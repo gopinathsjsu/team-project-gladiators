@@ -2,14 +2,15 @@ name: FE Dev PR pipeline.
 
 on:
   pull_request:
-    paths-ignore:
-      - 'back_end/**'
     branches: ["development"]
 
 jobs:
   build:
     name: Dev PR pipeline
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: '../../front_end'
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
