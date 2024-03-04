@@ -16,7 +16,7 @@ jobs:
           java-version: 17
           distribution: 'adopt'
       - name: Move To FE
-        run: ls
+        run: cd front_end
       - name: Set Up Gradle
         run: gradle wrapper
       - name: Build Gradle
