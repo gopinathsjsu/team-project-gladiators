@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: '/front_end'
+        working-directory: '/front_end/app'
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
