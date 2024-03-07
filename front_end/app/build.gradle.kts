@@ -51,6 +51,14 @@ android {
     }
     koverReport {
         androidReports("debug") {
+            filters {
+                excludes {
+                    annotatedBy(
+                        "androidx.compose.ui.tooling.preview.Preview",
+                        "androidx.compose.runtime.Composable"
+                    )
+                }
+            }
             verify {
                 rule {
                     isEnabled = true
@@ -59,6 +67,11 @@ android {
                     }
                 }
             }
+        }
+    }
+    testOptions {
+        unitTests {
+            this.isIncludeAndroidResources = true
         }
     }
 }
@@ -73,12 +86,16 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
 
     // Unit Tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("com.google.truth:truth:1.2.0")
+    testImplementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("androidx.compose.ui:ui-test-junit4:1.6.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.2")
 
     // UI tests
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
