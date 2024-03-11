@@ -1,0 +1,32 @@
+name: BE Dev PR pipeline
+
+on:
+  pull_request:
+    branches: ["development"]
+
+jobs:
+  build:
+    name: Dev PR pipeline
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'back_end'  # Update this if your project files are in a specific directory
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+      - name: Set Up Gradle
+        run: ./gradlew wrapper
+      - name: Build Project
+        run: ./gradlew build  # Use build or another appropriate task for your project
+      - name: Check formatting
+        run: ./gradlew check  # Adjust if you're using a different linter or formatter
+      - name: Run Tests
+        run: ./gradlew test  # Adjust the test task if necessary
+      - name: Generate Coverage Report
+        run: ./gradlew jacocoTestReport  # Generates the Jacoco coverage report
+      - name: Check Coverage
+        run: ./gradlew jacocoTestCoverageVerification  # Verifies the coverage against specified thresholds
