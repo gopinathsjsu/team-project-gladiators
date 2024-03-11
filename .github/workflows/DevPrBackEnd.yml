@@ -1,4 +1,4 @@
-name: BE Dev PR pipeline
+name: BE Dev PR pipeline.
 
 on:
   pull_request:
@@ -19,14 +19,26 @@ jobs:
           java-version: 17
           distribution: 'adopt'
       - name: Set Up Gradle
-        run: ./gradlew wrapper
+        run: |
+          chmod +x gradlew
+          ./gradlew wrapper
       - name: Build Project
-        run: ./gradlew build  # Use build or another appropriate task for your project
+        run: |
+          chmod +x gradlew
+          ./gradlew build
       - name: Check formatting
-        run: ./gradlew check  # Adjust if you're using a different linter or formatter
+        run: |
+          chmod +x gradlew
+          ./gradlew check
       - name: Run Tests
-        run: ./gradlew test  # Adjust the test task if necessary
+        run: |
+          chmod +x gradlew
+          ./gradlew test
       - name: Generate Coverage Report
-        run: ./gradlew jacocoTestReport  # Generates the Jacoco coverage report
+        run: |
+          chmod +x gradlew
+          ./gradlew jacocoTestReport
       - name: Check Coverage
-        run: ./gradlew jacocoTestCoverageVerification  # Verifies the coverage against specified thresholds
+        run: |
+          chmod +x gradlew
+          ./gradlew jacocoTestCoverageVerification

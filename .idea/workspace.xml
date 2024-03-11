@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="beeb7c39-c95f-4359-a71c-b78361d241d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/DevPrBackEnd.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/DevPr.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/DevPrFrontEnd.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/DevPrBackEnd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/DevPrBackEnd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back_end/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +60,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709543572216</updated>
-      <workItem from="1710122953932" duration="208000" />
+      <workItem from="1710122953932" duration="806000" />
     </task>
     <servers />
   </component>
