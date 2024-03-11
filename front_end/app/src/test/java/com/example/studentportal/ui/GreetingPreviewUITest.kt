@@ -1,9 +1,9 @@
-package com.example.myapplication.ui
+package com.example.studentportal.ui
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.myapplication.GreetingPreview
+import com.example.studentportal.home.ui.activity.GreetingPreview
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

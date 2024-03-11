@@ -1,4 +1,3 @@
 package com.example.studentportal.common.usecase
 
-class DefaultError {
-}
+data class DefaultUseCaseError(val message: String)

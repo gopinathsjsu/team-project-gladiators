@@ -1,4 +1,5 @@
 package com.example.studentportal.common.service
 
-class Repository {
+interface Repository<Service> {
+    val provider: ServiceProvider<Service>
 }

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication"
+    namespace = "com.example.studentportal"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.example.studentportal"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -86,7 +86,25 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
+    implementation("androidx.compose.ui:ui:1.6.2")
+    implementation("androidx.compose.ui:ui-tooling:1.6.2")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.4.0")
+
+    // Koin
+    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
+    testImplementation("io.insert-koin:koin-test:3.5.3")
+    androidTestImplementation("io.insert-koin:koin-test:3.5.3")
+    testImplementation("io.insert-koin:koin-test:3.5.3")
+    testImplementation("io.insert-koin:koin-test-junit4:3.5.3")
 
     // Unit Tests
     testImplementation("junit:junit:4.13.2")

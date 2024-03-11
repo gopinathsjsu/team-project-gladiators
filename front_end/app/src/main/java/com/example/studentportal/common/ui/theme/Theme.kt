@@ -1,4 +1,4 @@
-package com.example.studentportal.ui.theme
+package com.example.studentportal.common.ui.theme
 
 import android.app.Activity
 import android.os.Build

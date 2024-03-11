@@ -1,9 +1,9 @@
-package com.example.studentportal.common.usecase
+package com.example.studentportal.common.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.studentportal.common.usecase.BaseUseCaseProvider
 import kotlinx.coroutines.CoroutineDispatcher
 
-abstract class BaseViewModel<UseCaseProvider : BaseUseCaseProvider>(
-    protected val provider: UseCaseProvider,
+abstract class BaseViewModel(
     protected val dispatcher: CoroutineDispatcher
 ) : ViewModel()

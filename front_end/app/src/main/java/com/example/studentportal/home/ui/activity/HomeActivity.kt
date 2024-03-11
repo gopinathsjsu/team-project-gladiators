@@ -1,49 +1,54 @@
-package com.example.studentportal.home.ui
+package com.example.studentportal.home.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import com.example.studentportal.common.ui.model.BaseUiResult
+import com.example.studentportal.common.ui.model.data
+import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.common.ui.theme.MyApplicationTheme
+import com.example.studentportal.home.ui.viewmodel.UserViewModel
+import java.lang.reflect.Modifier
 
 class HomeActivity : ComponentActivity() {
+
+    val viewModel by viewModels<UserViewModel> {
+        UserViewModel.StudentViewModelFactory
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting(
-                        "Android",
-                        modifier = Modifier
-                    )
-                }
+                UserDetails(
+                    viewModel = viewModel,
+                    modifier = Modifier()
+                )
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun UserDetails(viewModel: UserViewModel, modifier: Modifier = Modifier()) {
+    val state by viewModel.uiResultLiveData.observeAsState()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
+    // API call
+    LaunchedEffect(key1 = Unit) {
+        viewModel.fetchStudent("9")
+    }
+
+    when(state){
+        is BaseUiResult.Error ->  Text(text = "ERROR ${state?.error()?.message}")
+        is BaseUiResult.Loading -> Text(text = "Loading...")
+        is BaseUiResult.Success ->  Text(text = "Hello ${state?.data()?.name ?: "NOT FOUND"} your email is  ${state?.data()?.email ?: "NOT FOUND"}")
+        null -> Text(text = "Hello NOT FOUND")
     }
 }

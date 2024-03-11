@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.studentportal
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test

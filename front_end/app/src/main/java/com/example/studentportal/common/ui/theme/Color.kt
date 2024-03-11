@@ -1,4 +1,4 @@
-package com.example.studentportal.ui.theme
+package com.example.studentportal.common.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

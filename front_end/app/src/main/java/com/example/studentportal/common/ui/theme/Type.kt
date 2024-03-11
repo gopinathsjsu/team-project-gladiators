@@ -1,4 +1,4 @@
-package com.example.studentportal.ui.theme
+package com.example.studentportal.common.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
