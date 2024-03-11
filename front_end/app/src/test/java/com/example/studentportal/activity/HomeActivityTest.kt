@@ -1,10 +1,10 @@
-package com.example.myapplication.activity
+package com.example.studentportal.activity
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.myapplication.MainActivity
+import com.example.studentportal.home.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
