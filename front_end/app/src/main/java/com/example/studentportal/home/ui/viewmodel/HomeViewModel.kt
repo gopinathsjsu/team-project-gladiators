@@ -1,5 +1,6 @@
 package com.example.studentportal.home.ui.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -21,12 +22,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class UserViewModel(
+class HomeViewModel(
     val userType: UserType,
     dispatcher: CoroutineDispatcher
-): BaseViewModel(dispatcher) {
+) : BaseViewModel(dispatcher) {
 
-    private val _uiResultLiveData = MutableLiveData<UserServiceUiResult>()
+    @VisibleForTesting
+    internal val _uiResultLiveData = MutableLiveData<UserServiceUiResult>()
     val uiResultLiveData: LiveData<UserServiceUiResult>
         get() = _uiResultLiveData
 
@@ -56,7 +58,7 @@ class UserViewModel(
     companion object {
         val StudentViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                UserViewModel(
+                HomeViewModel(
                     userType = UserType.STUDENT,
                     Dispatchers.IO
                 )

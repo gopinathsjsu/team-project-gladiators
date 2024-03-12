@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 class StudentUseCase(
     val userId: String,
     override val repository: StudentRepository
-) : BaseUseCase<StudentUseCaseModel,DefaultUseCaseError, StudentRepository, UserUiModel> {
+) : BaseUseCase<StudentUseCaseModel, DefaultUseCaseError, StudentRepository, UserUiModel> {
 
     override suspend fun launch(): Flow<UseCaseResult<StudentUseCaseModel, DefaultUseCaseError, UserUiModel>> {
         val response = repository.fetchStudent(userId)

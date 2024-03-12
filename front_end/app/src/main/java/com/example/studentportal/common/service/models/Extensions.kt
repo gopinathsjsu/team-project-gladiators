@@ -11,7 +11,6 @@ import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 
-
 fun <UseCaseModel : BaseUseCaseModel<UIModel>, Error, UIModel : BaseUiModel> successFlow(serviceModel: BaseServiceModel<UseCaseModel, UIModel>): Flow<UseCaseResult<UseCaseModel, Error, UIModel>> {
     return flowOf(UseCaseResult.Success(serviceModel.toUseCaseModel()))
 }

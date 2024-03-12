@@ -12,7 +12,7 @@ fun BaseUiResult<*, *>.isError(): Boolean {
     return this is BaseUiResult.Error
 }
 
-fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>.data(): UiModel {
+fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>?.data(): UiModel {
     return if (this is BaseUiResult.Success) {
         data
     } else {
@@ -20,7 +20,7 @@ fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>.data(): UiModel 
     }
 }
 
-fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>.error(): Error {
+fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>?.error(): Error {
     return if (this is BaseUiResult.Error) {
         error
     } else {

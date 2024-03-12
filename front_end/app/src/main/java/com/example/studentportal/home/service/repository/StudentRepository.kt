@@ -13,7 +13,7 @@ class StudentRepository(
     override val provider: ServiceProvider<StudentService>
 ) : Repository<StudentService> {
 
-    suspend fun fetchStudent(id: String): Response<StudentServiceModel>{
+    suspend fun fetchStudent(id: String): Response<StudentServiceModel> {
         return provider.service().fetchStudent(id).execute()
     }
 
