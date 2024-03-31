@@ -1,0 +1,47 @@
+@startuml
+'''' Declarations to stylize the diagram ''''
+hide circle
+skinparam classFontStyle bold
+hide empty members
+skinparam classAttributeIconSize 0
+
+'''' Base Service Package '''
+interface Repository {
+ + serviceProvider : ServiceProvider
+}
+interface ServiceProvider <<Interface>>{
+  + retrofit: Retrofit
+  + service(): Service
+}
+
+''' Base UseCase Package '''
+abstract class BaseUseCaseResult<<Sealed Class>>{
+  + data: BaseUseCaseModel
+  + error: DefaultError
+}
+interface BaseUseCase <<interface>>{
+  + launch(): Flow<BaseUseCaseResult>
+}
+interface BaseUseCaseModel<<Interface>> {
+  + toUiModel(): BaseUiModel
+}
+class DefaultError{
+ + message: String
+}
+
+''' Base UI Package '''
+interface BaseUiModel<<Interface>>
+
+
+'''' Service Package Relations '''
+Repository <-- BaseUseCase: " repository "
+ServiceProvider <-- Repository
+
+'''' UseCase Package Relations '''
+BaseUseCase ..> BaseUseCaseResult
+BaseUseCaseModel <-- BaseUseCaseResult
+DefaultError <-- BaseUseCaseResult
+
+''' Ui Package Relations '''
+BaseUseCaseModel ...> BaseUiModel
+@enduml

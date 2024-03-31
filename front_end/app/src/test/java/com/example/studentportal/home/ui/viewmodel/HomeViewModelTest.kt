@@ -7,11 +7,11 @@ import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.common.ui.model.isLoading
-import com.example.studentportal.common.usecase.DefaultUseCaseError
-import com.example.studentportal.home.service.models.StudentServiceModel
+import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.home.ui.model.UserType
 import com.example.studentportal.home.ui.model.UserUiModel
 import com.example.studentportal.home.usecase.StudentUseCase
+import com.example.studentportal.home.usecase.models.StudentUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -55,7 +55,7 @@ class HomeViewModelTest {
         // Set Up Resources
         mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
-            StudentServiceModel(
+            StudentUseCaseModel(
                 id = "Id",
                 name = "Name",
                 email = "email"
@@ -78,7 +78,7 @@ class HomeViewModelTest {
         // Set Up Resources
         mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
-            StudentServiceModel(
+            StudentUseCaseModel(
                 id = "Id",
                 name = "Name",
                 email = "email"
@@ -118,7 +118,7 @@ class HomeViewModelTest {
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
-            DefaultUseCaseError("Parse error")
+            DefaultError("Parse error")
         )
     }
 }
