@@ -24,7 +24,7 @@ class UserUseCaseModelTest {
         assertThat(result).isEqualTo(
             UserUiModel(
                 id = "ID",
-                name = "NAME",
+                name = "FAIL",
                 email = "EMAIL",
                 type = UserType.STUDENT
             )

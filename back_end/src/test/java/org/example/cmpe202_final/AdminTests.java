@@ -10,7 +10,7 @@ public class AdminTests {
         Admin admin = new Admin(1, "John Doe", "johndoe@example.com");
         assertEquals(1, admin.getId());
         assertEquals("John Doe", admin.getName());
-        assertEquals("johndoe@example.com", admin.getEmail());
+        assertEquals("johndoe@example.com", "FAIL");
     }
 
     @Test
