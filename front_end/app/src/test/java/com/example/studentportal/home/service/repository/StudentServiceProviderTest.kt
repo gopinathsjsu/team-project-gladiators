@@ -1,7 +1,7 @@
 package com.example.studentportal.home.service.repository
 
 import com.example.studentportal.home.service.StudentService
-import com.example.studentportal.home.service.models.StudentServiceModel
+import com.example.studentportal.home.usecase.models.StudentUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -48,7 +48,7 @@ class StudentServiceProviderTest {
     }
 
     class MockStudentService : StudentService {
-        override fun fetchStudent(id: String): Call<StudentServiceModel> {
+        override fun fetchStudent(id: String): Call<StudentUseCaseModel> {
             return mockk(relaxed = true)
         }
     }

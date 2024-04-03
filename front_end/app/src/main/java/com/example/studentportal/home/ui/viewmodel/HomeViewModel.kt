@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.studentportal.common.di.koin
-import com.example.studentportal.common.ui.model.BaseUiResult
+import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.viewmodel.BaseViewModel
-import com.example.studentportal.common.usecase.DefaultUseCaseError
+import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
@@ -28,12 +28,12 @@ class HomeViewModel(
 ) : BaseViewModel(dispatcher) {
 
     @VisibleForTesting
-    internal val _uiResultLiveData = MutableLiveData<UserServiceUiResult>()
-    val uiResultLiveData: LiveData<UserServiceUiResult>
+    internal val _uiResultLiveData = MutableLiveData<UserUiResult>()
+    val uiResultLiveData: LiveData<UserUiResult>
         get() = _uiResultLiveData
 
     fun fetchStudent(userId: String) {
-        _uiResultLiveData.value = BaseUiResult.Loading()
+        _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
             StudentUseCase(userId = userId, repository = koin.get())
                 .launch()
@@ -67,4 +67,4 @@ class HomeViewModel(
     }
 }
 
-typealias UserServiceUiResult = BaseUiResult<UserUiModel, DefaultUseCaseError>
+typealias UserUiResult = BaseUiState<UserUiModel, DefaultError>

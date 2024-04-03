@@ -1,27 +1,27 @@
 package com.example.studentportal.common.ui.model
 
-fun BaseUiResult<*, *>.isLoading(): Boolean {
-    return this is BaseUiResult.Loading
+fun BaseUiState<*, *>.isLoading(): Boolean {
+    return this is BaseUiState.Loading
 }
 
-fun BaseUiResult<*, *>.isSuccess(): Boolean {
-    return this is BaseUiResult.Success
+fun BaseUiState<*, *>.isSuccess(): Boolean {
+    return this is BaseUiState.Success
 }
 
-fun BaseUiResult<*, *>.isError(): Boolean {
-    return this is BaseUiResult.Error
+fun BaseUiState<*, *>.isError(): Boolean {
+    return this is BaseUiState.Error
 }
 
-fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>?.data(): UiModel {
-    return if (this is BaseUiResult.Success) {
+fun <UiModel : BaseUiModel, Error> BaseUiState<UiModel, Error>?.data(): UiModel? {
+    return if (this is BaseUiState.Success) {
         data
     } else {
         throw IllegalArgumentException("Data is not provided")
     }
 }
 
-fun <UiModel : BaseUiModel, Error> BaseUiResult<UiModel, Error>?.error(): Error {
-    return if (this is BaseUiResult.Error) {
+fun <UiModel : BaseUiModel, Error> BaseUiState<UiModel, Error>?.error(): Error? {
+    return if (this is BaseUiState.Error) {
         error
     } else {
         throw IllegalArgumentException("Error Data is not provided")

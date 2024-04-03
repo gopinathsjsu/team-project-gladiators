@@ -1,7 +1,7 @@
 package com.example.studentportal.common.usecase
 
 import com.example.studentportal.common.ui.model.BaseUiModel
-import com.example.studentportal.common.ui.model.BaseUiResult
+import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.common.ui.model.isError
@@ -14,14 +14,14 @@ class ExtensionTests {
 
     @Test
     fun `test BaseUiResult isLoading`() {
-        assertThat(BaseUiResult.Loading<TestUiModel, DefaultUseCaseError>().isLoading()).isTrue()
+        assertThat(BaseUiState.Loading<TestUiModel, DefaultError>().isLoading()).isTrue()
     }
 
     @Test
     fun `test BaseUiResult isError`() {
         assertThat(
-            BaseUiResult.Error<TestUiModel, DefaultUseCaseError>(
-                DefaultUseCaseError("")
+            BaseUiState.Error<TestUiModel, DefaultError>(
+                DefaultError("")
             ).isError()
         ).isTrue()
     }
@@ -29,7 +29,7 @@ class ExtensionTests {
     @Test
     fun `test BaseUiResult isSuccess`() {
         assertThat(
-            BaseUiResult.Success<TestUiModel, DefaultUseCaseError>(
+            BaseUiState.Success<TestUiModel, DefaultError>(
                 TestUiModel()
             ).isSuccess()
         ).isTrue()
@@ -38,7 +38,7 @@ class ExtensionTests {
     @Test
     fun `test useCase success`() {
         val data = TestUseCaseModel("WHATEVER")
-        val success = UseCaseResult.Success<TestUseCaseModel, DefaultUseCaseError, TestUiModel>(data).success()
+        val success = UseCaseResult.Success<TestUseCaseModel, DefaultError, TestUiModel>(data).success()
         assertThat(
             success.data()
         ).isEqualTo(TestUiModel("WHATEVER"))
@@ -46,23 +46,23 @@ class ExtensionTests {
 
     @Test(expected = IllegalArgumentException::class)
     fun `test useCase success on error`() {
-        UseCaseResult.Failure<TestUseCaseModel, DefaultUseCaseError, TestUiModel>(
-            DefaultUseCaseError("WHATEVER")
+        UseCaseResult.Failure<TestUseCaseModel, DefaultError, TestUiModel>(
+            DefaultError("WHATEVER")
         ).success()
     }
 
     @Test
     fun `test useCase failure`() {
-        val failure = UseCaseResult.Failure<TestUseCaseModel, DefaultUseCaseError, TestUiModel>(
-            DefaultUseCaseError("WHATEVER")
+        val failure = UseCaseResult.Failure<TestUseCaseModel, DefaultError, TestUiModel>(
+            DefaultError("WHATEVER")
         ).failure().error()
-        assertThat(failure).isEqualTo(DefaultUseCaseError("WHATEVER"))
+        assertThat(failure).isEqualTo(DefaultError("WHATEVER"))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `test useCase error on success`() {
         val data = TestUseCaseModel("WHATEVER")
-        UseCaseResult.Success<TestUseCaseModel, DefaultUseCaseError, TestUiModel>(data).failure()
+        UseCaseResult.Success<TestUseCaseModel, DefaultError, TestUiModel>(data).failure()
     }
 
     data class TestUseCaseModel(val name: String = "Name") : BaseUseCaseModel<TestUiModel> {

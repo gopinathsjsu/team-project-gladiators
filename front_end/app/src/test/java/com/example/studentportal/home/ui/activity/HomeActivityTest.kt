@@ -5,8 +5,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.studentportal.common.ui.model.BaseUiResult
-import com.example.studentportal.common.usecase.DefaultUseCaseError
+import com.example.studentportal.common.ui.model.BaseUiState
+import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.home.ui.model.UserType
 import com.example.studentportal.home.ui.model.UserUiModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,7 +44,7 @@ class HomeActivityTest {
         ActivityScenario.launch(HomeActivity::class.java)
             .use { scenario ->
                 scenario.onActivity {
-                    it.viewModel._uiResultLiveData.value = BaseUiResult.Success(
+                    it.viewModel._uiResultLiveData.value = BaseUiState.Success(
                         UserUiModel(
                             id = "Id",
                             name = "Name",
@@ -63,8 +63,8 @@ class HomeActivityTest {
         ActivityScenario.launch(HomeActivity::class.java)
             .use { scenario ->
                 scenario.onActivity {
-                    it.viewModel._uiResultLiveData.value = BaseUiResult.Error(
-                        DefaultUseCaseError("Error Loading User")
+                    it.viewModel._uiResultLiveData.value = BaseUiState.Error(
+                        DefaultError("Error Loading User")
                     )
                     composeTestRule
                         .onNodeWithText("Error Loading User").assertIsDisplayed()

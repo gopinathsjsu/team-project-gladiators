@@ -1,11 +1,10 @@
 package com.example.studentportal.common.service
 
-import com.example.studentportal.common.service.models.BaseServiceModel
 import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.ui.model.BaseUiModel
 import com.example.studentportal.common.usecase.BaseUseCaseModel
-import com.example.studentportal.common.usecase.DefaultUseCaseError
+import com.example.studentportal.common.usecase.DefaultError
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -21,11 +20,11 @@ import org.junit.Test
 class ExtensionTest {
     @Test
     fun `test successFlow`() = runTest {
-        val serviceModel = TestServiceModel("ExpectedName")
-        successFlow<TestUseCaseModel, DefaultUseCaseError, TestUiModel>(
+        val serviceModel = TestUseCaseModel("ExpectedName")
+        successFlow<TestUseCaseModel, DefaultError, TestUiModel>(
             serviceModel
         ).collectLatest { result ->
-            assertThat(result.data).isEqualTo(serviceModel.toUseCaseModel())
+            assertThat(result.data).isEqualTo(serviceModel)
         }
     }
 
@@ -40,7 +39,7 @@ class ExtensionTest {
 
         // Verify Error Returned
         defaultFailureFlow<TestUseCaseModel, TestUiModel>(mockResponseError).collectLatest { result ->
-            assertThat(result.error).isEqualTo(DefaultUseCaseError("Error Message"))
+            assertThat(result.error).isEqualTo(DefaultError("Error Message"))
         }
 
         // Clean Up Resources
@@ -58,7 +57,7 @@ class ExtensionTest {
 
         // Verify Error Returned
         defaultFailureFlow<TestUseCaseModel, TestUiModel>(mockResponseError).collectLatest { result ->
-            assertThat(result.error).isEqualTo(DefaultUseCaseError("Parse Error"))
+            assertThat(result.error).isEqualTo(DefaultError("Parse Error"))
         }
 
         // Clean Up Resources
@@ -68,15 +67,10 @@ class ExtensionTest {
     @Test
     fun `test default defaultErrorFlow`() = runTest {
         defaultFailureFlow<TestUseCaseModel, TestUiModel>().collectLatest { result ->
-            assertThat(result.error).isEqualTo(DefaultUseCaseError("Parse error"))
+            assertThat(result.error).isEqualTo(DefaultError("Parse error"))
         }
     }
 
-    data class TestServiceModel(val name: String = "Name") : BaseServiceModel<TestUseCaseModel, TestUiModel> {
-        override fun toUseCaseModel(): TestUseCaseModel {
-            return TestUseCaseModel(name)
-        }
-    }
     data class TestUseCaseModel(val name: String = "Name") : BaseUseCaseModel<TestUiModel> {
         override fun toUiModel() = TestUiModel(name)
     }

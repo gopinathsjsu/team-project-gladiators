@@ -1,7 +1,6 @@
 package com.example.studentportal.home.usecase
 
-import com.example.studentportal.common.usecase.DefaultUseCaseError
-import com.example.studentportal.home.service.models.StudentServiceModel
+import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.home.service.repository.StudentRepository
 import com.example.studentportal.home.usecase.models.StudentUseCaseModel
 import com.google.common.truth.Truth.assertThat
@@ -24,7 +23,7 @@ class StudentUseCaseTest {
         val userId = "UserId"
         val repository: StudentRepository = mockk(relaxed = true) {
             coEvery { fetchStudent(userId) } returns Response.success(
-                StudentServiceModel(
+                StudentUseCaseModel(
                     id = "ID",
                     name = "NAME",
                     email = "EMAIL"
@@ -76,7 +75,7 @@ class StudentUseCaseTest {
         // Assert
         result.collectLatest {
             assertThat(it.error).isEqualTo(
-                DefaultUseCaseError(
+                DefaultError(
                     "Backend Error"
                 )
             )
@@ -107,7 +106,7 @@ class StudentUseCaseTest {
         // Assert
         result.collectLatest {
             assertThat(it.error).isEqualTo(
-                DefaultUseCaseError(
+                DefaultError(
                     "Parse error"
                 )
             )

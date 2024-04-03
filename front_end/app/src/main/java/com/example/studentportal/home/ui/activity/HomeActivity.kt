@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import com.example.studentportal.common.ui.model.BaseUiResult
+import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.home.ui.viewmodel.HomeViewModel
@@ -31,16 +31,16 @@ class HomeActivity : ComponentActivity() {
 
 @Composable
 fun UserDetailsLayout(viewModel: HomeViewModel) {
-    val state by viewModel.uiResultLiveData.observeAsState()
+    val uiState by viewModel.uiResultLiveData.observeAsState()
 
     // API call
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchStudent("9")
     }
 
-    when (state) {
-        is BaseUiResult.Error -> Text(text = state.error().message)
-        is BaseUiResult.Success -> Text(text = "Hello ${state.data().name} your email is ${state.data().email}")
+    when (uiState) {
+        is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
+        is BaseUiState.Success -> Text(text = "Hello ${uiState.data()?.name} your email is ${uiState.data()?.email}")
         else -> Text(text = "Loading...")
     }
 }

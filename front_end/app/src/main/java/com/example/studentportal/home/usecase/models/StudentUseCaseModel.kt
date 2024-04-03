@@ -3,7 +3,9 @@ package com.example.studentportal.home.usecase.models
 import com.example.studentportal.common.usecase.BaseUseCaseModel
 import com.example.studentportal.home.ui.model.UserType
 import com.example.studentportal.home.ui.model.UserUiModel
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class StudentUseCaseModel(
     val id: String,
     val name: String,
