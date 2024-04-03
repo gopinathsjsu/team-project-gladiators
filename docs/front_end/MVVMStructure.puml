@@ -1,0 +1,32 @@
+@startuml
+'''' Declarations to stylize the diagram ''''
+hide circle
+skinparam classFontStyle bold
+hide empty members
+skinparam classAttributeIconSize 0
+''' Class Declarations '''
+abstract class BaseViewModel {
+  # dispatcher: CoroutineDispatcher
+}
+abstract class BaseUiState <<Sealed Class>> {
+  data: BaseUiModel?
+  error: DefaultError?
+}
+class ConcreteViewModel {
+ + uiResultLiveData: LiveData<BaseUiState>
+ + fetchStudent(userId: String): void
+}
+
+interface BaseUseCase<<Interface>>
+
+class LifecycleOwner <<Activity/Fragment>> {
+  viewModel: ConcreteViewModel
+  {static} ConcreteViewModelFactory: ViewModelProvider.Factory
+}
+''' Relations '''
+BaseUseCase <.. ConcreteViewModel
+ConcreteViewModel --|> BaseViewModel
+ConcreteViewModel <-- LifecycleOwner  : "- viewModel"
+ConcreteViewModel --> BaseUiState
+LifecycleOwner --> BaseUiState : "- uiState:LiveData<BaseUiState> "
+@enduml
