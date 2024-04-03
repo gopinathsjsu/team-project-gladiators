@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Dev PR pipeline
+    name: Dev PR Front End
     runs-on: ubuntu-latest
     defaults:
       run:
