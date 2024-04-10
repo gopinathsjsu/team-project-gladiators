@@ -9,4 +9,9 @@
     <!-- To toggle the open close button of the navigation drawer -->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+
+    <!-- Notification message -->
+    <string name="assignment_created">An assignment was graded</string>
+    <string name="assignment_graded">New assignment</string>
+    <string name="announcement_created">New announcement</string>
 </resources>
