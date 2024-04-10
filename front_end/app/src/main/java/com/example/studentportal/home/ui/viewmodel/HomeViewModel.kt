@@ -32,7 +32,7 @@ class HomeViewModel(
     val uiResultLiveData: LiveData<UserUiResult>
         get() = _uiResultLiveData
 
-    fun fetchStudent(userId: String) {
+    suspend fun fetchStudent(userId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
             StudentUseCase(userId = userId, repository = koin.get())

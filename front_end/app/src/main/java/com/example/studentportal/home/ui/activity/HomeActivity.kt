@@ -1,46 +1,98 @@
 package com.example.studentportal.home.ui.activity
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import com.example.studentportal.common.ui.model.BaseUiState
-import com.example.studentportal.common.ui.model.data
-import com.example.studentportal.common.ui.model.error
-import com.example.studentportal.home.ui.viewmodel.HomeViewModel
+import android.view.MenuItem
+import androidx.annotation.IdRes
+import androidx.annotation.VisibleForTesting
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.fragment.app.FragmentActivity
+import com.example.studentportal.R
+import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.common.ui.popBackStackToFragment
+import com.example.studentportal.common.ui.showFragment
+import com.example.studentportal.databinding.ActivityHomeBinding
+import com.example.studentportal.home.ui.fragment.HomeFragment
+import com.example.studentportal.notifications.ui.fragment.NotificationsFragment
+import com.example.studentportal.profile.ui.fragment.ProfileFragment
+import com.google.android.material.navigation.NavigationView
 
-class HomeActivity : ComponentActivity() {
+class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val viewModel by viewModels<HomeViewModel> {
-        HomeViewModel.StudentViewModelFactory
-    }
+    @VisibleForTesting
+    internal lateinit var binding: ActivityHomeBinding
+    private lateinit var actionBarToggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            UserDetailsLayout(
-                viewModel = viewModel
-            )
+        binding = ActivityHomeBinding.inflate(layoutInflater).initUI()
+        // Set up activity action bar
+        actionBar?.apply {
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.drawer_menu)
         }
-    }
-}
-
-@Composable
-fun UserDetailsLayout(viewModel: HomeViewModel) {
-    val uiState by viewModel.uiResultLiveData.observeAsState()
-
-    // API call
-    LaunchedEffect(key1 = Unit) {
-        viewModel.fetchStudent("9")
+        selectDrawerItem(R.id.nav_courses, false)
+        setContentView(binding.root)
     }
 
-    when (uiState) {
-        is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
-        is BaseUiState.Success -> Text(text = "Hello ${uiState.data()?.name} your email is ${uiState.data()?.email}")
-        else -> Text(text = "Loading...")
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        selectDrawerItem(item.itemId, true)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun selectDrawerItem(
+        @IdRes itemId: Int,
+        addToBackStack: Boolean
+    ) {
+        val displayedFragment = supportFragmentManager.findFragmentById(binding.flContent.id) as? BaseFragment<*>
+        if (displayedFragment?.menuItem() == itemId) {
+            binding.drawerLayout.closeDrawers()
+            return // Don't display fragment twice
+        }
+        val fragment = when (itemId) {
+            R.id.nav_courses -> HomeFragment.newInstance()
+            R.id.nav_profile -> ProfileFragment.newInstance()
+            R.id.nav_notifications -> NotificationsFragment.newInstance()
+            else -> HomeFragment.newInstance()
+        }
+        val existingFragment = supportFragmentManager.findFragmentByTag(fragment.fragmentTag)
+        if (existingFragment != null) {
+            supportFragmentManager.popBackStackToFragment(fragment)
+            binding.drawerLayout.closeDrawers()
+            return // Go back in history to previous fragment
+        }
+        supportFragmentManager.showFragment(
+            fragment = fragment,
+            addToBackStack = addToBackStack,
+            containerId = binding.flContent.id
+        )
+        binding.drawerLayout.closeDrawers()
+    }
+
+    private fun ActivityHomeBinding.initUI(): ActivityHomeBinding {
+        drawerLayout.apply {
+            actionBarToggle = ActionBarDrawerToggle(
+                this@HomeActivity,
+                this,
+                R.string.nav_open,
+                R.string.nav_close
+            )
+            addDrawerListener(actionBarToggle)
+            actionBarToggle.syncState()
+        }
+        setActionBar(homeToolbar)
+        navigationView.setNavigationItemSelectedListener(this@HomeActivity)
+        return this
     }
 }
