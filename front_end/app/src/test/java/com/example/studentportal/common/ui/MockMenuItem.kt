@@ -10,7 +10,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import io.mockk.mockk
 
-class MockMenuItem(@IdRes val menuId: Int): MenuItem {
+class MockMenuItem(@IdRes val menuId: Int) : MenuItem {
     override fun getItemId(): Int = menuId
 
     override fun getGroupId(): Int = 0
@@ -166,5 +166,4 @@ class MockMenuItem(@IdRes val menuId: Int): MenuItem {
     override fun setOnActionExpandListener(listener: MenuItem.OnActionExpandListener?): MenuItem {
         return this
     }
-
 }

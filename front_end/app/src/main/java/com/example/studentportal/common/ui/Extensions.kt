@@ -10,10 +10,10 @@ import com.example.studentportal.home.ui.fragment.HomeFragment
 /**
  * Pop backstack to this fragment
  */
-fun FragmentManager.popBackStackToFragment(fragment:BaseFragment<*>){
-    if(fragment is HomeFragment){
+fun FragmentManager.popBackStackToFragment(fragment: BaseFragment<*>) {
+    if (fragment is HomeFragment) {
         popBackStack(null, POP_BACK_STACK_INCLUSIVE)
-    }else {
+    } else {
         popBackStack(fragment.fragmentTag, 0)
     }
 }
@@ -26,7 +26,7 @@ fun FragmentManager.showFragment(
     commit {
         setReorderingAllowed(true)
         replace(containerId, fragment, fragment.fragmentTag)
-        if(addToBackStack){
+        if (addToBackStack) {
             addToBackStack(fragment.fragmentTag)
         }
     }

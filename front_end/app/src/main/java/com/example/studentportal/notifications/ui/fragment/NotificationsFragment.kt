@@ -4,17 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.fragment.app.Fragment
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.databinding.FragmentNotificationsBinding
-import com.example.studentportal.databinding.FragmentProfileBinding
 
-class NotificationsFragment: BaseFragment<FragmentNotificationsBinding>(TAG) {
+class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(TAG) {
 
     override fun inflateBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
+        container: ViewGroup?
     ): FragmentNotificationsBinding {
         val binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         binding.composeView.setContent {
@@ -28,7 +26,7 @@ class NotificationsFragment: BaseFragment<FragmentNotificationsBinding>(TAG) {
     companion object {
 
         const val TAG = "NOTIFICATIONS"
-        fun newInstance(): NotificationsFragment{
+        fun newInstance(): NotificationsFragment {
             return NotificationsFragment()
         }
     }

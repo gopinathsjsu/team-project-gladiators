@@ -16,7 +16,7 @@ class StudentUseCase(
 ) : BaseUseCase<StudentUseCaseModel, DefaultError, StudentRepository, UserUiModel> {
 
     override suspend fun launch(): Flow<UseCaseResult<StudentUseCaseModel, DefaultError, UserUiModel>> {
-        return try{
+        return try {
             val response = repository.fetchStudent(userId)
             val student = response.body()
             val errorResponse = response.errorBody()
@@ -25,7 +25,7 @@ class StudentUseCase(
                 errorResponse != null -> defaultFailureFlow(errorResponse)
                 else -> defaultFailureFlow()
             }
-        }catch(e: Exception){
+        } catch (e: Exception) {
             defaultFailureFlow(e)
         }
     }

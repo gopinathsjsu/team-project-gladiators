@@ -16,7 +16,6 @@ import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.databinding.FragmentCoursesBinding
 import com.example.studentportal.home.ui.viewmodel.HomeViewModel
 
-
 class HomeFragment : BaseFragment<FragmentCoursesBinding>(TAG) {
     internal val viewModel by viewModels<HomeViewModel> {
         HomeViewModel.StudentViewModelFactory
@@ -24,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentCoursesBinding>(TAG) {
 
     override fun inflateBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
+        container: ViewGroup?
     ): FragmentCoursesBinding {
         val binding = FragmentCoursesBinding.inflate(inflater, container, false)
         binding.composeView.setContent {

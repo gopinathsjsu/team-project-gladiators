@@ -8,7 +8,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<T: ViewBinding>(val fragmentTag: String) : Fragment(){
+abstract class BaseFragment<T : ViewBinding>(val fragmentTag: String) : Fragment() {
 
     private var _binding: T? = null
     val binding
@@ -16,7 +16,7 @@ abstract class BaseFragment<T: ViewBinding>(val fragmentTag: String) : Fragment(
 
     abstract fun inflateBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
+        container: ViewGroup?
     ): T
 
     @IdRes

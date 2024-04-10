@@ -135,7 +135,6 @@ class StudentUseCaseTest {
         }
     }
 
-
     @Test
     fun `test student call default`() = runTest {
         // Arrange

@@ -4,13 +4,13 @@ import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.STATE_IDLE
 
-class MockDrawerState: DrawerLayout.DrawerListener {
+class MockDrawerState : DrawerLayout.DrawerListener {
 
     val state: State
         get() = _state
     private var _state = State.CLOSED
 
-    enum class State{
+    enum class State {
         CLOSED, OPEN
     }
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
@@ -19,8 +19,7 @@ class MockDrawerState: DrawerLayout.DrawerListener {
 
     override fun onDrawerClosed(drawerView: View) = Unit
 
-    override fun onDrawerStateChanged(newState: Int){
-        this._state = if(newState == STATE_IDLE){State.CLOSED}else{State.OPEN}
+    override fun onDrawerStateChanged(newState: Int) {
+        this._state = if (newState == STATE_IDLE) { State.CLOSED } else { State.OPEN }
     }
-
 }
