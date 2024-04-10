@@ -19,6 +19,7 @@ import com.example.studentportal.home.ui.model.UserUiModel
 import com.example.studentportal.home.usecase.StudentUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,14 +33,14 @@ class HomeViewModel(
     val uiResultLiveData: LiveData<UserUiResult>
         get() = _uiResultLiveData
 
-    fun fetchStudent(userId: String) {
+    suspend fun fetchStudent(userId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
             StudentUseCase(userId = userId, repository = koin.get())
                 .launch()
                 .collectLatest { result ->
                     when (result) {
-                        is UseCaseResult.Failure -> {
+                            is UseCaseResult.Failure -> {
                             viewModelScope.launch {
                                 _uiResultLiveData.value = result.failure()
                             }

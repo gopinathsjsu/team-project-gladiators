@@ -34,3 +34,7 @@ fun <UseCaseModel : BaseUseCaseModel<UiModel>, UiModel : BaseUiModel> defaultFai
 fun <U : BaseUseCaseModel<UI>, UI : BaseUiModel> defaultFailureFlow(): Flow<UseCaseResult<U, DefaultError, UI>> {
     return failureFlow(DefaultError("Parse error"))
 }
+
+fun <U : BaseUseCaseModel<UI>, UI : BaseUiModel> defaultFailureFlow(e: Exception): Flow<UseCaseResult<U, DefaultError, UI>> {
+    return failureFlow(DefaultError(e.message ?: "Unknown Error"))
+}

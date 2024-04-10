@@ -86,6 +86,57 @@ class StudentUseCaseTest {
     }
 
     @Test
+    fun `test student call exception with message`() = runTest {
+        // Arrange
+        val userId = "UserId"
+        val repository: StudentRepository = mockk(relaxed = true) {
+            coEvery { fetchStudent(userId) } throws IllegalAccessException("Expected Message")
+        }
+
+        // Act
+        val useCase = StudentUseCase(
+            userId = userId,
+            repository = repository
+        )
+        val result = useCase.launch()
+
+        // Assert
+        result.collectLatest {
+            assertThat(it.error).isEqualTo(
+                DefaultError(
+                    "Expected Message"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `test student call exception without message`() = runTest {
+        // Arrange
+        val userId = "UserId"
+        val repository: StudentRepository = mockk(relaxed = true) {
+            coEvery { fetchStudent(userId) } throws IllegalAccessException()
+        }
+
+        // Act
+        val useCase = StudentUseCase(
+            userId = userId,
+            repository = repository
+        )
+        val result = useCase.launch()
+
+        // Assert
+        result.collectLatest {
+            assertThat(it.error).isEqualTo(
+                DefaultError(
+                    "Unknown Error"
+                )
+            )
+        }
+    }
+
+
+    @Test
     fun `test student call default`() = runTest {
         // Arrange
         val userId = "UserId"
