@@ -12,7 +12,7 @@ import java.util.List;
 public class NotificationService {
     private final NotificationRepository repository;
     public List<Notification> getAllNotifications() {
-        return repository.findAllByOrderByDate();
+        return repository.findAllByOrderByDateDesc();
     }
 
     public void insertNotification(Notification notification) {
