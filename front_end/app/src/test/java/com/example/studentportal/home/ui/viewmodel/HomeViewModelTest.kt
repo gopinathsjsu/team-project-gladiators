@@ -12,15 +12,12 @@ import com.example.studentportal.home.ui.model.UserType
 import com.example.studentportal.home.ui.model.UserUiModel
 import com.example.studentportal.home.usecase.StudentUseCase
 import com.example.studentportal.home.usecase.models.StudentUseCaseModel
-import com.example.studentportal.notifications.usecase.NotificationListUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
