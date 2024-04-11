@@ -12,6 +12,7 @@ import com.example.studentportal.home.ui.model.UserType
 import com.example.studentportal.home.ui.model.UserUiModel
 import com.example.studentportal.home.usecase.StudentUseCase
 import com.example.studentportal.home.usecase.models.StudentUseCaseModel
+import com.example.studentportal.notifications.usecase.NotificationListUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -22,6 +23,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,8 +37,14 @@ class HomeViewModelTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
 
+    @Before
+    fun before() {
+        mockkConstructor(StudentUseCase::class)
+    }
+
     @After
     fun tearDown() {
+        unmockkConstructor(StudentUseCase::class)
         stopKoin()
     }
 
@@ -54,7 +62,6 @@ class HomeViewModelTest {
     @Test
     fun `test student fetch loading`() = runTest {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
             StudentUseCaseModel(
                 id = "Id",
@@ -72,13 +79,11 @@ class HomeViewModelTest {
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
-        unmockkConstructor(StudentUseCase::class)
     }
 
     @Test
     fun `test student fetch success`() = runTest(mainDispatcher) {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
             StudentUseCaseModel(
                 id = "Id",
@@ -104,13 +109,11 @@ class HomeViewModelTest {
                 type = UserType.STUDENT
             )
         )
-        unmockkConstructor(StudentUseCase::class)
     }
 
     @Test
     fun `test student fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns defaultFailureFlow()
         val viewModel = HomeViewModel(
             UserType.STUDENT,
@@ -125,6 +128,5 @@ class HomeViewModelTest {
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
             DefaultError("Parse error")
         )
-        unmockkConstructor(StudentUseCase::class)
     }
 }
