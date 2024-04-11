@@ -18,6 +18,7 @@ import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -27,10 +28,9 @@ import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 
 @RunWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
 
-    private val mainDispatcher = UnconfinedTestDispatcher()
+    private val mainDispatcher = StandardTestDispatcher()
 
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
@@ -93,6 +93,7 @@ class HomeViewModelTest {
 
         // Act
         viewModel.fetchStudent("Id")
+        mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.data()).isEqualTo(
@@ -118,6 +119,7 @@ class HomeViewModelTest {
 
         // Act
         viewModel.fetchStudent("Id")
+        mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
