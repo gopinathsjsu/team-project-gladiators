@@ -21,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NotificationListViewModel (
+class NotificationListViewModel(
     dispatcher: CoroutineDispatcher
 ) : BaseViewModel(dispatcher) {
 
@@ -30,7 +30,7 @@ class NotificationListViewModel (
     val uiResultLiveData: LiveData<NotificationListUiResult>
         get() = _uiResultLiveData
 
-    fun fetchNotifications() {
+    suspend fun fetchNotifications() {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
             NotificationListUseCase(repository = koin.get())

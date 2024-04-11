@@ -1,8 +1,8 @@
 package com.example.studentportal.notifications.service.repository
 
-import com.example.studentportal.notifications.service.NotificationService
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.service.ServiceProvider
+import com.example.studentportal.notifications.service.NotificationService
 import retrofit2.Retrofit
 
 class NotificationServiceProvider : ServiceProvider<NotificationService> {

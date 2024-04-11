@@ -7,5 +7,5 @@ data class NotificationUiModel(
     val courseName: String,
     val eventTitle: String,
     val eventId: String,
-    val type: NotificationType,
+    val type: NotificationType
 ) : BaseUiModel

@@ -72,12 +72,13 @@ fun NotificationListLayout(viewModel: NotificationListViewModel) {
         is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
         is BaseUiState.Success -> {
             val notificationList = uiState.data()?.notifications
-            if (notificationList != null) {
+            if (!notificationList.isNullOrEmpty()) {
                 NotificationList(
                     notificationList = notificationList,
-                    modifier = Modifier.fillMaxSize())
+                    modifier = Modifier.fillMaxSize()
+                )
             } else {
-                Text("You do not have notifications")
+                Text(stringResource(id = R.string.empty_notifications))
             }
         }
         else -> Text(text = "Loading...")
@@ -91,7 +92,8 @@ fun NotificationList(notificationList: List<NotificationUiModel>, modifier: Modi
             NotificationCard(
                 notification = it,
                 modifier = Modifier
-                    .padding(4.dp))
+                    .padding(4.dp)
+            )
         }
     }
 }
@@ -107,10 +109,14 @@ fun NotificationCard(notification: NotificationUiModel, modifier: Modifier) {
 
     Box(modifier) {
         Column {
-            Text(text = message,
-                style = textStyle)
-            Text(text = "${notification.courseName}: ${notification.eventTitle}",
-                style = textStyle)
+            Text(
+                text = message,
+                style = textStyle
+            )
+            Text(
+                text = "${notification.courseName}: ${notification.eventTitle}",
+                style = textStyle
+            )
             Divider()
         }
     }
