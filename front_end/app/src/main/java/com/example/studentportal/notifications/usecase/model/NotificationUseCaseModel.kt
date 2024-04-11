@@ -6,12 +6,12 @@ import com.example.studentportal.notifications.ui.model.NotificationUiModel
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class  NotificationUseCaseModel(
+data class NotificationUseCaseModel(
     val id: String,
     val courseName: String,
     val eventTitle: String,
     val eventId: String,
-    val type: String, // !!! NotificationType
+    val type: String // !!! NotificationType
 ) : BaseUseCaseModel<NotificationUiModel> {
     override fun toUiModel(): NotificationUiModel {
         return NotificationUiModel(

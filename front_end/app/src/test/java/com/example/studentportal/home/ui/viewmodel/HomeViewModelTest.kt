@@ -16,6 +16,7 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.unmockkConstructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -71,6 +72,7 @@ class HomeViewModelTest {
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
+        unmockkConstructor(StudentUseCase::class)
     }
 
     @Test
@@ -101,6 +103,7 @@ class HomeViewModelTest {
                 type = UserType.STUDENT
             )
         )
+        unmockkConstructor(StudentUseCase::class)
     }
 
     @Test
@@ -120,5 +123,6 @@ class HomeViewModelTest {
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
             DefaultError("Parse error")
         )
+        unmockkConstructor(StudentUseCase::class)
     }
 }
