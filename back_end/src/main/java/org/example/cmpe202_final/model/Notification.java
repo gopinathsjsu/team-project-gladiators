@@ -1,17 +1,16 @@
 package org.example.cmpe202_final.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Data
-@Document
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Document
 public class Notification {
     @Id
     private String id;
