@@ -16,26 +16,32 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import io.mockk.unmockkConstructor
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 
 @RunWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
 
-    private val mainDispatcher = UnconfinedTestDispatcher()
+    private val mainDispatcher = StandardTestDispatcher()
 
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
 
+    @Before
+    fun before() {
+        mockkConstructor(StudentUseCase::class)
+    }
+
     @After
     fun tearDown() {
+        unmockkConstructor(StudentUseCase::class)
         stopKoin()
     }
 
@@ -53,7 +59,6 @@ class HomeViewModelTest {
     @Test
     fun `test student fetch loading`() = runTest {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
             StudentUseCaseModel(
                 id = "Id",
@@ -76,7 +81,6 @@ class HomeViewModelTest {
     @Test
     fun `test student fetch success`() = runTest(mainDispatcher) {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns successFlow(
             StudentUseCaseModel(
                 id = "Id",
@@ -91,6 +95,7 @@ class HomeViewModelTest {
 
         // Act
         viewModel.fetchStudent("Id")
+        mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.data()).isEqualTo(
@@ -106,7 +111,6 @@ class HomeViewModelTest {
     @Test
     fun `test student fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
-        mockkConstructor(StudentUseCase::class)
         coEvery { anyConstructed<StudentUseCase>().launch() } returns defaultFailureFlow()
         val viewModel = HomeViewModel(
             UserType.STUDENT,
@@ -115,6 +119,7 @@ class HomeViewModelTest {
 
         // Act
         viewModel.fetchStudent("Id")
+        mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
