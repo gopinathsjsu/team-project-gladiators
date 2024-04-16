@@ -1,6 +1,7 @@
 package org.example.cmpe202_final.repository;
 
-import org.example.cmpe202_final.model.Notification;
+import org.example.cmpe202_final.model.notification.Notification;
+import org.example.cmpe202_final.repository.notifications.NotificationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
