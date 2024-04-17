@@ -29,6 +29,10 @@ public class FacultyCourseStrategy implements CourseStrategy{
         List<Course> courses = courseService.findByInstructor(userId);
         List<Semester> semesters = semesterService.findAllSemesters();
 
+        if(courses.isEmpty()){
+            return new ArrayList<>();
+        }
+
         // Organize courses by semesters
         HashMap<String, ArrayList<CourseViewEntity>> coursesBySemester = new HashMap<>();
         for (Course course : courses) {
@@ -43,8 +47,12 @@ public class FacultyCourseStrategy implements CourseStrategy{
         // Compile final List
         ArrayList<CourseViewEntity> views = new ArrayList<>();
         for (Semester semester : semesters){
+            ArrayList<CourseViewEntity> courseViews = coursesBySemester.get(semester.getId());
+            if(courseViews == null){
+                continue;
+            }
             views.add(new CourseViewSemester(semester));
-            views.addAll(coursesBySemester.get(semester.getId()));
+            views.addAll(courseViews);
         }
         return views;
     }

@@ -78,7 +78,7 @@ public class CoursesControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=studentId"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getStudentAndProfessorResponseViews(mockDate))))
+                .andExpect(content().json(objectMapper.writeValueAsString(getStudentResponseViews(mockDate))))
                 .andReturn();
     }
 
@@ -94,7 +94,7 @@ public class CoursesControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=instructor1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getStudentAndProfessorResponseViews(mockDate))))
+                .andExpect(content().json(objectMapper.writeValueAsString(getProfessorResponseViews(mockDate))))
                 .andReturn();
     }
 
@@ -123,13 +123,23 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student3", "Student4")),
                         new HashSet<>(Set.of("Assignment3", "Assignment4")),
                         "semester1",
-                        false,
+                        true,
                         "course1",
                         "description1"
                 ),
                 new CourseViewCourse(
                         "id2",
                         "instructor1",
+                        new HashSet<>(Set.of("Student1", "Student2")),
+                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
+                        "semester1",
+                        true,
+                        "course2",
+                        "description2"
+                ),
+                new CourseViewCourse(
+                        "id3",
+                        null,
                         new HashSet<>(Set.of("Student1", "Student2")),
                         new HashSet<>(Set.of("Assignment1", "Assignment2")),
                         "semester1",
@@ -140,7 +150,7 @@ public class CoursesControllerTest {
         );
     }
 
-    List<CourseViewEntity> getStudentAndProfessorResponseViews(Date date) {
+    List<CourseViewEntity> getProfessorResponseViews(Date date) {
         return Arrays.asList(
                 new CourseViewSemester(
                         "semester1",
@@ -154,7 +164,7 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student3", "Student4")),
                         new HashSet<>(Set.of("Assignment3", "Assignment4")),
                         "semester1",
-                        false,
+                        true,
                         "course1",
                         "description1"
                 ),
@@ -164,7 +174,48 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student1", "Student2")),
                         new HashSet<>(Set.of("Assignment1", "Assignment2")),
                         "semester1",
+                        true,
+                        "course2",
+                        "description2"
+                ),
+                new CourseViewCourse(
+                        "id3",
+                        null,
+                        new HashSet<>(Set.of("Student1", "Student2")),
+                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
+                        "semester1",
                         false,
+                        "course2",
+                        "description2"
+                )
+        );
+    }
+
+    List<CourseViewEntity> getStudentResponseViews(Date date) {
+        return Arrays.asList(
+                new CourseViewSemester(
+                        "semester1",
+                        date,
+                        date,
+                        "Semester Name"
+                ),
+                new CourseViewCourse(
+                        "id1",
+                        "instructor1",
+                        new HashSet<>(Set.of("Student3", "Student4")),
+                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
+                        "semester1",
+                        true,
+                        "course1",
+                        "description1"
+                ),
+                new CourseViewCourse(
+                        "id2",
+                        "instructor1",
+                        new HashSet<>(Set.of("Student1", "Student2")),
+                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
+                        "semester1",
+                        true,
                         "course2",
                         "description2"
                 )
@@ -192,7 +243,7 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student3", "Student4")),
                         new HashSet<>(Set.of("Assignment3", "Assignment4")),
                         "semester1",
-                        false,
+                        true,
                         "course1",
                         "description1"
                 ),
@@ -202,10 +253,28 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student1", "Student2")),
                         new HashSet<>(Set.of("Assignment1", "Assignment2")),
                         "semester1",
+                        true,
+                        "course2",
+                        "description2"
+                ),
+                CourseViewFaculty.getUnassignedView(),
+                new CourseViewSemester(
+                        "semester1",
+                        date,
+                        date,
+                        "Semester Name"
+                ),
+                new CourseViewCourse(
+                        "id3",
+                        null,
+                        new HashSet<>(Set.of("Student1", "Student2")),
+                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
+                        "semester1",
                         false,
                         "course2",
                         "description2"
                 )
+
         );
     }
 
@@ -217,13 +286,23 @@ public class CoursesControllerTest {
                         new HashSet<>(Set.of("Student3", "Student4")),
                         new HashSet<>(Set.of("Assignment3", "Assignment4")),
                         "semester1",
-                        false,
+                        true,
                         "course1",
                         "description1"
                 ),
                 new Course(
                         "id2",
                         "instructor1",
+                        new HashSet<>(Set.of("Student1", "Student2")),
+                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
+                        "semester1",
+                        true,
+                        "course2",
+                        "description2"
+                ),
+                new Course(
+                        "id3",
+                        null,
                         new HashSet<>(Set.of("Student1", "Student2")),
                         new HashSet<>(Set.of("Assignment1", "Assignment2")),
                         "semester1",

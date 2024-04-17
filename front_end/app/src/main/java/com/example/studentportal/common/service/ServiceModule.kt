@@ -1,5 +1,6 @@
 package com.example.studentportal.common.service
 
+import com.example.studentportal.home.usecase.models.BaseCourseUseCaseModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -25,8 +26,10 @@ private fun buildRetrofitClient(): Retrofit {
         .build()
 }
 
-private fun buildMoshi(): Moshi {
+fun buildMoshi(): Moshi {
     return Moshi.Builder()
+        .add(DateJsonAdapter())
+        .add(BaseCourseUseCaseModel.Type.moshiPolymorphicFactory())
         .add(KotlinJsonAdapterFactory())
         .build()
 }
