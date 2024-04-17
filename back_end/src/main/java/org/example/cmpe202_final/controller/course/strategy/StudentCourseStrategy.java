@@ -30,9 +30,16 @@ public class StudentCourseStrategy implements CourseStrategy{
         List<Course> courses = courseService.findByEnrolledStudent(userId);
         List<Semester> semesters = semesterService.findAllSemesters();
 
+        if(courses.isEmpty()){
+            return new ArrayList<>();
+        }
+
         // Organize courses by semesters
         HashMap<String, ArrayList<CourseViewEntity>> coursesBySemester = new HashMap<>();
         for (Course course : courses) {
+            if(!course.isPublished()){
+                continue; // Exclude unpublished courses
+            }
             ArrayList<CourseViewEntity> existingCourses = coursesBySemester.get(course.getSemester());
             if(existingCourses == null){
                 existingCourses = new ArrayList<>();
@@ -44,6 +51,10 @@ public class StudentCourseStrategy implements CourseStrategy{
         // Compile final List
         ArrayList<CourseViewEntity> views = new ArrayList<>();
         for (Semester semester : semesters){
+            ArrayList<CourseViewEntity> courseViews = coursesBySemester.get(semester.getId());
+            if(courseViews == null){
+                continue;
+            }
             views.add(new CourseViewSemester(semester));
             views.addAll(coursesBySemester.get(semester.getId()));
         }

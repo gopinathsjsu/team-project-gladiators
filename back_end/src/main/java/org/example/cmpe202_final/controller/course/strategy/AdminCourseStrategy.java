@@ -12,6 +12,7 @@ import org.example.cmpe202_final.view.course.CourseViewCourse;
 import org.example.cmpe202_final.view.course.CourseViewEntity;
 import org.example.cmpe202_final.view.course.CourseViewFaculty;
 import org.example.cmpe202_final.view.course.CourseViewSemester;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,25 +38,29 @@ public class AdminCourseStrategy implements CourseStrategy{
         // Organize courses by professors by semester
         HashMap<String, HashMap<String, ArrayList<CourseViewEntity>>> coursesByProfessorBySemester = new HashMap<>();
         for (Course course : courses) {
-            HashMap<String, ArrayList<CourseViewEntity>> existingCoursesBySemester = coursesByProfessorBySemester.get(course.getInstructor());
-            if(existingCoursesBySemester == null){
-                existingCoursesBySemester = new HashMap<>();
+            String instructor = course.getInstructor() != null ? course.getInstructor() : "UNASSIGNED";
+            HashMap<String, ArrayList<CourseViewEntity>> existingCoursesByInstructor = coursesByProfessorBySemester.get(instructor);
+            if(existingCoursesByInstructor == null){
+                existingCoursesByInstructor = new HashMap<>();
             }
-            ArrayList<CourseViewEntity> existingCourses = existingCoursesBySemester.get(course.getSemester());
+            ArrayList<CourseViewEntity> existingCourses = existingCoursesByInstructor.get(course.getSemester());
             if(existingCourses == null){
                 existingCourses = new ArrayList<>();
             }
             existingCourses.add(new CourseViewCourse(course));
-            existingCoursesBySemester.put(course.getSemester(), existingCourses);
-            coursesByProfessorBySemester.put(course.getInstructor(), existingCoursesBySemester);
+            existingCoursesByInstructor.put(course.getSemester(), existingCourses);
+            coursesByProfessorBySemester.put(instructor, existingCoursesByInstructor);
         }
 
         // Compile final List
         ArrayList<CourseViewEntity> views = new ArrayList<>();
         for (User professor : professors){
+            HashMap<String, ArrayList<CourseViewEntity>> coursesBySemester = coursesByProfessorBySemester.get(professor.getId());
+            if(coursesBySemester == null || coursesBySemester.isEmpty()){
+               continue;
+            }
             views.add(new CourseViewFaculty(professor));
             // Get Courses by semester for this user
-            HashMap<String, ArrayList<CourseViewEntity>> coursesBySemester = coursesByProfessorBySemester.get(professor.getId());
             for (Semester semester: semesters) {
                 if(coursesBySemester.containsKey(semester.getId())){
                     views.add(new CourseViewSemester(semester));
@@ -63,6 +68,21 @@ public class AdminCourseStrategy implements CourseStrategy{
                 }
             }
         }
+
+        // Add Unassigned courses
+        HashMap<String, ArrayList<CourseViewEntity>> unassignedCourses = coursesByProfessorBySemester.get("UNASSIGNED");
+        if(unassignedCourses == null || unassignedCourses.isEmpty()){
+            return views;
+        }
+        views.add(CourseViewFaculty.getUnassignedView());
+        // Get Courses by semester for this user
+        for (Semester semester: semesters) {
+            if(unassignedCourses.containsKey(semester.getId())){
+                views.add(new CourseViewSemester(semester));
+                views.addAll(unassignedCourses.get(semester.getId()));
+            }
+        }
+
         return views;
     }
 }
