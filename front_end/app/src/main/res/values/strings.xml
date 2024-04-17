@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Portal</string>
+
+    <!-- Drawer Menu -->
+    <string name="drawer_profile">Profile</string>
+    <string name="drawer_notifications">Notifications</string>
+    <string name="drawer_courses">Courses</string>
+
+    <!-- To toggle the open close button of the navigation drawer -->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <!-- Notification message -->
+    <string name="empty_notifications">You do not have notifications</string>
+    <string name="assignment_created">An assignment was graded</string>
+    <string name="assignment_graded">New assignment</string>
+    <string name="announcement_created">New announcement</string>
+
+    <!-- Courses -->
+    <string name= "courses_empty">No courses to show</string>
 </resources>

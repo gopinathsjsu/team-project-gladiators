@@ -30,6 +30,8 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    // Add-on for MongoDB
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     // JUnit Jupiter for testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
@@ -37,6 +39,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     // Mocking framework
     testImplementation("org.mockito:mockito-core:4.0.0")
+
+    // Lombok to reduce repetitive code such as getters and setters
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks.withType<Test> {

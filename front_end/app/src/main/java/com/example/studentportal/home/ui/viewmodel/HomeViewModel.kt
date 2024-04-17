@@ -14,28 +14,26 @@ import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
-import com.example.studentportal.home.ui.model.UserType
-import com.example.studentportal.home.ui.model.UserUiModel
-import com.example.studentportal.home.usecase.StudentUseCase
+import com.example.studentportal.home.ui.model.CourseListUiModel
+import com.example.studentportal.home.usecase.CoursesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val userType: UserType,
     dispatcher: CoroutineDispatcher
 ) : BaseViewModel(dispatcher) {
 
     @VisibleForTesting
-    internal val _uiResultLiveData = MutableLiveData<UserUiResult>()
-    val uiResultLiveData: LiveData<UserUiResult>
+    internal val _uiResultLiveData = MutableLiveData<CourseListUiResult>()
+    val uiResultLiveData: LiveData<CourseListUiResult>
         get() = _uiResultLiveData
 
-    fun fetchStudent(userId: String) {
+    suspend fun fetchStudent(userId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
-            StudentUseCase(userId = userId, repository = koin.get())
+            CoursesUseCase(userId = userId, repository = koin.get())
                 .launch()
                 .collectLatest { result ->
                     when (result) {
@@ -44,7 +42,6 @@ class HomeViewModel(
                                 _uiResultLiveData.value = result.failure()
                             }
                         }
-
                         is UseCaseResult.Success -> {
                             viewModelScope.launch {
                                 _uiResultLiveData.value = result.success()
@@ -56,10 +53,9 @@ class HomeViewModel(
     }
 
     companion object {
-        val StudentViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        val HomeViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 HomeViewModel(
-                    userType = UserType.STUDENT,
                     Dispatchers.IO
                 )
             }
@@ -67,4 +63,4 @@ class HomeViewModel(
     }
 }
 
-typealias UserUiResult = BaseUiState<UserUiModel, DefaultError>
+typealias CourseListUiResult = BaseUiState<CourseListUiModel, DefaultError>

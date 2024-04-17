@@ -1,5 +1,6 @@
 package com.example.studentportal.common.usecase
 
+import com.example.studentportal.common.service.Repository
 import com.example.studentportal.common.ui.model.BaseUiModel
 import kotlinx.coroutines.flow.Flow
 
