@@ -1,7 +1,7 @@
 package com.example.studentportal.home.service.repository
 
-import com.example.studentportal.home.service.StudentService
-import com.example.studentportal.home.usecase.models.StudentUseCaseModel
+import com.example.studentportal.home.service.CourseService
+import com.example.studentportal.home.usecase.models.BaseCourseUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -14,15 +14,15 @@ import org.koin.dsl.module
 import retrofit2.Call
 import retrofit2.Retrofit
 
-class StudentServiceProviderTest {
+class CourseServiceProviderTest {
     private lateinit var retrofit: Retrofit
-    private lateinit var studentService: StudentService
+    private lateinit var courseService: CourseService
 
     @Before
     fun setUp() {
-        studentService = MockStudentService()
+        courseService = MockCoursesService()
         retrofit = mockk(relaxed = true) {
-            every { create(StudentService::class.java) } returns studentService
+            every { create(CourseService::class.java) } returns courseService
         }
         startKoin {
             modules(
@@ -42,13 +42,13 @@ class StudentServiceProviderTest {
 
     @Test
     fun `test service provided`() {
-        val provider = StudentServiceProvider()
+        val provider = CourseServiceProvider()
         assertThat(provider.retrofit).isEqualTo(this.retrofit)
-        assertThat(provider.service()).isEqualTo(this.studentService)
+        assertThat(provider.service()).isEqualTo(this.courseService)
     }
 
-    class MockStudentService : StudentService {
-        override fun fetchStudent(id: String): Call<StudentUseCaseModel> {
+    class MockCoursesService : CourseService {
+        override fun fetchCourses(userId: String): Call<List<BaseCourseUseCaseModel>> {
             return mockk(relaxed = true)
         }
     }

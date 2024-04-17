@@ -15,4 +15,7 @@
     <string name="assignment_created">An assignment was graded</string>
     <string name="assignment_graded">New assignment</string>
     <string name="announcement_created">New announcement</string>
+
+    <!-- Courses -->
+    <string name= "courses_empty">No courses to show</string>
 </resources>

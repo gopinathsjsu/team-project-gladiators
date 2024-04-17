@@ -1,8 +1,8 @@
 package com.example.studentportal.common.di
 
 import com.example.studentportal.common.service.KEY_BASE_URL
-import com.example.studentportal.home.service.StudentService
-import com.example.studentportal.home.service.repository.StudentRepository
+import com.example.studentportal.home.service.CourseService
+import com.example.studentportal.home.service.repository.CourseRepository
 import com.google.common.truth.Truth.assertThat
 import okhttp3.OkHttpClient
 import org.junit.Rule
@@ -35,10 +35,10 @@ class AppModuleTest {
     }
 
     @Test
-    fun `test student service`() {
+    fun `test course service`() {
         val retrofit: Retrofit = koinTestRule.koin.get()
-        val studentRepo: StudentRepository = koinTestRule.koin.get()
-        assertThat(studentRepo.provider.service()).isInstanceOf(StudentService::class.java)
-        assertThat(studentRepo.provider.retrofit).isEqualTo(retrofit)
+        val courseRepo: CourseRepository = koinTestRule.koin.get()
+        assertThat(courseRepo.provider.service()).isInstanceOf(CourseService::class.java)
+        assertThat(courseRepo.provider.retrofit).isEqualTo(retrofit)
     }
 }

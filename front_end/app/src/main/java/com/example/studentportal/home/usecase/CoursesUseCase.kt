@@ -5,23 +5,22 @@ import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.usecase.BaseUseCase
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
-import com.example.studentportal.home.service.repository.StudentRepository
-import com.example.studentportal.home.ui.model.UserUiModel
-import com.example.studentportal.home.usecase.models.StudentUseCaseModel
+import com.example.studentportal.home.service.repository.CourseRepository
+import com.example.studentportal.home.ui.model.CourseListUiModel
+import com.example.studentportal.home.usecase.models.CourseListUseCaseModel
 import kotlinx.coroutines.flow.Flow
 
-class StudentUseCase(
-    val userId: String,
-    override val repository: StudentRepository
-) : BaseUseCase<StudentUseCaseModel, DefaultError, StudentRepository, UserUiModel> {
-
-    override suspend fun launch(): Flow<UseCaseResult<StudentUseCaseModel, DefaultError, UserUiModel>> {
+class CoursesUseCase(
+    private val userId: String,
+    override val repository: CourseRepository
+) : BaseUseCase<CourseListUseCaseModel, DefaultError, CourseRepository, CourseListUiModel> {
+    override suspend fun launch(): Flow<UseCaseResult<CourseListUseCaseModel, DefaultError, CourseListUiModel>> {
         return try {
-            val response = repository.fetchStudent(userId)
-            val student = response.body()
+            val response = repository.fetchCourses(userId)
+            val courses = response.body()
             val errorResponse = response.errorBody()
             when {
-                student != null -> successFlow(student)
+                courses != null -> successFlow(courses)
                 errorResponse != null -> defaultFailureFlow(errorResponse)
                 else -> defaultFailureFlow()
             }
