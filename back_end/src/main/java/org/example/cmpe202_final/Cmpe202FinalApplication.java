@@ -1,11 +1,15 @@
 package org.example.cmpe202_final;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 public class Cmpe202FinalApplication {
@@ -58,13 +62,16 @@ public class Cmpe202FinalApplication {
     @RestController
     public static class CourseController {
 
+        @Autowired
+        private CourseService courseService;
+
         @GetMapping("/courses/{id}")
-        public ResponseEntity<Course> getCourseById(@PathVariable int id) {
-            if (id == 999) {
+        public ResponseEntity<List<Student>> getStudentsByCourseId(@PathVariable int id) {
+            Optional<Course> course = courseService.findCourseById(id);
+            if (!course.isPresent() || course.get().getStudents() == null) {
                 return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok(new Course(id, "Course 101", "Introduction to Java", "Spring 2024", true, null, null, null, null, null));
             }
+            return ResponseEntity.ok(course.get().getStudents());
         }
     }
 

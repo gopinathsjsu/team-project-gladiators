@@ -3,11 +3,18 @@ package org.example.cmpe202_final;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,8 +23,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ControllerTests.class)
 public class ControllerTests {
 
+
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private CourseService courseService;
 
     @Nested
     public class AdminControllerTest {
@@ -77,19 +88,33 @@ public class ControllerTests {
 
     @Nested
     public class CourseControllerTest {
-
         @Test
-        public void getCourseById_ExistingId_ShouldReturnCourse() throws Exception {
-            mockMvc.perform(get("/courses/1"))
+        public void getStudentsByCourseId_WhenStudentsExist_ShouldReturnStudents() throws Exception {
+            // Given
+            Student student1 = new Student(1, "Student One", "student1@example.com");
+            Student student2 = new Student(2, "Student Two", "student2@example.com");
+            List<Student> students = Arrays.asList(student1, student2);
+            Course course = new Course(1, "Java 101", "Introduction to Java", "Spring 2024", true, null, students, null, null, null);
+
+            given(courseService.findCourseById(1)).willReturn(Optional.of(course));
+
+            // When & Then
+            mockMvc.perform(get("/courses/{id}", 1))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id").value(1))
-                    .andExpect(jsonPath("$.name").value("Course 101"))
-                    .andExpect(jsonPath("$.description").value("Introduction to Java"));
+                    .andExpect(jsonPath("$[0].id").value(student1.getId()))
+                    .andExpect(jsonPath("$[0].name").value(student1.getName()))
+                    .andExpect(jsonPath("$[1].id").value(student2.getId()))
+                    .andExpect(jsonPath("$[1].name").value(student2.getName()));
         }
 
         @Test
-        public void getCourseById_NonExistingId_ShouldReturnNotFound() throws Exception {
-            mockMvc.perform(get("/courses/999"))
+        public void getStudentsByCourseId_WhenCourseDoesNotExist_ShouldReturnNotFound() throws Exception {
+            // Given
+            int nonExistentCourseId = 999;
+            given(courseService.findCourseById(nonExistentCourseId)).willReturn(Optional.empty());
+
+            // When & Then
+            mockMvc.perform(get("/courses/{id}", nonExistentCourseId))
                     .andExpect(status().isNotFound());
         }
     }

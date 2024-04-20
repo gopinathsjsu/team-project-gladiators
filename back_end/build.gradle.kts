@@ -30,6 +30,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     // JUnit Jupiter for testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
@@ -60,3 +61,6 @@ tasks.jacocoTestCoverageVerification {
 tasks.build {
     dependsOn(tasks.jacocoTestCoverageVerification)
 }
+
+
+
