@@ -122,6 +122,8 @@ dependencies {
     testImplementation("com.google.truth:truth:1.2.0")
     testImplementation("androidx.test:core-ktx:1.5.0")
     testImplementation("androidx.compose.ui:ui-test-junit4:1.6.5")
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.5")
 
     // UI tests
