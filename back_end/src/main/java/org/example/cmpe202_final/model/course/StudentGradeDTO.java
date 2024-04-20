@@ -12,7 +12,8 @@ import lombok.Setter;
 public class StudentGradeDTO {
     private String gradeId;
     private Double score;
-    private String studentName;
+    private String studentFirstName;
+    private String studentLastName;
     private String studentId;
 }
 
