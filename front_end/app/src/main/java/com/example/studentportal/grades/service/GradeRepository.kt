@@ -5,8 +5,6 @@ import android.util.Log
 import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
 import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
-import com.example.studentportal.home.service.repository.CourseServiceProvider
-import com.example.studentportal.home.usecase.models.CourseListUseCaseModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Response

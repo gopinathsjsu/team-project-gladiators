@@ -7,5 +7,5 @@ data class GradeUiModel(
     val score: Int,
     val studentFirstName: String,
     val studentLastName: String,
-    val studentId: String,
+    val studentId: String
 ) : BaseUiModel
