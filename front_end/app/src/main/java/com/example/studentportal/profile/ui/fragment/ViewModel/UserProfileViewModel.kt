@@ -8,25 +8,17 @@ import org.jetbrains.annotations.VisibleForTesting
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class UserProfileViewModel : ViewModel() {
+class UserProfileViewModel(private val userApi: UserAPIService) : ViewModel() {
     @VisibleForTesting
     val _userProfileModel = MutableLiveData<UserProfileModel>()
     val userProfileModel: LiveData<UserProfileModel> = _userProfileModel
-
-    private val userApi = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:8080")  // Use 10.0.2.2 for the Android emulator to access localhost
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(UserAPIService::class.java)
 
     init {
         fetchUserData()
     }
 
-    private fun fetchUserData() {
+    fun fetchUserData() {
         userApi.getUsers().enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 val student = response.body()?.find { it.type == "STUDENT" }

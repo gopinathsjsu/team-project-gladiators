@@ -12,6 +12,8 @@ import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.databinding.FragmentProfileBinding
 import com.example.studentportal.profile.ui.fragment.Model.UserProfileModel
 import com.example.studentportal.profile.ui.fragment.ViewModel.UserProfileViewModel
+import com.example.studentportal.profile.ui.fragment.ViewModel.ApiServiceFactory
+import com.example.studentportal.profile.ui.fragment.ViewModel.UserProfileViewModelFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(TAG) {
-    private val userProfileViewModel by viewModels<UserProfileViewModel>()
+    private val userProfileViewModel by viewModels<UserProfileViewModel> {
+        UserProfileViewModelFactory(ApiServiceFactory.createUserApiService())
+    }
 
     override fun inflateBinding(
         inflater: LayoutInflater,
