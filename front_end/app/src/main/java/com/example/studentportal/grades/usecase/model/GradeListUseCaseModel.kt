@@ -6,11 +6,11 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GradeListUseCaseModel(
-    val notifications: List<GradeUseCaseModel>
+    val grades: List<GradeUseCaseModel>
 ) : BaseUseCaseModel<GradeListUiModel> {
     override fun toUiModel(): GradeListUiModel {
         return GradeListUiModel(
-            notifications = notifications.map { it.toUiModel() }
+            grades = grades.map { it.toUiModel() }
         )
     }
 }

@@ -5,6 +5,7 @@
     <string name="drawer_profile">Profile</string>
     <string name="drawer_notifications">Notifications</string>
     <string name="drawer_courses">Courses</string>
+    <string name="drawer_grades">Grades</string>
 
     <!-- Dropdown-->
     <string name="dropdown_show_options">Show Options</string>
@@ -62,4 +63,7 @@
     <string name= "auth_logout">Logout</string>
     <string name= "auth_logout_title">Confirm Logout</string>
     <string name= "auth_logout_message">Are you sure you want to logout?</string>
+
+    <!-- Grades -->
+    <string name= "grades_empty">No grades to show</string>
 </resources>

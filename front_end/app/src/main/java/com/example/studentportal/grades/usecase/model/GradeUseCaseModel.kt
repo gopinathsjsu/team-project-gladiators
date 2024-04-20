@@ -2,10 +2,12 @@ package com.example.studentportal.grades.usecase.model
 
 import com.example.studentportal.common.usecase.BaseUseCaseModel
 import com.example.studentportal.grades.ui.model.GradeUiModel
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class GradeUseCaseModel (
     val gradeId: String,
-    val score: Double,
+    val score: Int,
     val studentFirstName: String,
     val studentLastName: String,
     val studentId: String,

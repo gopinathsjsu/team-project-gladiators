@@ -20,6 +20,7 @@ import com.example.studentportal.common.ui.popBackStackToFragment
 import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.ActivityHomeBinding
+import com.example.studentportal.grades.ui.fragment.GradesFragment
 import com.example.studentportal.home.ui.fragment.HomeFragment
 import com.example.studentportal.notifications.ui.fragment.NotificationsFragment
 import com.example.studentportal.profile.ui.fragment.ProfileFragment
