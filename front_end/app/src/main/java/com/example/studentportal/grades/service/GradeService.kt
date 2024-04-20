@@ -1,4 +1,4 @@
-import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
+
 import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import retrofit2.Call
 import retrofit2.http.GET
