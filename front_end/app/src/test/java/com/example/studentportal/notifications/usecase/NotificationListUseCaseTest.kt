@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class NotificationListUseCaseTest {
     @Test
-    fun `test student call success`() = runTest {
+    fun `test notification call success`() = runTest {
         // Arrange
         val useCaseModel = NotificationListUseCaseModel(
             listOf(
@@ -52,7 +52,7 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call error`() = runTest {
+    fun `test notification call error`() = runTest {
         // Arrange
         mockkConstructor(JSONObject::class)
         every { anyConstructed<JSONObject>().getString("message") } returns "Backend Error"
@@ -85,7 +85,7 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call exception with message`() = runTest {
+    fun `test notification call exception with message`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
             coEvery { fetchNotifications() } throws IllegalAccessException("Expected Message")
@@ -108,7 +108,7 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call exception without message`() = runTest {
+    fun `test notification call exception without message`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
             coEvery { fetchNotifications() } throws IllegalAccessException()
@@ -131,7 +131,7 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call default`() = runTest {
+    fun `test notification call default`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
             coEvery { fetchNotifications() } returns mockk(relaxed = true) {
