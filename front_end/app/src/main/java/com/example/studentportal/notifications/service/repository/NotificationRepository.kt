@@ -3,7 +3,6 @@ package com.example.studentportal.notifications.service.repository
 import com.example.studentportal.common.service.Repository
 import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
-import com.example.studentportal.home.usecase.models.CourseListUseCaseModel
 import com.example.studentportal.notifications.mock.MockNotificationListDataSource
 import com.example.studentportal.notifications.service.NotificationService
 import com.example.studentportal.notifications.usecase.model.NotificationListUseCaseModel
