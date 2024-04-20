@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,12 +16,16 @@ public class CustomGradeRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<StudentGradeDTO> getGradesWithStudentNames() {
+    public List<StudentGradeDTO> getGradesWithStudentNamesByAssignmentId(String assignmentId) {
+        System.out.println(assignmentId);
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.lookup("students", "studentId", "id", "student"),
+                Aggregation.match(Criteria.where("assignmentId").is(assignmentId)),
+                Aggregation.lookup("users", "studentId", "_id", "student"),
                 Aggregation.unwind("student"),
-                Aggregation.project("id", "score", "studentId")
-                        .and("student.name").as("studentName")
+                Aggregation.project("score", "studentId")
+                        .and("_id").as("gradeId")
+                        .and("student.firstName").as("studentFirstName")
+                        .and("student.lastName").as("studentLastName")
         );
 
         AggregationResults<StudentGradeDTO> results = mongoTemplate.aggregate(

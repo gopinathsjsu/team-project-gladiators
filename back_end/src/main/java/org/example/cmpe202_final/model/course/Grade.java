@@ -17,5 +17,5 @@ public class Grade {
     private String id;
     private Double score;
     private String studentId;
-    private String courseId;
+    private String assignmentId;
 }
