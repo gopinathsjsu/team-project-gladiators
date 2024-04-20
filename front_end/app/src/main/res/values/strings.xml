@@ -5,6 +5,7 @@
     <string name="drawer_profile">Profile</string>
     <string name="drawer_notifications">Notifications</string>
     <string name="drawer_courses">Courses</string>
+    <string name="drawer_grades">Grades</string>
 
     <!-- To toggle the open close button of the navigation drawer -->
     <string name="nav_open">Open</string>
@@ -18,4 +19,7 @@
 
     <!-- Courses -->
     <string name= "courses_empty">No courses to show</string>
+
+    <!-- Grades -->
+    <string name= "grades_empty">No grades to show</string>
 </resources>

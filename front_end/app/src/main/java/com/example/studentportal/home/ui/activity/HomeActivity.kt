@@ -12,6 +12,7 @@ import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.popBackStackToFragment
 import com.example.studentportal.common.ui.showFragment
 import com.example.studentportal.databinding.ActivityHomeBinding
+import com.example.studentportal.grades.ui.fragment.GradesFragment
 import com.example.studentportal.home.ui.fragment.HomeFragment
 import com.example.studentportal.notifications.ui.fragment.NotificationsFragment
 import com.example.studentportal.profile.ui.fragment.ProfileFragment
@@ -64,6 +65,7 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             R.id.nav_courses -> HomeFragment.newInstance()
             R.id.nav_profile -> ProfileFragment.newInstance()
             R.id.nav_notifications -> NotificationsFragment.newInstance()
+            R.id.nav_grades -> GradesFragment.newInstance()
             else -> HomeFragment.newInstance()
         }
         val existingFragment = supportFragmentManager.findFragmentByTag(fragment.fragmentTag)

@@ -1,6 +1,7 @@
 package com.example.studentportal.common.di
 
 import com.example.studentportal.common.service.serviceModule
+import com.example.studentportal.grades.service.GradeRepository
 import com.example.studentportal.home.service.repository.CourseRepository
 import com.example.studentportal.notifications.service.repository.NotificationRepository
 import org.koin.core.Koin
@@ -11,6 +12,7 @@ val appModule = module {
     includes(serviceModule)
     includes(NotificationRepository.koinModule())
     includes(CourseRepository.koinModule())
+    includes(GradeRepository.koinModule())
 }
 
 val koin: Koin

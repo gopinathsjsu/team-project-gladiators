@@ -19,10 +19,10 @@ class GradeListUseCase(
         return try {
             // CHANGE MOCK SOURCE
             val response = repository.fetchGradesByAssignment(assignmentId)
-            val notifications = response.body()
+            val grades = response.body()
             val errorResponse = response.errorBody()
             when {
-                notifications != null -> successFlow(notifications)
+                grades != null -> successFlow(grades)
                 errorResponse != null -> defaultFailureFlow(errorResponse)
                 else -> defaultFailureFlow()
             }
