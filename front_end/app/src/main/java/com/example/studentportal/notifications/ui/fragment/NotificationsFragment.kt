@@ -17,7 +17,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
@@ -27,7 +26,6 @@ import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.databinding.FragmentNotificationsBinding
-import com.example.studentportal.notifications.mock.MockNotificationListDataSource
 import com.example.studentportal.notifications.ui.model.NotificationType
 import com.example.studentportal.notifications.ui.model.NotificationUiModel
 import com.example.studentportal.notifications.ui.viewmodel.NotificationListViewModel
@@ -120,17 +118,4 @@ fun NotificationCard(notification: NotificationUiModel, modifier: Modifier) {
             Divider()
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NotificationListPreview() {
-    val notifications = MockNotificationListDataSource
-        .getMockNotificationList()
-        .toUiModel()
-        .notifications
-    NotificationList(
-        notificationList = notifications,
-        modifier = Modifier.fillMaxSize()
-    )
 }
