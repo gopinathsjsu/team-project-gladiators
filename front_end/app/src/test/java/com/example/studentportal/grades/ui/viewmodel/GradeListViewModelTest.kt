@@ -60,7 +60,7 @@ class GradeListViewModelTest {
     }
 
     @Test
-    fun `test student fetch success`() = runTest(mainDispatcher) {
+    fun `test grade fetch success`() = runTest(mainDispatcher) {
         val useCaseModel = GradeListUseCaseModel(listOf())
         // Set Up Resources
         coEvery { anyConstructed<GradeListUseCase>().launch() } returns successFlow(
@@ -81,7 +81,7 @@ class GradeListViewModelTest {
     }
 
     @Test
-    fun `test student fetch error`() = runTest(mainDispatcher) {
+    fun `test grade fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
         coEvery { anyConstructed<GradeListUseCase>().launch() } returns defaultFailureFlow()
         val viewModel = GradeListViewModel(
