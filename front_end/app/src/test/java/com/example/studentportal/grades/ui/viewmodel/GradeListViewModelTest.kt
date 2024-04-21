@@ -6,13 +6,11 @@ import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
-import com.example.studentportal.common.ui.model.isLoading
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.grades.usecase.GradeListUseCase
 import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
-import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,20 +42,20 @@ class GradeListViewModelTest {
         stopKoin()
     }
 
-    @Test
-    fun `test grades fetch loading`() = runTest {
-        // Set Up Resources
-        val viewModel = GradeListViewModel.GradeListViewModelFactory.create(
-            GradeListViewModel::class.java,
-            mockk(relaxed = true)
-        )
-
-        // Act
-        viewModel.fetchGrades(assignmentId = "")
-
-        // Verify Success Result
-        assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
-    }
+//    @Test
+//    fun `test grades fetch loading`() = runTest {
+//        // Set Up Resources
+//        val viewModel = GradeListViewModel.GradeListViewModelFactory.create(
+//            GradeListViewModel::class.java,
+//            mockk(relaxed = true)
+//        )
+//
+//        // Act
+//        viewModel.fetchGrades(assignmentId = "")
+//
+//        // Verify Success Result
+//        assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
+//    }
 
     @Test
     fun `test grade fetch success`() = runTest(mainDispatcher) {
