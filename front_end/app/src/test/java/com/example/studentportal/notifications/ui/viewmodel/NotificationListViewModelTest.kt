@@ -60,7 +60,7 @@ class NotificationListViewModelTest {
     }
 
     @Test
-    fun `test student fetch success`() = runTest(mainDispatcher) {
+    fun `test notifications fetch success`() = runTest(mainDispatcher) {
         val useCaseModel = NotificationListUseCaseModel(listOf())
         // Set Up Resources
         coEvery { anyConstructed<NotificationListUseCase>().launch() } returns successFlow(
@@ -81,7 +81,7 @@ class NotificationListViewModelTest {
     }
 
     @Test
-    fun `test student fetch error`() = runTest(mainDispatcher) {
+    fun `test notifications fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
         coEvery { anyConstructed<NotificationListUseCase>().launch() } returns defaultFailureFlow()
         val viewModel = NotificationListViewModel(
