@@ -1,7 +1,6 @@
 package com.example.studentportal.grades.service
 
 import GradeService
-import android.util.Log
 import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
 import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
@@ -14,11 +13,7 @@ class GradeRepository(
 ) {
 
     suspend fun fetchGradesByAssignment(assignmentId: String): Response<GradeListUseCaseModel> {
-        Log.d("Grades", "provided assignmentId: $assignmentId")
-
         val response = provider.service().fetchGradesByAssignment(assignmentId).execute()
-        Log.d("Grades", "response is successful: ${response.isSuccessful}")
-        Log.d("Grades", "response: \n${response.body().orEmpty()}")
         return if (response.isSuccessful) {
             Response.success(
                 GradeListUseCaseModel(
