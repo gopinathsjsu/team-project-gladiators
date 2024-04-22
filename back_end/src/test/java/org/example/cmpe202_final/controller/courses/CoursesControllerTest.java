@@ -332,4 +332,24 @@ public class CoursesControllerTest {
     Optional<User> getAdmin() {
         return Optional.of(new User("admin1", "1234", UserType.ADMIN.name(), "AdminName", "AdminLastName"));
     }
+
+    @Test
+    public void testGetStudentsByCourseName() throws Exception {
+        // Given
+        String courseName = "Intro to Testing";
+        List<User> mockUsers = Arrays.asList(
+                new User("user1", "password1", UserType.STUDENT.name(), "John", "Doe"),
+                new User("user2", "password2", UserType.STUDENT.name(), "Jane", "Doe")
+        );
+
+        // When
+        given(courseService.findStudentsByCourseName(courseName)).willReturn(mockUsers);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/{courseName}/students", courseName))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(mockUsers)))
+                .andReturn();
+    }
 }
