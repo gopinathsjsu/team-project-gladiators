@@ -1,6 +1,6 @@
 package org.example.cmpe202_final.repository.grades;
 
-import org.example.cmpe202_final.model.course.StudentGradeDTO;
+import org.example.cmpe202_final.model.course.GradeWithStudentName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -16,7 +16,7 @@ public class CustomGradeRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<StudentGradeDTO> getGradesWithStudentNamesByAssignmentId(String assignmentId) {
+    public List<GradeWithStudentName> getGradesWithStudentNamesByAssignmentId(String assignmentId) {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("assignmentId").is(assignmentId)),
                 Aggregation.lookup("users", "studentId", "_id", "student"),
@@ -27,8 +27,8 @@ public class CustomGradeRepository {
                         .and("student.lastName").as("studentLastName")
         );
 
-        AggregationResults<StudentGradeDTO> results = mongoTemplate.aggregate(
-                aggregation, "grades", StudentGradeDTO.class
+        AggregationResults<GradeWithStudentName> results = mongoTemplate.aggregate(
+                aggregation, "grades", GradeWithStudentName.class
         );
 
         return results.getMappedResults();
