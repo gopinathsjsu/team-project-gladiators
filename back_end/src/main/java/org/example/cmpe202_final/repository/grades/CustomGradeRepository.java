@@ -17,7 +17,6 @@ public class CustomGradeRepository {
     private MongoTemplate mongoTemplate;
 
     public List<StudentGradeDTO> getGradesWithStudentNamesByAssignmentId(String assignmentId) {
-        System.out.println(assignmentId);
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("assignmentId").is(assignmentId)),
                 Aggregation.lookup("users", "studentId", "_id", "student"),
