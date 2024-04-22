@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentGradeDTO {
+public class GradeWithStudentName {
     private String gradeId;
     private Double score;
     private String studentFirstName;
