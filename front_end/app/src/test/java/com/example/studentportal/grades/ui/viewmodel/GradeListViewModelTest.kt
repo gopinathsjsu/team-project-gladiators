@@ -42,21 +42,6 @@ class GradeListViewModelTest {
         stopKoin()
     }
 
-//    @Test
-//    fun `test grades fetch loading`() = runTest {
-//        // Set Up Resources
-//        val viewModel = GradeListViewModel.GradeListViewModelFactory.create(
-//            GradeListViewModel::class.java,
-//            mockk(relaxed = true)
-//        )
-//
-//        // Act
-//        viewModel.fetchGrades(assignmentId = "")
-//
-//        // Verify Success Result
-//        assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
-//    }
-
     @Test
     fun `test grade fetch success`() = runTest(mainDispatcher) {
         val useCaseModel = GradeListUseCaseModel(listOf())
