@@ -17,7 +17,6 @@ class GradeListUseCase(
 
     override suspend fun launch(): Flow<UseCaseResult<GradeListUseCaseModel, DefaultError, GradeListUiModel>> {
         return try {
-            // CHANGE MOCK SOURCE
             val response = repository.fetchGradesByAssignment(assignmentId)
             val grades = response.body()
             val errorResponse = response.errorBody()
