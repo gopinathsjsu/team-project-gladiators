@@ -26,9 +26,9 @@ class UserProfileViewModel(private val userApi: UserAPIService) : ViewModel() {
                     _userProfileModel.postValue(UserProfileModel(
                         userName = "${student.firstName} ${student.lastName}",
                         userQualification = "MS. Software Engineering", // Default or fetch as needed
-                        userEmail = "john.doe@exampleuni.com",  // Default or fetch as needed
-                        userPhone = "(XXX) XXX XXXX",  // Default or fetch as needed
-                        userBiography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        userEmail = "${student.email}",  // Default or fetch as needed
+                        userPhone = "${student.phone}",  // Default or fetch as needed
+                        userBiography = "${student.biography}",
                         userLinks = emptyList()
                     ))
                 } else {

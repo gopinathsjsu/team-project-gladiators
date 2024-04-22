@@ -19,4 +19,7 @@ public class User {
     private String type;
     private String firstName;
     private String lastName;
+    private String biography; // New field
+    private String email;     // New field
+    private String phone;     // New field
 }

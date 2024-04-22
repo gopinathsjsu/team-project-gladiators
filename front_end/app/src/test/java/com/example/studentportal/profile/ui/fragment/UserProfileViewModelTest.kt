@@ -48,7 +48,7 @@ class UserProfileViewModelTest {
     @Test
     fun `test loading data successfully`() {
         // Arrange
-        val mockUsers = listOf(User("1", "password", "STUDENT", "John", "Doe"))
+        val mockUsers = listOf(User("1", "password", "STUDENT", "John", "Doe", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "john.doe@exampleuni.com", "(XXX) XXX XXXX"))
         `when`(userCall.enqueue(callbackCaptor.capture())).thenAnswer {
             val callback = callbackCaptor.value
             callback.onResponse(userCall, Response.success(mockUsers))
