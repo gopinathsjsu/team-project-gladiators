@@ -23,18 +23,22 @@ class UserProfileViewModel(private val userApi: UserAPIService) : ViewModel() {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 val student = response.body()?.find { it.type == "STUDENT" }
                 if (student != null) {
-                    _userProfileModel.postValue(UserProfileModel(
-                        userName = "${student.firstName} ${student.lastName}",
-                        userQualification = "MS. Software Engineering", // Default or fetch as needed
-                        userEmail = "${student.email}",  // Default or fetch as needed
-                        userPhone = "${student.phone}",  // Default or fetch as needed
-                        userBiography = "${student.biography}",
-                        userLinks = emptyList()
-                    ))
+                    _userProfileModel.postValue(
+                        UserProfileModel(
+                            userName = "${student.firstName} ${student.lastName}",
+                            userQualification = "MS. Software Engineering", // Default or fetch as needed
+                            userEmail = "${student.email}", // Default or fetch as needed
+                            userPhone = "${student.phone}", // Default or fetch as needed
+                            userBiography = "${student.biography}",
+                            userLinks = emptyList()
+                        )
+                    )
                 } else {
-                    _userProfileModel.postValue(UserProfileModel(
-                        errorMessage = "No student found"
-                    ))
+                    _userProfileModel.postValue(
+                        UserProfileModel(
+                            errorMessage = "No student found"
+                        )
+                    )
                 }
             }
 

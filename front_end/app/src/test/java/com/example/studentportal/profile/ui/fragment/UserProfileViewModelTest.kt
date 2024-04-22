@@ -2,21 +2,22 @@ package com.example.studentportal.profile.ui.fragment
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.studentportal.profile.ui.fragment.ViewModel.UserProfileViewModel
 import com.example.studentportal.profile.ui.fragment.Model.UserProfileModel
 import com.example.studentportal.profile.ui.fragment.ViewModel.User
 import com.example.studentportal.profile.ui.fragment.ViewModel.UserAPIService
+import com.example.studentportal.profile.ui.fragment.ViewModel.UserProfileViewModel
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Before
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mockito.Mockito.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 
 class UserProfileViewModelTest {
     @get:Rule
@@ -58,14 +59,16 @@ class UserProfileViewModelTest {
         viewModel.fetchUserData()
 
         // Assert
-        verify(apiResponseObserver).onChanged(UserProfileModel(
-            userName = "John Doe",
-            userQualification = "MS. Software Engineering",
-            userEmail = "john.doe@exampleuni.com",
-            userPhone = "(XXX) XXX XXXX",
-            userBiography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            userLinks = emptyList()
-        ))
+        verify(apiResponseObserver).onChanged(
+            UserProfileModel(
+                userName = "John Doe",
+                userQualification = "MS. Software Engineering",
+                userEmail = "john.doe@exampleuni.com",
+                userPhone = "(XXX) XXX XXXX",
+                userBiography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                userLinks = emptyList()
+            )
+        )
     }
 
     @Test
@@ -80,8 +83,10 @@ class UserProfileViewModelTest {
         viewModel.fetchUserData()
 
         // Assert
-        verify(apiResponseObserver).onChanged(UserProfileModel(
-            errorMessage = "Failed to load user data: Failed to load data"
-        ))
+        verify(apiResponseObserver).onChanged(
+            UserProfileModel(
+                errorMessage = "Failed to load user data: Failed to load data"
+            )
+        )
     }
 }
