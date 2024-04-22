@@ -17,6 +17,7 @@ class CourseActivityTests {
     fun tearDown() {
         stopKoin()
     }
+
     @Test
     fun activityLaunchesSuccessfully() {
         val intent = Intent(ApplicationProvider.getApplicationContext(), CourseActivity::class.java)
