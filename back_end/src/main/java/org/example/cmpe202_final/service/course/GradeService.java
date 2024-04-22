@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 public class GradeService {
 
-        private final CustomGradeRepository gradeRepository;
+        private final CustomGradeRepository customGradeRepository;
 
         public List<GradeWithStudentName> getGradesWithStudentNamesByAssignmentId(String assignmentId){
-            return gradeRepository.getGradesWithStudentNamesByAssignmentId(assignmentId);
+            return customGradeRepository.getGradesWithStudentNamesByAssignmentId(assignmentId);
         }
 }
