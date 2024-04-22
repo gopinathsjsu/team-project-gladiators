@@ -79,66 +79,66 @@ public class CourseServiceTest {
     @Test
     void testFindStudentsByCourseName_WithResults() {
         // Setup
-        String courseName = "Software Engineering";
+        String courseId = "CMPE_202";
         Set<String> enrolledStudents = new HashSet<>(Arrays.asList("John", "Jane"));
 
         Course course = new Course();
-        course.setName(courseName);
+        course.setId(courseId);
         course.setEnrolledStudents(enrolledStudents);
 
-        when(courseRepository.findByName(courseName)).thenReturn(Arrays.asList(course));
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList(course));
         when(userRepository.findByFirstNameIn(enrolledStudents)).thenReturn(Arrays.asList(
                 new User("user1", "password1", UserType.STUDENT.name(), "John", "Doe"),
                 new User("user2", "password2", UserType.STUDENT.name(), "Jane", "Doe")
         ));
 
         // Execution
-        List<User> result = courseService.findStudentsByCourseName(courseName);
+        List<User> result = courseService.findStudentsByCourseId(courseId);
 
         // Assertions
         assertEquals(2, result.size());
         assertTrue(result.stream().map(User::getFirstName).collect(Collectors.toSet()).containsAll(Arrays.asList("John", "Jane")));
 
         // Verify
-        verify(courseRepository).findByName(courseName);
+        verify(courseRepository).findByEnrolledStudent(courseId);
         verify(userRepository).findByFirstNameIn(enrolledStudents);
     }
 
     @Test
     void testFindStudentsByCourseName_NoCoursesFound() {
         // Setup
-        String courseName = "Nonexistent Course";
-        when(courseRepository.findByName(courseName)).thenReturn(Arrays.asList());
+        String courseId = "CMPE_300";
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList());
 
         // Execution
-        List<User> result = courseService.findStudentsByCourseName(courseName);
+        List<User> result = courseService.findStudentsByCourseId(courseId);
 
         // Assertions
         assertTrue(result.isEmpty());
 
         // Verify
-        verify(courseRepository).findByName(courseName);
+        verify(courseRepository).findByEnrolledStudent(courseId);
         verify(userRepository, never()).findByFirstNameIn(any());
     }
 
     @Test
     void testFindStudentsByCourseName_CoursesWithNoStudents() {
         // Setup
-        String courseName = "Lonely Course";
+        String courseId = "CMPE_787";
         Course course = new Course();
-        course.setName(courseName);
+        course.setId(courseId);
         course.setEnrolledStudents(new HashSet<>());
 
-        when(courseRepository.findByName(courseName)).thenReturn(Arrays.asList(course));
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList(course));
 
         // Execution
-        List<User> result = courseService.findStudentsByCourseName(courseName);
+        List<User> result = courseService.findStudentsByCourseId(courseId);
 
         // Assertions
         assertTrue(result.isEmpty());
 
         // Verify
-        verify(courseRepository).findByName(courseName);
+        verify(courseRepository).findByEnrolledStudent(courseId);
         verify(userRepository, never()).findByFirstNameIn(any());
     }
 }

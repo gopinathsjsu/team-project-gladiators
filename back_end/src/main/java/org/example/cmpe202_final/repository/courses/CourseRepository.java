@@ -15,5 +15,4 @@ public interface CourseRepository extends MongoRepository<Course, String> {
 
     List<Course> findByInstructor(String instructor);
 
-    List<Course> findByName(String name);
 }

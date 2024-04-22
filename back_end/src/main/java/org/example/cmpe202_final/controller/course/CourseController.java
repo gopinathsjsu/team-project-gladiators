@@ -50,8 +50,8 @@ public class CourseController {
         );
     }
 
-    @GetMapping("/{courseName}/students")
-    public List<User> getStudentsByCourseName(@PathVariable String courseName) {
-        return courseService.findStudentsByCourseName(courseName);
+    @GetMapping("/{courseId}/students")
+    public List<User> getStudentsByCourseId(@PathVariable String courseId) {
+        return courseService.findStudentsByCourseId(courseId);
     }
 }

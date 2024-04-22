@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class CourseService {
 
+
     private final CourseRepository courseRepository;
 
     private final UserRepository userRepository;
@@ -34,9 +35,9 @@ public class CourseService {
         return courseRepository.findByInstructor(instructor);
     }
 
-    public List<User> findStudentsByCourseName(String courseName) {
+    public List<User> findStudentsByCourseId(String courseId) {
         // Fetch courses by name
-        List<Course> courses = courseRepository.findByName(courseName);
+        List<Course> courses = courseRepository.findByEnrolledStudent(courseId);
 
         // Stream courses to extract unique names of enrolled students
         Set<String> studentNames = courses.stream()
