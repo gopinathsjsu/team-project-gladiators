@@ -67,7 +67,6 @@ fun GradeListLayout(viewModel: GradeListViewModel) {
 
     // API call
     LaunchedEffect(key1 = Unit) {
-        print("Hello World!")
         viewModel.fetchGrades(assignmentId = "c665e126-846c-4375-989d-d963053762a3")
     }
 
