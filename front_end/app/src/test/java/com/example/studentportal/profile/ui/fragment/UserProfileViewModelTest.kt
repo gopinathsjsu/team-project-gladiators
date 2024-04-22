@@ -1,5 +1,23 @@
 package com.example.studentportal.profile.ui.fragment
 
+//import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+//import androidx.lifecycle.Observer
+//import com.example.studentportal.profile.ui.fragment.Model.UserProfileModel
+//import com.example.studentportal.profile.ui.fragment.ViewModel.User
+//import com.example.studentportal.profile.ui.fragment.ViewModel.UserAPIService
+//import com.example.studentportal.profile.ui.fragment.ViewModel.UserProfileViewModel
+//import org.junit.Before
+//import org.junit.Rule
+//import org.junit.Test
+//import org.mockito.ArgumentCaptor
+//import org.mockito.Captor
+//import org.mockito.Mock
+//import org.mockito.Mockito.`when`
+//import org.mockito.Mockito.verify
+//import org.mockito.MockitoAnnotations
+//import retrofit2.Call
+//import retrofit2.Callback
+//import retrofit2.Response
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.studentportal.profile.ui.fragment.Model.UserProfileModel
@@ -18,6 +36,7 @@ import org.mockito.MockitoAnnotations
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class UserProfileViewModelTest {
     @get:Rule
