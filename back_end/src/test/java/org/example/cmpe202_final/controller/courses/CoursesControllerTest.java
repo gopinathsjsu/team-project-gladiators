@@ -318,7 +318,7 @@ public class CoursesControllerTest {
     }
 
     Optional<User> getStudent() {
-        return Optional.of(new User("studentId", "1234", UserType.STUDENT.name(), "StudentName", "StudentLastName"));
+        return Optional.of(new User("studentId", "1234", UserType.STUDENT.name(), "StudentName", "StudentLastName", "biography", "email", "phone"));
     }
 
     Optional<User> getOptionalFaculty() {
@@ -326,10 +326,10 @@ public class CoursesControllerTest {
     }
 
     User getFaculty(){
-        return new User("instructor1", "1234", UserType.FACULTY.name(), "ProfessorName", "ProfessorLastName");
+        return new User("instructor1", "1234", UserType.FACULTY.name(), "ProfessorName", "ProfessorLastName", "biography", "email", "phone");
     }
 
     Optional<User> getAdmin() {
-        return Optional.of(new User("admin1", "1234", UserType.ADMIN.name(), "AdminName", "AdminLastName"));
+        return Optional.of(new User("admin1", "1234", UserType.ADMIN.name(), "AdminName", "AdminLastName", "biography", "email", "phone"));
     }
 }
