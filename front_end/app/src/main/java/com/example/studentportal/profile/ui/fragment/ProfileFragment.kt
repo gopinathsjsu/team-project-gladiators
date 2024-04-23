@@ -76,9 +76,9 @@ fun ProfileLayout(viewModel: UserProfileViewModel) {
 fun UserProfileScreen(
     userName: String,
     userQualification: String,
-    userEmail: String,
-    userPhone: String,
-    userBiography: String,
+    userEmail: String?,
+    userPhone: String?,
+    userBiography: String?,
     userLinks: List<String>,
     errorMessage: String?
 ) {
@@ -122,9 +122,9 @@ fun UserProfileScreen(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ProfileSection(title = "Email", information = userEmail)
-        ProfileSection(title = "Phone", information = userPhone)
-        ProfileSection(title = "Biography", information = userBiography)
+        ProfileSection(title = "Email", information = userEmail ?: "No email provided")
+        ProfileSection(title = "Phone", information = userPhone ?: "No phone number provided")
+        ProfileSection(title = "Biography", information = userBiography ?: "No biography provided")
         ProfileLinks(userLinks)
     }
 }

@@ -13,7 +13,7 @@ data class User(
     val type: String,
     val firstName: String,
     val lastName: String,
-    val biography: String,
-    val email: String,
-    val phone: String
+    val biography: String?,
+    val email: String?,
+    val phone: String?
 )

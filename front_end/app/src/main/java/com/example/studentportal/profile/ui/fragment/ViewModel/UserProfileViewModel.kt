@@ -47,8 +47,4 @@ class UserProfileViewModel(private val userApi: UserAPIService) : ViewModel() {
             }
         })
     }
-//    fun updateUserProfile(update: UserProfileModel.() -> UserProfileModel) {
-//
-//        _userProfileModel.value = _userProfileModel.value?.update()
-//    }
 }
