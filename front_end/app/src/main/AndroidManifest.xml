@@ -26,6 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".course.ui.activtiy.CourseActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
     </application>
 
 </manifest>

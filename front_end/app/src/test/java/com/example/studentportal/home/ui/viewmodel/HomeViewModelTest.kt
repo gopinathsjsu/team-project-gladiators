@@ -77,7 +77,7 @@ class HomeViewModelTest {
         )
 
         // Act
-        viewModel.fetchStudent("Id")
+        viewModel.fetchCourses("Id")
 
         // Verify Success Result
         assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
@@ -114,7 +114,7 @@ class HomeViewModelTest {
         )
 
         // Act
-        viewModel.fetchStudent("Id")
+        viewModel.fetchCourses("Id")
         mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
@@ -151,7 +151,7 @@ class HomeViewModelTest {
         )
 
         // Act
-        viewModel.fetchStudent("Id")
+        viewModel.fetchCourses("Id")
         mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
