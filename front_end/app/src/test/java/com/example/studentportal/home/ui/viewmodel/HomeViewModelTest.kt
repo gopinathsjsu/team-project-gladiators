@@ -17,6 +17,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkAll
+import io.mockk.unmockkConstructor
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -165,7 +166,7 @@ class HomeViewModelTest {
         @AfterClass
         @JvmStatic
         fun afterClass() {
-            unmockkAll()
+            unmockkConstructor(CoursesUseCase::class)
         }
     }
 }
