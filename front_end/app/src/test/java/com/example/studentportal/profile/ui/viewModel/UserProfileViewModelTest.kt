@@ -15,7 +15,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkAll
-import io.mockk.unmockkConstructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -111,7 +110,7 @@ class UserProfileViewModelTest {
 
         @AfterClass
         @JvmStatic
-        fun afterClass(){
+        fun afterClass() {
             unmockkAll()
         }
     }
