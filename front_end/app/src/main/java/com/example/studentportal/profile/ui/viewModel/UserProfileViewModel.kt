@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
@@ -32,7 +33,7 @@ class UserProfileViewModel(
     suspend fun fetchUserData(userId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
-            UserProfileUseCase(userId = userId)
+            UserProfileUseCase(userId = userId, repository = koin.get())
                 .launch()
                 .collectLatest { result ->
                     when (result) {

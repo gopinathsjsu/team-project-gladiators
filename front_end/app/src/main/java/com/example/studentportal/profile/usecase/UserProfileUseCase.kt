@@ -1,6 +1,5 @@
 package com.example.studentportal.profile.usecase
 
-import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.usecase.BaseUseCase
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 class UserProfileUseCase(
     private val userId: String,
-    override val repository: UserRepository = koin.get()
+    override val repository: UserRepository
 ) : BaseUseCase<UserUseCaseModel, DefaultError, UserRepository, UserUiModel> {
 
     override suspend fun launch(): Flow<UseCaseResult<UserUseCaseModel, DefaultError, UserUiModel>> {

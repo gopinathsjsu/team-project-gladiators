@@ -24,15 +24,6 @@ class UserUseCaseServiceProviderTest {
         retrofit = mockk(relaxed = true) {
             every { create(UserService::class.java) } returns userService
         }
-    }
-
-    @After
-    fun tearDown() {
-        stopKoin()
-    }
-
-    @Test
-    fun `test service provided`() {
         startKoin {
             modules(
                 module {
@@ -42,6 +33,15 @@ class UserUseCaseServiceProviderTest {
                 }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
+
+    @Test
+    fun `test service provided`() {
         val provider = UserServiceProvider()
         assertThat(provider.retrofit).isEqualTo(this.retrofit)
         assertThat(provider.service()).isEqualTo(this.userService)
