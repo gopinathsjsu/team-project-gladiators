@@ -17,7 +17,7 @@ class NotificationListUseCase(
     override suspend fun launch(): Flow<UseCaseResult<NotificationListUseCaseModel, DefaultError, NotificationListUiModel>> {
         return try {
             // CHANGE MOCK SOURCE
-            val response = repository.fetchMockNotifications()
+            val response = repository.fetchNotifications()
             val notifications = response.body()
             val errorResponse = response.errorBody()
             when {
