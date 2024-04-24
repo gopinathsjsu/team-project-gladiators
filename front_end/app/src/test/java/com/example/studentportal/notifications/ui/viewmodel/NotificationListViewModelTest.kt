@@ -20,7 +20,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.AfterClass
-import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,11 +33,6 @@ class NotificationListViewModelTest {
 
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
-
-    @Before
-    fun before() {
-        mockkConstructor(NotificationListUseCase::class)
-    }
 
     @After
     fun tearDown() {
@@ -99,6 +94,12 @@ class NotificationListViewModelTest {
     }
 
     companion object {
+
+        @BeforeClass
+        @JvmStatic
+        fun beforeClass() {
+            mockkConstructor(NotificationListUseCase::class)
+        }
 
         @AfterClass
         @JvmStatic
