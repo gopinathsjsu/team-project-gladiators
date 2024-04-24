@@ -20,7 +20,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.AfterClass
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -34,11 +33,6 @@ class UserProfileViewModelTest {
 
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
-
-    @Before
-    fun before() {
-        mockkConstructor(UserProfileUseCase::class)
-    }
 
     @After
     fun tearDown() {
