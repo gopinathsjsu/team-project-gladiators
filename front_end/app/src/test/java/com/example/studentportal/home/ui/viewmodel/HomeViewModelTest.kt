@@ -138,7 +138,7 @@ class HomeViewModelTest {
         )
     }
 
-    @Ignore("FLAKY")
+    @Ignore("Failing intermitently ")
     @Test
     fun `test student fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
