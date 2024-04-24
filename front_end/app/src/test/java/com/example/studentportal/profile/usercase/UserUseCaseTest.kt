@@ -22,7 +22,7 @@ import retrofit2.Response
 class UserUseCaseTest {
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         stopKoin()
     }
 
