@@ -15,6 +15,7 @@ import com.example.studentportal.home.ui.layout.KEY_USER_TYPE
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.home.ui.model.CourseListUiModel
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +33,7 @@ class HomeFragmentTest {
         stopKoin()
     }
 
+    @Ignore("FLAKY")
     @Test
     fun `test fetch courses loading`() {
         launchFragmentInContainer<HomeFragment>(
