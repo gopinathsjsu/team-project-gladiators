@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class NotificationListUseCaseTest {
     @Test
-    fun `test student call success`() = runTest {
+    fun `test notification call success`() = runTest {
         // Arrange
         val useCaseModel = NotificationListUseCaseModel(
             listOf(
@@ -32,7 +32,7 @@ class NotificationListUseCaseTest {
             )
         )
         val repository: NotificationRepository = mockk(relaxed = true) {
-            coEvery { fetchMockNotifications() } returns Response.success(
+            coEvery { fetchNotifications() } returns Response.success(
                 useCaseModel
             )
         }
@@ -52,12 +52,12 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call error`() = runTest {
+    fun `test notification call error`() = runTest {
         // Arrange
         mockkConstructor(JSONObject::class)
         every { anyConstructed<JSONObject>().getString("message") } returns "Backend Error"
         val repository: NotificationRepository = mockk(relaxed = true) {
-            coEvery { fetchMockNotifications() } returns Response.error(
+            coEvery { fetchNotifications() } returns Response.error(
                 400,
                 mockk(relaxed = true) {
                     every { string() } returns "{\"message\":\"Backend Error\" }"
@@ -85,10 +85,10 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call exception with message`() = runTest {
+    fun `test notification call exception with message`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
-            coEvery { fetchMockNotifications() } throws IllegalAccessException("Expected Message")
+            coEvery { fetchNotifications() } throws IllegalAccessException("Expected Message")
         }
 
         // Act
@@ -108,10 +108,10 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call exception without message`() = runTest {
+    fun `test notification call exception without message`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
-            coEvery { fetchMockNotifications() } throws IllegalAccessException()
+            coEvery { fetchNotifications() } throws IllegalAccessException()
         }
 
         // Act
@@ -131,10 +131,10 @@ class NotificationListUseCaseTest {
     }
 
     @Test
-    fun `test student call default`() = runTest {
+    fun `test notification call default`() = runTest {
         // Arrange
         val repository: NotificationRepository = mockk(relaxed = true) {
-            coEvery { fetchMockNotifications() } returns mockk(relaxed = true) {
+            coEvery { fetchNotifications() } returns mockk(relaxed = true) {
                 every { body() } returns null
                 every { errorBody() } returns null
             }

@@ -9,7 +9,7 @@ import org.junit.Test
 class NotificationUseCaseModelTest {
 
     @Test
-    fun `test NotificiationList model`() {
+    fun `test NotificationList model`() {
         // Arrange
         val notificationListUseCaseModel = NotificationListUseCaseModel(
             listOf(
