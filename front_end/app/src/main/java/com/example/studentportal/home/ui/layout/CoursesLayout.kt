@@ -1,6 +1,8 @@
 package com.example.studentportal.home.ui.layout
 
+import android.os.Bundle
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -33,12 +34,16 @@ import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.home.ui.viewmodel.HomeViewModel
 
 @Composable
-fun CoursesLayout(viewModel: HomeViewModel) {
+fun CoursesLayout(
+    viewModel: HomeViewModel,
+    args: Bundle,
+    onClick: (course: BaseCourseUiModel.CourseUiModel) -> Unit
+) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
     // API call
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchStudent(userId = "b0f52f07-86a7-4abe-b71a-9ef9212b303d")
+        viewModel.fetchCourses(userId = args.getString(KEY_USER_ID))
     }
 
     when (uiState) {
@@ -48,7 +53,8 @@ fun CoursesLayout(viewModel: HomeViewModel) {
             if (!courseList.isNullOrEmpty()) {
                 CoursesList(
                     uiModels = courseList,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onCourseClicked = onClick
                 )
             } else {
                 Text(stringResource(id = R.string.courses_empty))
@@ -59,12 +65,17 @@ fun CoursesLayout(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun CoursesList(uiModels: List<BaseCourseUiModel>, modifier: Modifier = Modifier) {
+fun CoursesList(
+    uiModels: List<BaseCourseUiModel>,
+    modifier: Modifier = Modifier,
+    onCourseClicked: (course: BaseCourseUiModel.CourseUiModel) -> Unit
+) {
     LazyColumn(modifier) {
         items(uiModels) { item ->
             when (item) {
                 is BaseCourseUiModel.CourseUiModel -> CourseCard(
-                    course = item
+                    course = item,
+                    onCourseClicked = onCourseClicked
                 )
                 is BaseCourseUiModel.FacultyUiModel -> FacultyHeaderCard(
                     professor = item
@@ -136,8 +147,16 @@ fun SemesterHeaderCard(semester: BaseCourseUiModel.SemesterUiModel, modifier: Mo
 }
 
 @Composable
-fun CourseCard(course: BaseCourseUiModel.CourseUiModel, modifier: Modifier = Modifier) {
-    ConstraintLayout {
+fun CourseCard(
+    course: BaseCourseUiModel.CourseUiModel,
+    onCourseClicked: (course: BaseCourseUiModel.CourseUiModel) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ConstraintLayout(
+        modifier = Modifier.clickable {
+            onCourseClicked.invoke(course)
+        }
+    ) {
         val (text1, text2, divider, icon) = createRefs()
         Text(
             modifier = modifier
@@ -187,3 +206,6 @@ fun CourseCard(course: BaseCourseUiModel.CourseUiModel, modifier: Modifier = Mod
         )
     }
 }
+
+val KEY_USER_ID = "KEY_USER_ID"
+val KEY_USER_TYPE = "KEY_USER_TYPE"

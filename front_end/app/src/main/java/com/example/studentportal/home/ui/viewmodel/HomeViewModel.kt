@@ -30,25 +30,27 @@ class HomeViewModel(
     val uiResultLiveData: LiveData<CourseListUiResult>
         get() = _uiResultLiveData
 
-    suspend fun fetchStudent(userId: String) {
-        _uiResultLiveData.value = BaseUiState.Loading()
-        viewModelScope.launch(dispatcher) {
-            CoursesUseCase(userId = userId, repository = koin.get())
-                .launch()
-                .collectLatest { result ->
-                    when (result) {
-                        is UseCaseResult.Failure -> {
-                            viewModelScope.launch {
-                                _uiResultLiveData.value = result.failure()
+    suspend fun fetchCourses(userId: String?) {
+        userId?.let {
+            _uiResultLiveData.value = BaseUiState.Loading()
+            viewModelScope.launch(dispatcher) {
+                CoursesUseCase(userId = userId, repository = koin.get())
+                    .launch()
+                    .collectLatest { result ->
+                        when (result) {
+                            is UseCaseResult.Failure -> {
+                                viewModelScope.launch {
+                                    _uiResultLiveData.value = result.failure()
+                                }
                             }
-                        }
-                        is UseCaseResult.Success -> {
-                            viewModelScope.launch {
-                                _uiResultLiveData.value = result.success()
+                            is UseCaseResult.Success -> {
+                                viewModelScope.launch {
+                                    _uiResultLiveData.value = result.success()
+                                }
                             }
                         }
                     }
-                }
+            }
         }
     }
 
