@@ -20,9 +20,7 @@ import io.mockk.unmockkConstructor
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.Ignore
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,8 +35,14 @@ class HomeViewModelTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherTestRule(mainDispatcher)
 
+    @Before
+    fun before() {
+        mockkConstructor(CoursesUseCase::class)
+    }
+
     @After
     fun tearDown() {
+        unmockkConstructor(CoursesUseCase::class)
         stopKoin()
     }
 
@@ -138,7 +142,6 @@ class HomeViewModelTest {
         )
     }
 
-    @Ignore("Failing intermitently ")
     @Test
     fun `test student fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
@@ -155,19 +158,5 @@ class HomeViewModelTest {
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
             DefaultError("Parse error")
         )
-    }
-
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun beforeClass() {
-            mockkConstructor(CoursesUseCase::class)
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun afterClass() {
-            unmockkConstructor(CoursesUseCase::class)
-        }
     }
 }
