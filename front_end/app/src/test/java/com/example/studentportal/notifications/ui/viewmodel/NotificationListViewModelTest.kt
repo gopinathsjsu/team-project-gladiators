@@ -8,7 +8,6 @@ import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.common.ui.model.isLoading
 import com.example.studentportal.common.usecase.DefaultError
-import com.example.studentportal.home.usecase.CoursesUseCase
 import com.example.studentportal.notifications.usecase.NotificationListUseCase
 import com.example.studentportal.notifications.usecase.model.NotificationListUseCaseModel
 import com.google.common.truth.Truth.assertThat
@@ -20,9 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.AfterClass
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
