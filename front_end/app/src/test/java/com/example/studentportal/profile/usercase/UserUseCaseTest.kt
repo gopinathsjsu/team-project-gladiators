@@ -14,10 +14,17 @@ import io.mockk.unmockkConstructor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.test.runTest
 import org.json.JSONObject
+import org.junit.After
 import org.junit.Test
+import org.koin.core.context.stopKoin
 import retrofit2.Response
 
 class UserUseCaseTest {
+
+    @After
+    fun tearDown(){
+        stopKoin()
+    }
 
     @Test
     fun `test user call success`() = runTest {

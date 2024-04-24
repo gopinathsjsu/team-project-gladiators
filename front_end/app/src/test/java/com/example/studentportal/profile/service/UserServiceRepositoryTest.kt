@@ -33,6 +33,12 @@ class UserServiceRepositoryTest {
         }
     }
 
+    @After
+    fun tearDown() {
+        unmockkConstructor(NotificationServiceProvider::class)
+        stopKoin()
+    }
+
     @Test
     fun `test fetchNotificationList call`() = runTest {
         // Arrange
@@ -49,11 +55,5 @@ class UserServiceRepositoryTest {
             service.getUser("id")
         }
         assertThat(response.isSuccessful).isTrue()
-    }
-
-    @After
-    fun tearDown() {
-        unmockkConstructor(NotificationServiceProvider::class)
-        stopKoin()
     }
 }
