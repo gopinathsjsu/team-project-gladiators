@@ -14,11 +14,13 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.unmockkAll
 import io.mockk.unmockkConstructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,7 +42,6 @@ class UserProfileViewModelTest {
 
     @After
     fun tearDown() {
-        unmockkConstructor(UserProfileUseCase::class)
         stopKoin()
     }
 
@@ -104,5 +105,14 @@ class UserProfileViewModelTest {
         assertThat(viewModel.uiResultLiveData.value.data()).isEqualTo(
             useCaseModel.toUiModel()
         )
+    }
+
+    companion object {
+
+        @AfterClass
+        @JvmStatic
+        fun afterClass(){
+            unmockkAll()
+        }
     }
 }

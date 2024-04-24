@@ -16,10 +16,12 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.unmockkAll
 import io.mockk.unmockkConstructor
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +44,6 @@ class HomeViewModelTest {
 
     @After
     fun tearDown() {
-        unmockkConstructor(CoursesUseCase::class)
         stopKoin()
     }
 
@@ -158,5 +159,14 @@ class HomeViewModelTest {
         assertThat(viewModel.uiResultLiveData.value?.error()).isEqualTo(
             DefaultError("Parse error")
         )
+    }
+
+    companion object {
+
+        @AfterClass
+        @JvmStatic
+        fun afterClass(){
+            unmockkAll()
+        }
     }
 }
