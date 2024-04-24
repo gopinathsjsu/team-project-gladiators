@@ -1,7 +1,7 @@
 package com.example.studentportal.notifications.service
 
 import com.example.studentportal.notifications.service.repository.NotificationServiceProvider
-import com.example.studentportal.notifications.usecase.model.NotificationListUseCaseModel
+import com.example.studentportal.notifications.usecase.model.NotificationUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -48,7 +48,7 @@ class NotificationServiceProviderTest {
     }
 
     class MockNotificationListService : NotificationService {
-        override fun fetchNotifications(): Call<NotificationListUseCaseModel> {
+        override fun fetchNotifications(): Call<List<NotificationUseCaseModel>> {
             return mockk(relaxed = true)
         }
     }
