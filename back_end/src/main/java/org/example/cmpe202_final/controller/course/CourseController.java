@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -47,5 +48,10 @@ public class CourseController {
                 userService,
                 userId
         );
+    }
+
+    @GetMapping("/{courseId}/students")
+    public List<User> getStudentsByCourseId(@PathVariable String courseId) {
+        return courseService.findStudentsByCourseId(courseId);
     }
 }
