@@ -319,18 +319,6 @@ class AssignmentListFragmentTest {
 
     @Test
     fun `test assignmentList, error`() = runTest(mainDispatcher) {
-        val expectedResult = AssignmentListUseCaseModel(
-            listOf(
-                AssignmentUseCaseModel(
-                    id = "id",
-                    dueDate = Date(),
-                    name = "Name",
-                    submissions = setOf(),
-                    course = "course",
-                    link = "link"
-                )
-            )
-        )
         coEvery { mockRepo.fetchAssignments(any()) } returns Response.error(
             400,
             mockk(relaxed = true) {
