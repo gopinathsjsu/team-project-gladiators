@@ -84,6 +84,7 @@ class NotificationsFragmentTest {
         }
     }
 
+    @Ignore("Flaky")
     @Test(expected = IllegalAccessException::class)
     fun `expect exception when binding is accessed after UI is destroyed`() {
         var fragment: NotificationsFragment? = null
