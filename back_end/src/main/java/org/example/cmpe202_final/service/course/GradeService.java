@@ -13,11 +13,7 @@ public class GradeService {
 
     private final CustomGradeRepository customGradeRepository;
 
-    public List<GradeWithStudentName> getGradesWithStudentNamesByAssignmentId(String assignmentId){
-        return customGradeRepository.getGradesWithStudentNamesByAssignmentId(assignmentId);
-    }
-
-    public List<GradeWithStudentName> getGradeWithStudentNameByAssignmentIdAndStudentId(String assignmentId, String studentId){
-        return customGradeRepository.getGradeWithStudentNameByAssignmentIdAndStudentId(assignmentId, studentId);
+    public List<GradeWithStudentName> getGradesWithStudentNamesByAssignmentId(String assignmentId, String userId){
+        return customGradeRepository.getGradesWithStudentNamesByAssignmentId(assignmentId, userId);
     }
 }

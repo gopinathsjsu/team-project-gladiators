@@ -30,10 +30,13 @@ class GradeListViewModel(
     val uiResultLiveData: LiveData<GradeListUiResult>
         get() = _uiResultLiveData
 
-    suspend fun fetchGrades(assignmentId: String) {
+    suspend fun fetchGrades(assignmentId: String, userId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
-            GradeListUseCase(assignmentId = assignmentId, repository = koin.get())
+            GradeListUseCase(
+                assignmentId = assignmentId,
+                userId = userId,
+                repository = koin.get())
                 .launch()
                 .collectLatest { result ->
                     when (result) {

@@ -12,8 +12,8 @@ class GradeRepository(
     val provider: ServiceProvider<GradeService>
 ) {
 
-    suspend fun fetchGradesByAssignment(assignmentId: String): Response<GradeListUseCaseModel> {
-        val response = provider.service().fetchGradesByAssignment(assignmentId).execute()
+    suspend fun fetchGradesByAssignment(assignmentId: String, userId: String): Response<GradeListUseCaseModel> {
+        val response = provider.service().fetchGradesByAssignment(assignmentId, userId).execute()
         return if (response.isSuccessful) {
             Response.success(
                 GradeListUseCaseModel(
