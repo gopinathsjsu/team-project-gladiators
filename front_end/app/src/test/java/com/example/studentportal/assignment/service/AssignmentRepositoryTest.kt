@@ -2,9 +2,6 @@ package com.example.studentportal.assignment.service
 
 import com.example.studentportal.assignment.service.repository.AssignmentRepository
 import com.example.studentportal.assignment.usecase.models.AssignmentUseCaseModel
-import com.example.studentportal.common.di.koin
-import com.example.studentportal.home.service.repository.CourseRepository
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -19,7 +16,7 @@ class AssignmentRepositoryTest {
     lateinit var service: AssignmentService
 
     @Before
-    fun setUp(){
+    fun setUp() {
         service = mockk(relaxed = true)
     }
 
@@ -30,7 +27,7 @@ class AssignmentRepositoryTest {
             every { execute() } returns Response.success(mockk(relaxed = true))
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )
@@ -53,7 +50,7 @@ class AssignmentRepositoryTest {
             every { execute() } returns Response.success(mockk(relaxed = true))
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )
@@ -76,7 +73,7 @@ class AssignmentRepositoryTest {
             every { execute() } returns Response.error(400, mockk(relaxed = true))
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )
@@ -102,7 +99,7 @@ class AssignmentRepositoryTest {
             }
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )
@@ -119,7 +116,7 @@ class AssignmentRepositoryTest {
             every { execute() } returns Response.error(400, mockk(relaxed = true))
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )
@@ -145,7 +142,7 @@ class AssignmentRepositoryTest {
             }
         }
         val repository: AssignmentRepository = AssignmentRepository(
-            mockk(relaxed = true){
+            mockk(relaxed = true) {
                 every { service() } returns service
             }
         )

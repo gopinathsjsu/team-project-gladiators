@@ -97,7 +97,7 @@ class AssignmentListFragmentTest {
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
                 AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
             ),
-            factory = object: FragmentFactory(){
+            factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                     return AssignmentsFragment(
                         viewModelFactory {
@@ -160,8 +160,8 @@ class AssignmentListFragmentTest {
                 mockRepo.createNewAssignment(
                     assignment = match {
                         it.course == "courseId" &&
-                                it.link == "Link" &&
-                                it.name == "CourseName"
+                            it.link == "Link" &&
+                            it.name == "CourseName"
                     }
                 )
             }
@@ -178,15 +178,18 @@ class AssignmentListFragmentTest {
 
     @Test
     fun `test open new assignment window, error when creating`() = runTest(mainDispatcher) {
-        coEvery { mockRepo.createNewAssignment(any()) } returns Response.error(400, mockk(relaxed = true){
-            every { string() } returns "{\"message\":\"Backend Error\" }"
-        })
+        coEvery { mockRepo.createNewAssignment(any()) } returns Response.error(
+            400,
+            mockk(relaxed = true) {
+                every { string() } returns "{\"message\":\"Backend Error\" }"
+            }
+        )
         launchFragmentInContainer<AssignmentsFragment>(
             fragmentArgs = bundleOf(
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
                 AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
             ),
-            factory = object: FragmentFactory(){
+            factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                     return AssignmentsFragment(
                         viewModelFactory {
@@ -249,8 +252,8 @@ class AssignmentListFragmentTest {
                 mockRepo.createNewAssignment(
                     assignment = match {
                         it.course == "courseId" &&
-                                it.link == "Link" &&
-                                it.name == "CourseName"
+                            it.link == "Link" &&
+                            it.name == "CourseName"
                     }
                 )
             }
@@ -286,7 +289,7 @@ class AssignmentListFragmentTest {
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
                 AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
             ),
-            factory = object: FragmentFactory(){
+            factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                     return AssignmentsFragment(
                         viewModelFactory {
@@ -328,15 +331,18 @@ class AssignmentListFragmentTest {
                 )
             )
         )
-        coEvery { mockRepo.fetchAssignments(any()) } returns Response.error(400, mockk(relaxed = true){
-            every { string() } returns "{\"message\":\"Backend Error\" }"
-        })
+        coEvery { mockRepo.fetchAssignments(any()) } returns Response.error(
+            400,
+            mockk(relaxed = true) {
+                every { string() } returns "{\"message\":\"Backend Error\" }"
+            }
+        )
         launchFragmentInContainer<AssignmentsFragment>(
             fragmentArgs = bundleOf(
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
                 AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
             ),
-            factory = object: FragmentFactory(){
+            factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                     return AssignmentsFragment(
                         viewModelFactory {
