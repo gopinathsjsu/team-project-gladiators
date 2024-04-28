@@ -33,4 +33,10 @@ public class CustomGradeRepository {
 
         return results.getMappedResults();
     }
+
+    public List<GradeWithStudentName> getGradeWithStudentNameByAssignmentIdAndStudentId(String assignmentId, String studentId) {
+            List<GradeWithStudentName> grades = getGradesWithStudentNamesByAssignmentId(assignmentId);
+            List<GradeWithStudentName> grade = grades.stream().filter(g -> g.getStudentId().equals(studentId)).toList();
+            return grade;
+    }
 }

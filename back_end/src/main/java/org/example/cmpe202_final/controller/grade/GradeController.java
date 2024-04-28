@@ -14,7 +14,15 @@ public class GradeController {
     private final GradeService gradeService;
 
     @GetMapping("/assignment/{assignmentId}")
-    public List<GradeWithStudentName> getGradesByAssignmentId(@PathVariable String assignmentId) {
-        return gradeService.getGradesWithStudentNamesByAssignmentId(assignmentId);
+    public List<GradeWithStudentName> getGradesByAssignmentId(
+            @PathVariable String assignmentId,
+            @RequestParam(required = false) String studentId) {
+        if (studentId != null) {
+            // Perform action A when userId is passed
+            return gradeService.getGradeWithStudentNameByAssignmentIdAndStudentId(assignmentId, studentId);
+        } else {
+            // Perform action B when userId is not passed
+            return gradeService.getGradesWithStudentNamesByAssignmentId(assignmentId);
+        }
     }
 }
