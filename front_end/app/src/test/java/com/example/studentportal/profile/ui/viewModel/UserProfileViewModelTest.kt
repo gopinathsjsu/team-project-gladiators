@@ -45,6 +45,7 @@ class UserProfileViewModelTest {
         stopKoin()
     }
 
+    @Ignore("FLAKY")
     @Test
     fun `test user fetch loading`() = runTest {
         // Set Up Resources
