@@ -33,7 +33,11 @@ fun GradeListLayout(viewModel: GradeListViewModel) {
 
     // API call
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchGrades(assignmentId = "c665e126-846c-4375-989d-d963053762a3")
+        viewModel.fetchGrades(
+            assignmentId = "c665e126-846c-4375-989d-d963053762a3",
+//            userId = "b0f52f07-86a7-4abe-b71a-9ef9212b303d" // FACULTY
+            userId = "ce609294-76ce-40ab-a803-0bdee38ba172" // STUDENT
+        )
     }
 
     when (uiState) {

@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.Flow
 
 class GradeListUseCase(
     private val assignmentId: String,
+    private val userId: String,
     override val repository: GradeRepository
 ) : BaseUseCase<GradeListUseCaseModel, DefaultError, GradeRepository, GradeListUiModel> {
 
     override suspend fun launch(): Flow<UseCaseResult<GradeListUseCaseModel, DefaultError, GradeListUiModel>> {
         return try {
-            val response = repository.fetchGradesByAssignment(assignmentId)
+            val response = repository.fetchGradesByAssignment(assignmentId, userId)
             val grades = response.body()
             val errorResponse = response.errorBody()
             when {
