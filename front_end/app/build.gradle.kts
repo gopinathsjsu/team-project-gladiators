@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
     id("org.jetbrains.kotlinx.kover") version "0.7.5"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }

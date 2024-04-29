@@ -1,7 +1,5 @@
-package org.example.cmpe202_final.model.courses;
+package org.example.cmpe202_final.model.assignment;
 
-import org.example.cmpe202_final.model.course.Assignment;
-import org.example.cmpe202_final.model.course.Grade;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,26 +17,30 @@ public class AssignmentTests {
         String id = "123";
         Date dueDate = new Date();
         String name = "Assignment 1";
-        ArrayList<Grade> grades = new ArrayList<>();
+        String course = "course";
+        String link = "link";
+        ArrayList<String> submissions = new ArrayList<>();
 
         // Set values using setters
         assignment.setId(id);
         assignment.setDueDate(dueDate);
         assignment.setName(name);
-        assignment.setGrades(grades);
+        assignment.setSubmissions(submissions);
 
         // Test getters
         assertEquals(id, assignment.getId());
         assertEquals(dueDate, assignment.getDueDate());
         assertEquals(name, assignment.getName());
-        assertEquals(grades, assignment.getGrades());
+        assertEquals(submissions, assignment.getSubmissions());
 
         // Test Full Constructor
-        Assignment assignment2 = new Assignment(id,dueDate,name,grades);
+        Assignment assignment2 = new Assignment(id,dueDate,name,submissions,course, link);
         assertEquals(id, assignment2.getId());
         assertEquals(dueDate, assignment2.getDueDate());
         assertEquals(name, assignment2.getName());
-        assertEquals(grades, assignment2.getGrades());
+        assertEquals(submissions, assignment2.getSubmissions());
+        assertEquals(course, assignment2.getCourse());
+        assertEquals(link, assignment2.getLink());
     }
 }
 

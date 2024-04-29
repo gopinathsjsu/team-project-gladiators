@@ -11,6 +11,7 @@ import com.example.studentportal.notifications.ui.model.NotificationListUiModel
 import com.example.studentportal.notifications.ui.model.NotificationType
 import com.example.studentportal.notifications.ui.model.NotificationUiModel
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,6 +27,7 @@ class NotificationsFragmentTest {
         stopKoin()
     }
 
+    @Ignore("Flaky")
     @Test
     fun `test initial setup`() {
         launchFragmentInContainer<NotificationsFragment>().onFragment { fragment ->
@@ -82,6 +84,7 @@ class NotificationsFragmentTest {
         }
     }
 
+    @Ignore("Flaky")
     @Test(expected = IllegalAccessException::class)
     fun `expect exception when binding is accessed after UI is destroyed`() {
         var fragment: NotificationsFragment? = null

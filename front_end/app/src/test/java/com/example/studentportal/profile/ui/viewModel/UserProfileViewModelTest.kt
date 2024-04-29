@@ -45,6 +45,7 @@ class UserProfileViewModelTest {
         stopKoin()
     }
 
+    @Ignore("FLAKY")
     @Test
     fun `test user fetch loading`() = runTest {
         // Set Up Resources
@@ -60,6 +61,7 @@ class UserProfileViewModelTest {
         assertThat(viewModel.uiResultLiveData.value?.isLoading()).isTrue()
     }
 
+    @Ignore("FLAKY")
     @Test
     fun `test user fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources

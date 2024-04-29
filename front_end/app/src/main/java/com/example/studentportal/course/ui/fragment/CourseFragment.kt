@@ -3,7 +3,10 @@ package com.example.studentportal.course.ui.fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import com.example.studentportal.R
+import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
 import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.layout.CourseMenuLayout
 import com.example.studentportal.course.ui.model.Command
 import com.example.studentportal.course.ui.model.UserType
@@ -26,7 +29,15 @@ class CourseFragment : BaseFragment<FragmentCourseBinding>(TAG) {
             CourseMenuLayout(userType = userType) {
                 when (it) {
                     Command.ShowAssignments -> {
-                        // TODO set up assignments
+                        val fragment = AssignmentsFragment.newInstance(
+                            requireArguments().getString(KEY_COURSE_ID).orEmpty(),
+                            requireArguments().getString(KEY_USER_TYPE).orEmpty()
+                        )
+                        parentFragmentManager.showBaseFragment(
+                            fragment = fragment,
+                            addToBackStack = true,
+                            containerId = R.id.fl_content
+                        )
                     }
                     Command.ShowContent -> {
                         // TODO show course content

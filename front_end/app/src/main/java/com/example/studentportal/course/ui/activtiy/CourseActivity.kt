@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.example.studentportal.R
-import com.example.studentportal.common.ui.showFragment
+import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.fragment.CourseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.ActivityCourseBinding
@@ -41,7 +41,7 @@ class CourseActivity : FragmentActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.arrow_back)
         }
-        supportFragmentManager.showFragment(
+        supportFragmentManager.showBaseFragment(
             fragment = CourseFragment.newInstance(
                 userType = userType,
                 userId = userId,

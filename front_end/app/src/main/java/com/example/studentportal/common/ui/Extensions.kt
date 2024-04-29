@@ -4,6 +4,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.commit
+import com.example.studentportal.common.ui.fragment.BaseDialogFragment
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.home.ui.fragment.HomeFragment
 
@@ -18,7 +19,7 @@ fun FragmentManager.popBackStackToFragment(fragment: BaseFragment<*>) {
     }
 }
 
-fun FragmentManager.showFragment(
+fun FragmentManager.showBaseFragment(
     fragment: BaseFragment<*>,
     addToBackStack: Boolean,
     @IdRes containerId: Int
@@ -30,4 +31,12 @@ fun FragmentManager.showFragment(
             addToBackStack(fragment.fragmentTag)
         }
     }
+}
+
+fun FragmentManager.showBaseDialogFragment(
+    fragment: BaseDialogFragment<*>
+) {
+    val transaction = beginTransaction()
+    transaction.addToBackStack(fragment.fragmentTag)
+    fragment.show(transaction, fragment.fragmentTag)
 }
