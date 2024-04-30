@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.popBackStackToFragment
-import com.example.studentportal.common.ui.showFragment
+import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.databinding.ActivityHomeBinding
 import com.example.studentportal.grades.ui.fragment.GradesFragment
 import com.example.studentportal.home.ui.fragment.HomeFragment
@@ -74,7 +74,7 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             binding.drawerLayout.closeDrawers()
             return // Go back in history to previous fragment
         }
-        supportFragmentManager.showFragment(
+        supportFragmentManager.showBaseFragment(
             fragment = fragment,
             addToBackStack = addToBackStack,
             containerId = binding.flContent.id
