@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping
     public List<User> fetchAllUsers() {
-        return userService.findAlUsers();
+        return userService.findAllUsers();
     }
 
     @GetMapping("/{userId}")

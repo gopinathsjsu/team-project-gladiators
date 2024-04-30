@@ -7,7 +7,6 @@ import org.example.cmpe202_final.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +24,12 @@ public class UserService {
         return repository.findByType(type);
     }
 
-    public List<User> findAlUsers(){
+    public List<User> findAllUsers(){
         return repository.findAll();
+    }
+
+    public User findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
 }
