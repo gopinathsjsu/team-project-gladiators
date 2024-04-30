@@ -1,11 +1,15 @@
 package org.example.cmpe202_final.controller.courses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.cmpe202_final.controller.AuthControllerTestConfiguration;
+import org.example.cmpe202_final.controller.MockSecurityConfiguration;
+import org.example.cmpe202_final.controller.auth.AuthController;
 import org.example.cmpe202_final.controller.course.CourseController;
 import org.example.cmpe202_final.model.course.Course;
 import org.example.cmpe202_final.model.course.Semester;
 import org.example.cmpe202_final.model.user.User;
 import org.example.cmpe202_final.model.user.UserType;
+import org.example.cmpe202_final.service.auth.TokenService;
 import org.example.cmpe202_final.service.course.CourseService;
 import org.example.cmpe202_final.service.semester.SemesterService;
 import org.example.cmpe202_final.service.user.UserService;
@@ -20,7 +24,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -30,7 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(CourseController.class)
+@WebMvcTest({CourseController.class, AuthController.class})
+@ActiveProfiles("test")
+@Import({MockSecurityConfiguration.class, TokenService.class, AuthControllerTestConfiguration.class})
 public class CoursesControllerTest {
 
     @Autowired
