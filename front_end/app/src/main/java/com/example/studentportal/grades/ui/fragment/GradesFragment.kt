@@ -39,7 +39,7 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
         return binding
     }
 
-    override fun menuItem() = R.id.nav_grades
+    override fun menuItem(): Int = -1
 
     companion object {
         private const val KEY_ASSIGNMENT_ID = "key_course_id"

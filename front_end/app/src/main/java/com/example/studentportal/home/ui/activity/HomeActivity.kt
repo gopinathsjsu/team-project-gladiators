@@ -65,9 +65,6 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             R.id.nav_courses -> HomeFragment.newInstance()
             R.id.nav_profile -> ProfileFragment.newInstance()
             R.id.nav_notifications -> NotificationsFragment.newInstance()
-            R.id.nav_grades -> GradesFragment.newInstance(
-                "fc28cdc8-09ce-4d66-9a22-488b512c4a26",
-                "a872bddb-0c7a-45dd-a172-3747d626ae0a")
             else -> HomeFragment.newInstance()
         }
         val existingFragment = supportFragmentManager.findFragmentByTag(fragment.fragmentTag)
