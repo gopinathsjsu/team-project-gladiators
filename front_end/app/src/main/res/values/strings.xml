@@ -33,4 +33,17 @@
     <string name= "assignments_link">Link</string>
     <string name= "assignments_due_date">Due Date</string>
     <string name= "assignments_create_new">Create</string>
+
+    <!-- Auth -->
+    <string name= "auth_yes">Yes</string>
+    <string name= "auth_no">No</string>
+    <string name= "auth_hide_password">Hide</string>
+    <string name= "auth_show_password">Show</string>
+    <string name= "auth_submit">Submit</string>
+    <string name= "auth_title">Login</string>
+    <string name= "auth_username">Email</string>
+    <string name= "auth_password">Password</string>
+    <string name= "auth_logout">Logout</string>
+    <string name= "auth_logout_title">Confirm Logout</string>
+    <string name= "auth_logout_message">Are you sure you want to logout?</string>
 </resources>

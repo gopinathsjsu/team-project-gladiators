@@ -21,8 +21,8 @@ class CoursesUseCase(
             val errorResponse = response.errorBody()
             when {
                 courses != null -> successFlow(courses)
-                errorResponse != null -> defaultFailureFlow(errorResponse)
-                else -> defaultFailureFlow()
+                errorResponse != null -> defaultFailureFlow(code = response.code(), errorResponse)
+                else -> defaultFailureFlow(response)
             }
         } catch (e: Exception) {
             defaultFailureFlow(e)

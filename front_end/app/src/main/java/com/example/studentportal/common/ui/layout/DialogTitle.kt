@@ -22,7 +22,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 fun DialogTitle(
     modifier: Modifier,
     @StringRes titleRes: Int,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
+    showCloseButton: Boolean = true
 ) {
     ConstraintLayout(modifier = modifier) {
         val (closeButton, title, divider) = createRefs()
@@ -37,20 +38,22 @@ fun DialogTitle(
             fontWeight = FontWeight.Bold,
             text = stringResource(id = titleRes)
         )
-        IconButton(
-            modifier = Modifier
-                .padding(16.dp)
-                .constrainAs(closeButton) {
-                    end.linkTo(parent.end)
-                    top.linkTo(title.top)
-                    bottom.linkTo(title.bottom)
-                },
-            onClick = onCloseClicked
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = null
-            )
+        if (showCloseButton) {
+            IconButton(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .constrainAs(closeButton) {
+                        end.linkTo(parent.end)
+                        top.linkTo(title.top)
+                        bottom.linkTo(title.bottom)
+                    },
+                onClick = onCloseClicked
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = null
+                )
+            }
         }
         Divider(
             modifier = Modifier

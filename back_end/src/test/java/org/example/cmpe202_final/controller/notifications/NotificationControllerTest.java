@@ -1,15 +1,21 @@
 package org.example.cmpe202_final.controller.notifications;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.cmpe202_final.controller.AuthControllerTestConfiguration;
+import org.example.cmpe202_final.controller.MockSecurityConfiguration;
+import org.example.cmpe202_final.controller.auth.AuthController;
 import org.example.cmpe202_final.controller.notification.NotificationController;
 import org.example.cmpe202_final.model.notification.Notification;
+import org.example.cmpe202_final.service.auth.TokenService;
 import org.example.cmpe202_final.service.notification.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -22,7 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(NotificationController.class)
+@WebMvcTest({NotificationController.class, AuthController.class})
+@ActiveProfiles("test")
+@Import({ MockSecurityConfiguration.class, TokenService.class, AuthControllerTestConfiguration.class })
 public class NotificationControllerTest {
 
     @Autowired

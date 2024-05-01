@@ -62,7 +62,7 @@ public class UserServiceTest {
         when(repository.findAll()).thenReturn(users);
 
         // Test service method
-        List<User> result = userService.findAlUsers();
+        List<User> result = userService.findAllUsers();
         assertEquals(users.size(), result.size());
         assertEquals(users, result);
     }

@@ -22,8 +22,8 @@ class NotificationListUseCase(
             val errorResponse = response.errorBody()
             when {
                 notifications != null -> successFlow(notifications)
-                errorResponse != null -> defaultFailureFlow(errorResponse)
-                else -> defaultFailureFlow()
+                errorResponse != null -> defaultFailureFlow(code = response.code(), errorResponse)
+                else -> defaultFailureFlow(response)
             }
         } catch (e: Exception) {
             defaultFailureFlow(e)
