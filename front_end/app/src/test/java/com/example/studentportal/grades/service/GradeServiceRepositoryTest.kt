@@ -41,18 +41,19 @@ class GradeServiceRepositoryTest {
     @Test
     fun `test fetchGradeList call`() = runTest {
         // Arrange
-        every { service.fetchGradesByAssignment(any()) } returns mockk(relaxed = true) {
+        every { service.fetchGradesByAssignment(any(), any()) } returns mockk(relaxed = true) {
             every { execute() } returns Response.success(mockk(relaxed = true))
         }
         val repository: GradeRepository = koin.get()
-        val expectedId = "expectedId"
+        val expectedAssignmentId = "assignmentId"
+        val expectedUserId = "userId"
 
         // Act
-        val response = repository.fetchGradesByAssignment(expectedId)
+        val response = repository.fetchGradesByAssignment(expectedAssignmentId, expectedUserId)
 
         // Assert
         verify {
-            service.fetchGradesByAssignment(expectedId)
+            service.fetchGradesByAssignment(expectedAssignmentId, expectedUserId)
         }
         assertThat(response.isSuccessful).isTrue()
     }

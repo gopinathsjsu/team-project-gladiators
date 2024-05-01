@@ -48,7 +48,7 @@ class GradeServiceProviderTest {
     }
 
     class MockGradeListService : GradeService {
-        override fun fetchGradesByAssignment(assignmentId: String): Call<List<GradeUseCaseModel>> {
+        override fun fetchGradesByAssignment(assignmentId: String, userId: String): Call<List<GradeUseCaseModel>> {
             return mockk(relaxed = true)
         }
     }

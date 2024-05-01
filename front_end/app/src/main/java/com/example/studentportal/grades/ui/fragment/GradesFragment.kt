@@ -42,8 +42,8 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
     override fun menuItem(): Int = -1
 
     companion object {
-        private const val KEY_ASSIGNMENT_ID = "key_course_id"
-        private const val KEY_USER_ID = "key_user_type"
+        const val KEY_ASSIGNMENT_ID = "key_course_id"
+        const val KEY_USER_ID = "key_user_type"
         const val TAG = "GRADES"
         fun newInstance(assignmentId: String, userId: String): GradesFragment {
             val fragment = GradesFragment()

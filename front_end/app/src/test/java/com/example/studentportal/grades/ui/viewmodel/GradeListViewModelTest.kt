@@ -54,7 +54,7 @@ class GradeListViewModelTest {
         )
 
         // Act
-        viewModel.fetchGrades(assignmentId = "")
+        viewModel.fetchGrades(assignmentId = "", userId = "")
         mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
@@ -72,7 +72,7 @@ class GradeListViewModelTest {
         )
 
         // Act
-        viewModel.fetchGrades(assignmentId = "")
+        viewModel.fetchGrades(assignmentId = "", userId = "")
         mainDispatcher.scheduler.advanceUntilIdle()
 
         // Verify Success Result
