@@ -47,11 +47,11 @@ class HomeFragment : BaseFragment<FragmentCoursesBinding>(TAG) {
 
     companion object {
         const val TAG = "HOME"
-        fun newInstance(): HomeFragment {
+        fun newInstance(userId: String, userType: UserType): HomeFragment {
             val fragments = HomeFragment()
             fragments.arguments = bundleOf(
-                KEY_USER_ID to "b0f52f07-86a7-4abe-b71a-9ef9212b303d",
-                KEY_USER_TYPE to UserType.FACULTY.name
+                KEY_USER_ID to userId,
+                KEY_USER_TYPE to userType.name
             )
             return fragments
         }

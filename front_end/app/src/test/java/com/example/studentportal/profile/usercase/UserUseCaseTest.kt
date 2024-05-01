@@ -1,6 +1,7 @@
 package com.example.studentportal.profile.usercase
 
 import com.example.studentportal.common.usecase.DefaultError
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.service.repository.UserRepository
 import com.example.studentportal.profile.usecase.UserProfileUseCase
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
@@ -36,7 +37,8 @@ class UserUseCaseTest {
             email = "email",
             phone = "phone",
             firstName = "firstName",
-            lastName = "lastName"
+            lastName = "lastName",
+            type = UserType.FACULTY.name
         )
         val repository: UserRepository = mockk(relaxed = true) {
             coEvery { fetchUser("id") } returns Response.success(

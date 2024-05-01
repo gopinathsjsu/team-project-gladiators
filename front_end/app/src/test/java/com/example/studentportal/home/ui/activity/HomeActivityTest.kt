@@ -2,10 +2,12 @@ package com.example.studentportal.home.ui.activity
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.MockDrawerState
 import com.example.studentportal.common.ui.MockMenuItem
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.home.ui.fragment.HomeFragment
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +31,13 @@ class HomeActivityTest {
 
     @Test
     fun `test initial setup`() {
-        ActivityScenario.launch(HomeActivity::class.java)
+        ActivityScenario.launch<HomeActivity>(
+            HomeActivity.intent(
+                ApplicationProvider.getApplicationContext(),
+                "userId",
+                UserType.FACULTY.name
+            )
+        )
             .use { scenario ->
                 scenario.onActivity { homeActivity ->
                     val fragmentManager = homeActivity.supportFragmentManager
@@ -48,7 +56,13 @@ class HomeActivityTest {
     @Test
     fun `test navigation`() {
         val mockDrawerState = MockDrawerState()
-        ActivityScenario.launch(HomeActivity::class.java)
+        ActivityScenario.launch<HomeActivity>(
+            HomeActivity.intent(
+                ApplicationProvider.getApplicationContext(),
+                "userId",
+                UserType.FACULTY.name
+            )
+        )
             .use { scenario ->
                 scenario.onActivity { homeActivity ->
                     homeActivity.onOptionsItemSelected(MockMenuItem(0)) // Consume invalid selection

@@ -11,6 +11,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(serviceModule)
+    includes(sharedPreferencesModule)
     includes(NotificationRepository.koinModule())
     includes(CourseRepository.koinModule())
     includes(UserRepository.koinModule())
