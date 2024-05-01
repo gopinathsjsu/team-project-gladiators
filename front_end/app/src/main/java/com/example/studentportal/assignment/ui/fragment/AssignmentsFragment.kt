@@ -1,5 +1,6 @@
 package com.example.studentportal.assignment.ui.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,12 +15,14 @@ import com.example.studentportal.R
 import com.example.studentportal.assignment.ui.layout.AssignmentListLayout
 import com.example.studentportal.assignment.ui.model.AssignmentUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
+import com.example.studentportal.common.di.getUserId
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentAssignmentsBinding
 import com.example.studentportal.grades.ui.fragment.GradesFragment
+import org.koin.android.ext.android.inject
 
 class AssignmentsFragment(
     viewModelFactory: ViewModelProvider.Factory = AssignmentsViewModel.AssignmentsViewModelFactory
@@ -27,11 +30,16 @@ class AssignmentsFragment(
 
     internal val viewModel by viewModels<AssignmentsViewModel> { viewModelFactory }
 
+    // Inject SharedPreferences
+    private val sharedPreferences: SharedPreferences by inject()
+
     val courseId: String
         get() = requireArguments().getString(KEY_COURSE_ID).orEmpty()
 
     val userType: UserType
         get() = UserType.valueOf(requireArguments().getString(KEY_USER_TYPE).orEmpty())
+
+    val userId: String = sharedPreferences.getUserId()
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -52,7 +60,7 @@ class AssignmentsFragment(
                 onItemClick = {
                     val fragment = GradesFragment.newInstance(
                         it,
-                        userId = "a872bddb-0c7a-45dd-a172-3747d626ae0a"
+                        userId = userId
                     )
                     parentFragmentManager.showBaseFragment(
                         fragment = fragment,
