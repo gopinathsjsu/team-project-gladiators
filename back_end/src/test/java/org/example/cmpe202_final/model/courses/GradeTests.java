@@ -14,7 +14,7 @@ public class GradeTests {
     public void testGettersAndSetters() {
         // Set up test data
         String id = "123";
-        Double score = 85.5;
+        int score = 85;
         String studentId = "456";
         String courseId = "789";
 
