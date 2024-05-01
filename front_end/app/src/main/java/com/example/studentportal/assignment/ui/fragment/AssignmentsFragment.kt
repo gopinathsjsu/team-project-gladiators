@@ -10,13 +10,17 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.studentportal.R
 import com.example.studentportal.assignment.ui.layout.AssignmentListLayout
 import com.example.studentportal.assignment.ui.model.AssignmentUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
+import com.example.studentportal.common.ui.showBaseFragment
+import com.example.studentportal.course.ui.fragment.CourseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentAssignmentsBinding
+import com.example.studentportal.grades.ui.fragment.GradesFragment
 
 class AssignmentsFragment(
     viewModelFactory: ViewModelProvider.Factory = AssignmentsViewModel.AssignmentsViewModelFactory
@@ -44,6 +48,17 @@ class AssignmentsFragment(
                 onAddClicked = {
                     childFragmentManager.showBaseDialogFragment(
                         AddAssignmentFragment.newInstance(courseId)
+                    )
+                },
+                onItemClick = {
+                    val fragment = GradesFragment.newInstance(
+                        it,
+                        userId = "a872bddb-0c7a-45dd-a172-3747d626ae0a"
+                    )
+                    parentFragmentManager.showBaseFragment(
+                        fragment = fragment,
+                        addToBackStack = true,
+                        containerId = R.id.fl_content
                     )
                 }
             )
