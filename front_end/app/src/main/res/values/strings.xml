@@ -5,7 +5,6 @@
     <string name="drawer_profile">Profile</string>
     <string name="drawer_notifications">Notifications</string>
     <string name="drawer_courses">Courses</string>
-    <string name="drawer_grades">Grades</string>
 
     <!-- Dropdown-->
     <string name="dropdown_show_options">Show Options</string>
