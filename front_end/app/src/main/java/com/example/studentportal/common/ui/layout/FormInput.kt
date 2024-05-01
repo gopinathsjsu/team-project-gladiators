@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -16,7 +17,10 @@ fun FormInput(
     modifier: Modifier,
     value: String,
     @StringRes labelStringRes: Int,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -26,12 +30,15 @@ fun FormInput(
             unfocusedBorderColor = Color.Gray, // Highlight color when the text field is not focused
             cursorColor = Color.Black // Color of the cursor
         ),
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
         onValueChange = onValueChange,
         label = {
             Text(
                 text = stringResource(id = labelStringRes),
                 color = Color.Black
             )
-        }
+        },
+        enabled = enabled
     )
 }

@@ -2,6 +2,7 @@ package com.example.studentportal.notifications.ui.viewmodel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.studentportal.MainDispatcherTestRule
+import com.example.studentportal.common.service.ExtensionTest
 import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.ui.model.data
@@ -25,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
+import retrofit2.Response
 
 @RunWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,7 +67,12 @@ class NotificationListViewModelTest {
     @Test
     fun `test notifications fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
-        coEvery { anyConstructed<NotificationListUseCase>().launch() } returns defaultFailureFlow()
+        coEvery { anyConstructed<NotificationListUseCase>().launch() } returns defaultFailureFlow(
+            Response.error<ExtensionTest.TestUiModel>(
+                500,
+                mockk(relaxed = true)
+            )
+        )
         val viewModel = NotificationListViewModel(
             mainDispatcher
         )

@@ -2,12 +2,14 @@ package com.example.studentportal.profile.ui.viewModel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.studentportal.MainDispatcherTestRule
+import com.example.studentportal.common.service.ExtensionTest
 import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.common.ui.model.isLoading
 import com.example.studentportal.common.usecase.DefaultError
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.usecase.UserProfileUseCase
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
 import com.google.common.truth.Truth.assertThat
@@ -25,6 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
+import retrofit2.Response
 
 @RunWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,7 +68,12 @@ class UserProfileViewModelTest {
     @Test
     fun `test user fetch error`() = runTest(mainDispatcher) {
         // Set Up Resources
-        coEvery { anyConstructed<UserProfileUseCase>().launch() } returns defaultFailureFlow()
+        coEvery { anyConstructed<UserProfileUseCase>().launch() } returns defaultFailureFlow(
+            Response.error<ExtensionTest.TestUiModel>(
+                500,
+                mockk(relaxed = true)
+            )
+        )
         val viewModel = UserProfileViewModel(
             mainDispatcher
         )
@@ -90,7 +98,8 @@ class UserProfileViewModelTest {
             email = "email",
             phone = "phone",
             firstName = "firstName",
-            lastName = "lastName"
+            lastName = "lastName",
+            type = UserType.FACULTY.name
         )
         // Set Up Resources
         coEvery { anyConstructed<UserProfileUseCase>().launch() } returns successFlow(

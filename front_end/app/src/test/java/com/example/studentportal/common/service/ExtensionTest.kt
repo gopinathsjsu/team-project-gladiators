@@ -16,6 +16,7 @@ import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 import org.junit.Test
+import retrofit2.Response
 
 class ExtensionTest {
     @Test
@@ -38,7 +39,7 @@ class ExtensionTest {
         }
 
         // Verify Error Returned
-        defaultFailureFlow<TestUseCaseModel, TestUiModel>(mockResponseError).collectLatest { result ->
+        defaultFailureFlow<TestUseCaseModel, TestUiModel>(code = 500, mockResponseError).collectLatest { result ->
             assertThat(result.error).isEqualTo(DefaultError("Error Message"))
         }
 
@@ -56,7 +57,10 @@ class ExtensionTest {
         }
 
         // Verify Error Returned
-        defaultFailureFlow<TestUseCaseModel, TestUiModel>(mockResponseError).collectLatest { result ->
+        defaultFailureFlow<TestUseCaseModel, TestUiModel>(
+            code = 500,
+            mockResponseError
+        ).collectLatest { result ->
             assertThat(result.error).isEqualTo(DefaultError("Parse Error"))
         }
 
@@ -66,7 +70,12 @@ class ExtensionTest {
 
     @Test
     fun `test default defaultErrorFlow`() = runTest {
-        defaultFailureFlow<TestUseCaseModel, TestUiModel>().collectLatest { result ->
+        defaultFailureFlow<TestUseCaseModel, TestUiModel>(
+            Response.error<TestUiModel>(
+                500,
+                mockk(relaxed = true)
+            )
+        ).collectLatest { result ->
             assertThat(result.error).isEqualTo(DefaultError("Parse error"))
         }
     }

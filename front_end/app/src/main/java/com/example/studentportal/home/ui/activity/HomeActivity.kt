@@ -1,16 +1,24 @@
 package com.example.studentportal.home.ui.activity
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.studentportal.R
+import com.example.studentportal.auth.ui.showLogoutDialog
+import com.example.studentportal.common.di.clearAuthenticatedUserData
+import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.popBackStackToFragment
 import com.example.studentportal.common.ui.showBaseFragment
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.ActivityHomeBinding
 import com.example.studentportal.home.ui.fragment.HomeFragment
 import com.example.studentportal.notifications.ui.fragment.NotificationsFragment
@@ -22,6 +30,12 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     @VisibleForTesting
     internal lateinit var binding: ActivityHomeBinding
     private lateinit var actionBarToggle: ActionBarDrawerToggle
+
+    val userId: String
+        get() = intent.getStringExtra(KEY_USER_ID).orEmpty()
+
+    val userType: UserType
+        get() = UserType.valueOf(intent.getStringExtra(KEY_USER_TYPE).orEmpty())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,10 +75,16 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             return // Don't display fragment twice
         }
         val fragment = when (itemId) {
-            R.id.nav_courses -> HomeFragment.newInstance()
-            R.id.nav_profile -> ProfileFragment.newInstance()
+            R.id.nav_courses -> HomeFragment.newInstance(
+                userId = userId,
+                userType = userType
+            )
+            R.id.nav_profile -> ProfileFragment.newInstance(userId)
             R.id.nav_notifications -> NotificationsFragment.newInstance()
-            else -> HomeFragment.newInstance()
+            else -> HomeFragment.newInstance(
+                userId = userId,
+                userType = userType
+            )
         }
         val existingFragment = supportFragmentManager.findFragmentByTag(fragment.fragmentTag)
         if (existingFragment != null) {
@@ -93,6 +113,31 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         }
         setActionBar(homeToolbar)
         navigationView.setNavigationItemSelectedListener(this@HomeActivity)
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount <= 0) {
+                    showLogoutDialog(this@HomeActivity) {
+                        koin.get<SharedPreferences>().clearAuthenticatedUserData() // Clear JwtToken
+                        finish()
+                    }
+                }
+            }
+        })
         return this
+    }
+
+    companion object {
+        const val KEY_USER_ID = "KEY_USER_ID"
+        const val KEY_USER_TYPE = "KEY_USER_TYPE"
+        fun intent(
+            owner: Context,
+            userId: String,
+            userType: String
+        ): Intent {
+            val intent = Intent(owner, HomeActivity::class.java)
+            intent.putExtra(KEY_USER_ID, userId)
+            intent.putExtra(KEY_USER_TYPE, userType)
+            return intent
+        }
     }
 }
