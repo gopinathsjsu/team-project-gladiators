@@ -22,8 +22,8 @@ class UserProfileUseCase(
             val error = response.errorBody()
             when {
                 user != null -> successFlow(user)
-                error != null -> defaultFailureFlow(error)
-                else -> defaultFailureFlow()
+                error != null -> defaultFailureFlow(code = response.code(), error)
+                else -> defaultFailureFlow(response)
             }
         } catch (e: Exception) {
             defaultFailureFlow(e)

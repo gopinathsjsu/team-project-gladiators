@@ -3,12 +3,14 @@ package com.example.studentportal.profile.ui.layout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,9 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.studentportal.R
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
@@ -29,7 +35,13 @@ import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.ui.viewModel.UserProfileViewModel
 
 @Composable
-fun ProfileLayout(userId: String, viewModel: UserProfileViewModel) {
+fun ProfileLayout(
+    showLogoutButton: Boolean,
+    userId: String,
+    viewModel: UserProfileViewModel,
+    onLogoutClicked: () -> Unit,
+    modifier: Modifier
+) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
     // API Call
@@ -40,7 +52,50 @@ fun ProfileLayout(userId: String, viewModel: UserProfileViewModel) {
     when (uiState) {
         is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
         is BaseUiState.Success -> {
-            UserLayout(uiState.data() ?: UserUiModel.empty())
+            ConstraintLayout(modifier = modifier) {
+                val (userLayout, logoutButton) = createRefs()
+                UserLayout(
+                    user = uiState.data() ?: UserUiModel.empty(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.Top)
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 16.dp)
+                        .constrainAs(userLayout) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                        }
+                )
+                if (showLogoutButton) {
+                    Button(
+                        modifier = Modifier
+                            .testTag("submitButton")
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .constrainAs(logoutButton) {
+                                top.linkTo(userLayout.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            },
+                        colors = ButtonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White,
+                            disabledContainerColor = Color.Gray,
+                            disabledContentColor = Color.LightGray
+                        ),
+                        onClick = {
+                            onLogoutClicked.invoke()
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            text = stringResource(id = R.string.auth_logout),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+            }
         }
         else -> Text(text = "Loading...")
     }
@@ -48,14 +103,11 @@ fun ProfileLayout(userId: String, viewModel: UserProfileViewModel) {
 
 @Composable
 fun UserLayout(
-    user: UserUiModel
+    user: UserUiModel,
+    modifier: Modifier
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight(align = Alignment.Top)
-            .padding(top = 16.dp)
-            .padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically

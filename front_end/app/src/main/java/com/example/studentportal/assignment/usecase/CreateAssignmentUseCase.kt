@@ -22,8 +22,8 @@ class CreateAssignmentUseCase(
             val errorResponse = response.errorBody()
             return when {
                 assignments != null -> successFlow(assignments)
-                errorResponse != null -> defaultFailureFlow(errorResponse)
-                else -> defaultFailureFlow()
+                errorResponse != null -> defaultFailureFlow(code = response.code(), errorResponse)
+                else -> defaultFailureFlow(response)
             }
         } catch (e: Exception) {
             defaultFailureFlow(e)

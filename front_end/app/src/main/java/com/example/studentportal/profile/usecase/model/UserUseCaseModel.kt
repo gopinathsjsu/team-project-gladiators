@@ -1,6 +1,7 @@
 package com.example.studentportal.profile.usecase.model
 
 import com.example.studentportal.common.usecase.BaseUseCaseModel
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.ui.model.UserUiModel
 
 data class UserUseCaseModel(
@@ -10,7 +11,8 @@ data class UserUseCaseModel(
     val email: String,
     val phone: String,
     val firstName: String,
-    val lastName: String
+    val lastName: String,
+    val type: String
 ) : BaseUseCaseModel<UserUiModel> {
     override fun toUiModel(): UserUiModel {
         return UserUiModel(
@@ -20,7 +22,8 @@ data class UserUseCaseModel(
             email = email,
             phone = phone,
             firstName = firstName,
-            lastName = lastName
+            lastName = lastName,
+            type = UserType.valueOf(this.type)
         )
     }
 }

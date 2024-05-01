@@ -1,5 +1,6 @@
 package com.example.studentportal.profile.usercase
 
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
 import com.google.common.truth.Truth.assertThat
@@ -16,7 +17,8 @@ class UserUseCaseModelTest {
             email = "email",
             phone = "phone",
             firstName = "firstName",
-            lastName = "lastName"
+            lastName = "lastName",
+            type = UserType.FACULTY.name
         )
         assertThat(user.toUiModel()).isEqualTo(
             UserUiModel(
@@ -26,7 +28,8 @@ class UserUseCaseModelTest {
                 email = "email",
                 phone = "phone",
                 firstName = "firstName",
-                lastName = "lastName"
+                lastName = "lastName",
+                type = UserType.FACULTY
             )
         )
     }
