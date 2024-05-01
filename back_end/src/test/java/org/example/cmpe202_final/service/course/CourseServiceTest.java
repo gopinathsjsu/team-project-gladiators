@@ -11,10 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,47 +77,68 @@ public class CourseServiceTest {
     }
 
     @Test
-    void testFindStudentsByCourseId_ReturnsStudents() {
+    void testFindStudentsByCourseName_WithResults() {
         // Setup
-        String courseId = "course123";
-        List<User> expectedUsers = Arrays.asList(
-                new User("1", "Alice", "STUDENT", null, null, null, null, null),
-                new User("2", "Bob", "STUDENT", null, null, null, null, null)
-        );
+        String courseId = "CMPE_202";
+        Set<String> enrolledStudents = new HashSet<>(Arrays.asList("John", "Jane"));
 
-        // Mock the repository call to ensure no actual database access occurs
-        when(userRepository.findByCourseId(courseId)).thenReturn(expectedUsers);
+        Course course = new Course();
+        course.setId(courseId);
+        course.setEnrolledStudents(enrolledStudents);
 
-        // Execute
-        // This line does not call the actual repository; it uses the mocked data above
-        List<User> actualUsers = courseService.findStudentsByCourseId(courseId);
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList(course));
+        when(userRepository.findByFirstNameIn(enrolledStudents)).thenReturn(Arrays.asList(
+                new User("user1", "password1", UserType.STUDENT.name(), "John", "Doe", null, null, null),
+                new User("user2", "password2", UserType.STUDENT.name(), "Jane", "Doe", null, null, null)
+        ));
+
+        // Execution
+        List<User> result = courseService.findStudentsByCourseId(courseId);
+
+        // Assertions
+        assertEquals(2, result.size());
+        assertTrue(result.stream().map(User::getFirstName).collect(Collectors.toSet()).containsAll(Arrays.asList("John", "Jane")));
 
         // Verify
-        // Check that the returned list matches expected mock data
-        assertNotNull(actualUsers, "The returned list should not be null");
-        assertFalse(actualUsers.isEmpty(), "The returned list should not be empty");
-        assertEquals(2, actualUsers.size(), "The returned list size should match the expected mock");
-        assertEquals(expectedUsers, actualUsers, "The returned list should match the expected users");
-        // Ensure the repository method was called with the correct parameter
-        verify(userRepository).findByCourseId(courseId);
+        verify(courseRepository).findByEnrolledStudent(courseId);
+        verify(userRepository).findByFirstNameIn(enrolledStudents);
     }
 
     @Test
-    void testFindStudentsByCourseId_ReturnsEmptyList() {
+    void testFindStudentsByCourseName_NoCoursesFound() {
         // Setup
-        String courseId = "course456";
-        // Ensure the method returns an empty list for this course ID, simulating no students found
-        when(userRepository.findByCourseId(courseId)).thenReturn(new ArrayList<>());
+        String courseId = "CMPE_300";
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList());
 
-        // Execute
-        // This line only tests the response to the simulated condition above
-        List<User> actualUsers = courseService.findStudentsByCourseId(courseId);
+        // Execution
+        List<User> result = courseService.findStudentsByCourseId(courseId);
+
+        // Assertions
+        assertTrue(result.isEmpty());
 
         // Verify
-        // Validate handling of empty data
-        assertNotNull(actualUsers, "The returned list should not be null");
-        assertTrue(actualUsers.isEmpty(), "The returned list should be empty");
-        // Confirm the method call to userRepository was made correctly
-        verify(userRepository).findByCourseId(courseId);
+        verify(courseRepository).findByEnrolledStudent(courseId);
+        verify(userRepository, never()).findByFirstNameIn(any());
+    }
+
+    @Test
+    void testFindStudentsByCourseName_CoursesWithNoStudents() {
+        // Setup
+        String courseId = "CMPE_787";
+        Course course = new Course();
+        course.setId(courseId);
+        course.setEnrolledStudents(new HashSet<>());
+
+        when(courseRepository.findByEnrolledStudent(courseId)).thenReturn(Arrays.asList(course));
+
+        // Execution
+        List<User> result = courseService.findStudentsByCourseId(courseId);
+
+        // Assertions
+        assertTrue(result.isEmpty());
+
+        // Verify
+        verify(courseRepository).findByEnrolledStudent(courseId);
+        verify(userRepository, never()).findByFirstNameIn(any());
     }
 }

@@ -6,8 +6,6 @@ import org.example.cmpe202_final.model.user.User;
 import org.example.cmpe202_final.repository.courses.CourseRepository;
 import org.example.cmpe202_final.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +35,22 @@ public class CourseService {
     }
 
     public List<User> findStudentsByCourseId(String courseId) {
-        return userRepository.findByCourseId(courseId);
+        // Fetch courses by name
+        List<Course> courses = courseRepository.findByEnrolledStudent(courseId);
+
+        // Stream courses to extract unique names of enrolled students
+        Set<String> studentNames = courses.stream()
+                .map(Course::getEnrolledStudents)  // Get student names from each course
+                .filter(Objects::nonNull)          // Ensure the set is not null
+                .flatMap(Set::stream)              // Flatten all sets into one stream
+                .collect(Collectors.toSet());      // Collect into a set to remove duplicates
+
+        // Return an empty list if no student names are collected
+        if (studentNames.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // Use the new repository method to find all users by their names
+        return userRepository.findByFirstNameIn(studentNames);
     }
 }
