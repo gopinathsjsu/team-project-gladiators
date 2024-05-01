@@ -36,7 +36,8 @@ class GradeListViewModel(
             GradeListUseCase(
                 assignmentId = assignmentId,
                 userId = userId,
-                repository = koin.get())
+                repository = koin.get()
+            )
                 .launch()
                 .collectLatest { result ->
                     when (result) {

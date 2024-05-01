@@ -36,7 +36,6 @@ import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
 import com.example.studentportal.course.ui.model.UserType
-import com.example.studentportal.grades.ui.fragment.GradesFragment
 
 @Composable
 fun AssignmentListLayout(
@@ -90,7 +89,7 @@ fun AssignmentListLayout(
 fun AssignmentList(
     viewModel: AssignmentsViewModel,
     modifier: Modifier,
-    onItemClick: (assignmentId: String) -> Unit,
+    onItemClick: (assignmentId: String) -> Unit
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
     when (uiState) {
@@ -102,7 +101,8 @@ fun AssignmentList(
                     items(assignments) {
                         AssignmentItem(
                             assignment = it,
-                            onItemClick = onItemClick)
+                            onItemClick = onItemClick
+                        )
                     }
                 }
             } else {
@@ -124,7 +124,7 @@ fun AssignmentList(
 fun AssignmentItem(
     assignment: AssignmentUiModel,
     modifier: Modifier = Modifier,
-    onItemClick: (assignmentId: String) -> Unit,
+    onItemClick: (assignmentId: String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier

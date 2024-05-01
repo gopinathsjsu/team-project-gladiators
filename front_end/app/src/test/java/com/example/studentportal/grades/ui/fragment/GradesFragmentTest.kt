@@ -7,9 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
 import com.example.studentportal.common.ui.model.BaseUiState
-import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.ui.model.GradeListUiModel
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import org.junit.After

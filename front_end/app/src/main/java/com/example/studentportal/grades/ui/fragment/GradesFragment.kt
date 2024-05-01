@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.databinding.FragmentGradesBinding
 import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
@@ -34,7 +33,7 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
                 viewModel = viewModel,
                 assignmentId = assignmentId,
                 userId = userId
-                )
+            )
         }
         return binding
     }
