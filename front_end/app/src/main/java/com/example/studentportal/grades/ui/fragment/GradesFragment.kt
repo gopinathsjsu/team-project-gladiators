@@ -1,6 +1,7 @@
 package com.example.studentportal.grades.ui.fragment
 
 import GradeListLayout
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -14,13 +15,26 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
         GradeListViewModel.GradeListViewModelFactory
     }
 
+    private lateinit var assignmentId: String
+    private lateinit var userId: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        assignmentId = requireArguments().getString(KEY_ASSIGNMENT_ID) ?: throw IllegalArgumentException("Assignment ID is required")
+        userId = requireArguments().getString(KEY_USER_ID) ?: throw IllegalArgumentException("User ID is required")
+    }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentGradesBinding {
         val binding = FragmentGradesBinding.inflate(inflater, container, false)
         binding.composeView.setContent {
-            GradeListLayout(viewModel = viewModel)
+            GradeListLayout(
+                viewModel = viewModel,
+                assignmentId = assignmentId,
+                userId = userId
+                )
         }
         return binding
     }
@@ -28,10 +42,16 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
     override fun menuItem() = R.id.nav_grades
 
     companion object {
-
+        private const val KEY_ASSIGNMENT_ID = "key_course_id"
+        private const val KEY_USER_ID = "key_user_type"
         const val TAG = "GRADES"
-        fun newInstance(): GradesFragment {
-            return GradesFragment()
+        fun newInstance(assignmentId: String, userId: String): GradesFragment {
+            val fragment = GradesFragment()
+            val args = Bundle()
+            args.putString(KEY_ASSIGNMENT_ID, assignmentId)
+            args.putString(KEY_USER_ID, userId)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

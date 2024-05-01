@@ -5,7 +5,7 @@ import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class GradeUseCaseModel(
+data class  GradeUseCaseModel(
     val gradeId: String,
     val score: Int,
     val studentFirstName: String,
