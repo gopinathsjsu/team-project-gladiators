@@ -32,7 +32,7 @@ class GradeListUseCaseTest {
             )
         )
         val repository: GradeRepository = mockk(relaxed = true) {
-            coEvery { fetchGradesByAssignment(assignmentId = "") } returns Response.success(
+            coEvery { fetchGradesByAssignment(assignmentId = "", userId = "") } returns Response.success(
                 useCaseModel
             )
         }
@@ -40,7 +40,8 @@ class GradeListUseCaseTest {
         // Act
         val useCase = GradeListUseCase(
             repository = repository,
-            assignmentId = ""
+            assignmentId = "",
+            userId = ""
         )
         val result = useCase.launch()
 
@@ -58,7 +59,7 @@ class GradeListUseCaseTest {
         mockkConstructor(JSONObject::class)
         every { anyConstructed<JSONObject>().getString("message") } returns "Backend Error"
         val repository: GradeRepository = mockk(relaxed = true) {
-            coEvery { fetchGradesByAssignment(assignmentId = "") } returns Response.error(
+            coEvery { fetchGradesByAssignment(assignmentId = "", userId = "") } returns Response.error(
                 400,
                 mockk(relaxed = true) {
                     every { string() } returns "{\"message\":\"Backend Error\" }"
@@ -69,7 +70,8 @@ class GradeListUseCaseTest {
         // Act
         val useCase = GradeListUseCase(
             repository = repository,
-            assignmentId = ""
+            assignmentId = "",
+            userId = ""
         )
         val result = useCase.launch()
 
@@ -90,13 +92,14 @@ class GradeListUseCaseTest {
     fun `test grades call exception with message`() = runTest {
         // Arrange
         val repository: GradeRepository = mockk(relaxed = true) {
-            coEvery { fetchGradesByAssignment(assignmentId = "") } throws IllegalAccessException("Expected Message")
+            coEvery { fetchGradesByAssignment(assignmentId = "", userId = "") } throws IllegalAccessException("Expected Message")
         }
 
         // Act
         val useCase = GradeListUseCase(
             repository = repository,
-            assignmentId = ""
+            assignmentId = "",
+            userId = ""
         )
         val result = useCase.launch()
 
@@ -114,13 +117,14 @@ class GradeListUseCaseTest {
     fun `test grades call exception without message`() = runTest {
         // Arrange
         val repository: GradeRepository = mockk(relaxed = true) {
-            coEvery { fetchGradesByAssignment(assignmentId = "") } throws IllegalAccessException()
+            coEvery { fetchGradesByAssignment(assignmentId = "", userId = "") } throws IllegalAccessException()
         }
 
         // Act
         val useCase = GradeListUseCase(
             repository = repository,
-            assignmentId = ""
+            assignmentId = "",
+            userId = ""
         )
         val result = useCase.launch()
 
@@ -138,7 +142,7 @@ class GradeListUseCaseTest {
     fun `test grades call default`() = runTest {
         // Arrange
         val repository: GradeRepository = mockk(relaxed = true) {
-            coEvery { fetchGradesByAssignment(assignmentId = "") } returns mockk(relaxed = true) {
+            coEvery { fetchGradesByAssignment(assignmentId = "", userId = "") } returns mockk(relaxed = true) {
                 every { body() } returns null
                 every { errorBody() } returns null
             }
@@ -147,7 +151,8 @@ class GradeListUseCaseTest {
         // Act
         val useCase = GradeListUseCase(
             repository = repository,
-            assignmentId = ""
+            assignmentId = "",
+            userId = ""
         )
         val result = useCase.launch()
 

@@ -3,10 +3,13 @@ package com.example.studentportal.grades.ui.fragment
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
 import com.example.studentportal.common.ui.model.BaseUiState
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.ui.model.GradeListUiModel
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import org.junit.After
@@ -27,7 +30,12 @@ class GradesFragmentTest {
 
     @Test
     fun `test initial setup`() {
-        launchFragmentInContainer<GradesFragment>().onFragment { fragment ->
+        launchFragmentInContainer<GradesFragment>(
+            fragmentArgs = bundleOf(
+                GradesFragment.KEY_ASSIGNMENT_ID to "assignmentId",
+                GradesFragment.KEY_USER_ID to "userId"
+            )
+        ).onFragment { fragment ->
             // Test Loading State
             fragment.viewModel._uiResultLiveData.postValue(BaseUiState.Loading())
             composeTestRule.onNodeWithText("Loading...").assertIsDisplayed()
@@ -83,7 +91,12 @@ class GradesFragmentTest {
     @Test(expected = IllegalAccessException::class)
     fun `expect exception when binding is accessed after UI is destroyed`() {
         var fragment: GradesFragment? = null
-        launchFragmentInContainer<GradesFragment>().onFragment {
+        launchFragmentInContainer<GradesFragment>(
+            fragmentArgs = bundleOf(
+                GradesFragment.KEY_ASSIGNMENT_ID to "assignmentId",
+                GradesFragment.KEY_USER_ID to "userId"
+            )
+        ).onFragment {
             fragment = it
         }.moveToState(Lifecycle.State.DESTROYED)
         fragment?.binding // Force Crash
