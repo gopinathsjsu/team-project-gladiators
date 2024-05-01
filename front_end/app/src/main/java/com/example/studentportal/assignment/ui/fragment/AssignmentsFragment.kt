@@ -16,7 +16,6 @@ import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.common.ui.showBaseFragment
-import com.example.studentportal.course.ui.fragment.CourseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentAssignmentsBinding
 import com.example.studentportal.grades.ui.fragment.GradesFragment

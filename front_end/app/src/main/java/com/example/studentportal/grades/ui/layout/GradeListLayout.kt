@@ -31,7 +31,8 @@ import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
 fun GradeListLayout(
     viewModel: GradeListViewModel,
     assignmentId: String,
-    userId: String) {
+    userId: String
+) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
     // API call
@@ -75,7 +76,7 @@ fun GradeList(gradeList: List<GradeUiModel>, modifier: Modifier = Modifier) {
 @Composable
 fun GradeCard(grade: GradeUiModel, modifier: Modifier) {
     val textStyle = TextStyle(fontSize = 22.sp)
-    val scoreToRender = when(grade.score) {
+    val scoreToRender = when (grade.score) {
         -1 -> "-"
         else -> grade.score
     }
@@ -92,7 +93,7 @@ fun GradeCard(grade: GradeUiModel, modifier: Modifier) {
                     style = textStyle
                 )
                 Text(
-                    text = "${scoreToRender}/100",
+                    text = "$scoreToRender/100",
                     style = textStyle
                 )
             }
