@@ -17,25 +17,29 @@ public class GradeTests {
         int score = 85;
         String studentId = "456";
         String courseId = "789";
+        String submissionLink ="www.test.com/123";
 
         // Set values using setters
         grade.setId(id);
         grade.setScore(score);
         grade.setStudentId(studentId);
         grade.setAssignmentId(courseId);
+        grade.setSubmissionLink(submissionLink);
 
         // Test getters
         assertEquals(id, grade.getId());
         assertEquals(score, grade.getScore());
         assertEquals(studentId, grade.getStudentId());
         assertEquals(courseId, grade.getAssignmentId());
+        assertEquals(submissionLink, grade.getSubmissionLink());
 
-        Grade grade2 = new Grade(id, score, studentId, courseId);
+        Grade grade2 = new Grade(id, score, studentId, courseId, submissionLink);
 
         // Test getters
         assertEquals(id, grade2.getId());
         assertEquals(score, grade2.getScore());
         assertEquals(studentId, grade2.getStudentId());
         assertEquals(courseId, grade2.getAssignmentId());
+        assertEquals(submissionLink, grade2.getSubmissionLink());
     }
 }

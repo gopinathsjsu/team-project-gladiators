@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.databinding.FragmentGradesBinding
 import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
 
@@ -32,7 +34,15 @@ class GradesFragment : BaseFragment<FragmentGradesBinding>(TAG) {
             GradeListLayout(
                 viewModel = viewModel,
                 assignmentId = assignmentId,
-                userId = userId
+                userId = userId,
+                onItemClick = {
+                    val fragment = EditGradeFragment.newInstance(it)
+                    parentFragmentManager.showBaseFragment(
+                        fragment = fragment,
+                        addToBackStack = true,
+                        containerId = R.id.fl_content
+                    )
+                }
             )
         }
         return binding

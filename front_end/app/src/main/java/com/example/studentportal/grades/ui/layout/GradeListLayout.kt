@@ -1,3 +1,4 @@
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,8 @@ import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
 fun GradeListLayout(
     viewModel: GradeListViewModel,
     assignmentId: String,
-    userId: String
+    userId: String,
+    onItemClick: (grade: GradeUiModel) -> Unit
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
@@ -50,7 +52,8 @@ fun GradeListLayout(
             if (!gradeList.isNullOrEmpty()) {
                 GradeList(
                     gradeList = gradeList,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onItemClick = onItemClick
                 )
             } else {
                 Text(stringResource(id = R.string.grades_empty))
@@ -61,26 +64,37 @@ fun GradeListLayout(
 }
 
 @Composable
-fun GradeList(gradeList: List<GradeUiModel>, modifier: Modifier = Modifier) {
+fun GradeList(
+    gradeList: List<GradeUiModel>,
+    modifier: Modifier = Modifier,
+    onItemClick: (grade: GradeUiModel) -> Unit
+) {
     LazyColumn(modifier) {
         items(gradeList) {
             GradeCard(
                 grade = it,
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(4.dp),
+                onItemClick = onItemClick
             )
         }
     }
 }
 
 @Composable
-fun GradeCard(grade: GradeUiModel, modifier: Modifier) {
+fun GradeCard(
+    grade: GradeUiModel,
+    modifier: Modifier,
+    onItemClick: (grade: GradeUiModel) -> Unit
+) {
     val textStyle = TextStyle(fontSize = 22.sp)
     val scoreToRender = when (grade.score) {
         -1 -> "-"
         else -> grade.score
     }
-    Box(modifier) {
+    Box(
+        modifier.clickable { onItemClick.invoke(grade) }
+    ) {
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

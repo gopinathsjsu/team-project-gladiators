@@ -1,14 +1,17 @@
 package org.example.cmpe202_final.repository.grades;
 
+import org.example.cmpe202_final.model.course.Grade;
 import org.example.cmpe202_final.model.course.GradeWithStudentName;
 import org.example.cmpe202_final.model.user.User;
-import org.example.cmpe202_final.model.user.UserType;
 import org.example.cmpe202_final.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,7 +40,7 @@ public class CustomGradeRepository {
                     Aggregation.match(Criteria.where("assignmentId").is(assignmentId)),
                     Aggregation.lookup("users", "studentId", "_id", "student"),
                     Aggregation.unwind("student"),
-                    Aggregation.project("score", "studentId")
+                    Aggregation.project("score", "studentId", "submissionLink")
                             .and("_id").as("gradeId")
                             .and("student.firstName").as("studentFirstName")
                             .and("student.lastName").as("studentLastName")
@@ -55,5 +58,18 @@ public class CustomGradeRepository {
         }
 
         throw new IllegalArgumentException("User with ID " + userId + " not found.");
+    }
+
+    public Grade updateGrade(GradeWithStudentName gradeWithStudentName) {
+        Query query = new Query(Criteria.where("_id").is(gradeWithStudentName.getId()));
+        Update update = new Update();
+        update.set("score", gradeWithStudentName.getScore());
+        update.set("submissionLink", gradeWithStudentName.getSubmissionLink());
+
+        Grade updatedGrade = mongoTemplate.findAndModify(query, update, new FindAndModifyOptions().returnNew(true), Grade.class);
+        if (updatedGrade == null) {
+            throw new IllegalArgumentException("No grade found with ID: " + gradeWithStudentName.getId());
+        }
+        return updatedGrade;
     }
 }

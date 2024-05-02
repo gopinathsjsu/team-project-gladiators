@@ -54,21 +54,21 @@ class GradesFragmentTest {
                     GradeListUiModel(
                         listOf(
                             GradeUiModel(
-                                gradeId = "1",
+                                id = "1",
                                 score = 10,
                                 studentFirstName = "First-N1",
                                 studentLastName = "Last-N1",
                                 studentId = "1"
                             ),
                             GradeUiModel(
-                                gradeId = "2",
+                                id = "2",
                                 score = 20,
                                 studentFirstName = "First-N2",
                                 studentLastName = "Last-N2",
                                 studentId = "2"
                             ),
                             GradeUiModel(
-                                gradeId = "3",
+                                id = "3",
                                 score = 30,
                                 studentFirstName = "First-N3",
                                 studentLastName = "Last-N3",

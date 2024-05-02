@@ -13,7 +13,7 @@ class GradeUseCaseModelTest {
         val gradeListUseCaseModel = GradeListUseCaseModel(
             listOf(
                 GradeUseCaseModel(
-                    gradeId = "1",
+                    id = "1",
                     score = 10,
                     studentFirstName = "First-N1",
                     studentLastName = "Last-N1",
@@ -30,7 +30,7 @@ class GradeUseCaseModelTest {
             GradeListUiModel(
                 listOf(
                     GradeUiModel(
-                        gradeId = "1",
+                        id = "1",
                         score = 10,
                         studentFirstName = "First-N1",
                         studentLastName = "Last-N1",

@@ -10,10 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GradeWithStudentName {
-    private String gradeId;
-    private Double score;
+    private String id;
+    private int score;
     private String studentFirstName;
     private String studentLastName;
     private String studentId;
+    private String submissionLink;
 }
 

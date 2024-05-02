@@ -23,7 +23,7 @@ class GradeListUseCaseTest {
         val useCaseModel = GradeListUseCaseModel(
             listOf(
                 GradeUseCaseModel(
-                    gradeId = "1",
+                    id = "1",
                     score = 10,
                     studentFirstName = "First-N1",
                     studentLastName = "Last-N1",

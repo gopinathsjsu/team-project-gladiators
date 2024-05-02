@@ -19,4 +19,5 @@ public class Grade {
     private int score = NOT_GRADED;
     private String studentId;
     private String assignmentId;
+    private String submissionLink;
 }

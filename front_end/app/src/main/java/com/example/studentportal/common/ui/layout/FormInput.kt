@@ -1,6 +1,7 @@
 package com.example.studentportal.common.ui.layout
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -20,7 +21,8 @@ fun FormInput(
     onValueChange: (String) -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -39,6 +41,7 @@ fun FormInput(
                 color = Color.Black
             )
         },
-        enabled = enabled
+        enabled = enabled,
+        keyboardOptions = keyboardOptions
     )
 }
