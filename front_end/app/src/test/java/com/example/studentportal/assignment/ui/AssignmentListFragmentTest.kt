@@ -1,5 +1,6 @@
 package com.example.studentportal.assignment.ui
 
+import android.content.SharedPreferences
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -22,6 +23,9 @@ import com.example.studentportal.assignment.ui.model.AssignmentListUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
 import com.example.studentportal.assignment.usecase.models.AssignmentListUseCaseModel
 import com.example.studentportal.assignment.usecase.models.AssignmentUseCaseModel
+import com.example.studentportal.common.di.APP_JWT_TOKEN_KEY
+import com.example.studentportal.common.di.APP_USER_ID
+import com.example.studentportal.common.di.APP_USER_TYPE
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
@@ -29,9 +33,11 @@ import com.example.studentportal.common.ui.model.isLoading
 import com.example.studentportal.common.ui.model.isSuccess
 import com.example.studentportal.course.ui.model.UserType
 import com.google.common.truth.Truth.assertThat
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -63,6 +69,21 @@ class AssignmentListFragmentTest {
     @Before
     fun setUp() {
         mockRepo = mockk(relaxed = true)
+        val mockSharedPreferences = mockk<SharedPreferences>(relaxed = true)
+        val mockSharedPreferencesEditor = mockk<SharedPreferences.Editor>(relaxed = true)
+
+        // Mock the behavior of SharedPreferences.Editor
+        every { mockSharedPreferences.edit() } returns mockSharedPreferencesEditor
+        every { mockSharedPreferencesEditor.putString(any(), any()) } returns mockSharedPreferencesEditor
+        every { mockSharedPreferencesEditor.remove(any()) } returns mockSharedPreferencesEditor
+        every { mockSharedPreferencesEditor.apply() } just Runs
+        every { mockSharedPreferencesEditor.commit() } returns true
+
+        // Mock the SharedPreferences getters based on the keys
+        every { mockSharedPreferences.getString(APP_JWT_TOKEN_KEY, any()) } returns "mockJwtToken"
+        every { mockSharedPreferences.getString(APP_USER_ID, any()) } returns "mockUserId"
+        every { mockSharedPreferences.getString(APP_USER_TYPE, any()) } returns "mockUserType"
+
         stopKoin()
         startKoin {
             modules(
@@ -70,6 +91,7 @@ class AssignmentListFragmentTest {
                     single {
                         mockRepo
                     }
+                    single { mockSharedPreferences }
                 }
             )
         }

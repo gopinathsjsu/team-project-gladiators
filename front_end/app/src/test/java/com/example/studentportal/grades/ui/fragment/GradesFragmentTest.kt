@@ -58,21 +58,24 @@ class GradesFragmentTest {
                                 score = 10,
                                 studentFirstName = "First-N1",
                                 studentLastName = "Last-N1",
-                                studentId = "1"
+                                studentId = "1",
+                                submissionLink = null
                             ),
                             GradeUiModel(
                                 id = "2",
                                 score = 20,
                                 studentFirstName = "First-N2",
                                 studentLastName = "Last-N2",
-                                studentId = "2"
+                                studentId = "2",
+                                submissionLink = null
                             ),
                             GradeUiModel(
                                 id = "3",
                                 score = 30,
                                 studentFirstName = "First-N3",
                                 studentLastName = "Last-N3",
-                                studentId = "3"
+                                studentId = "3",
+                                submissionLink = null
                             )
                         )
                     )

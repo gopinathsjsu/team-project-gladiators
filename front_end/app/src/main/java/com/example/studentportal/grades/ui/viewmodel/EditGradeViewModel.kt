@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.service.GradeRepository
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import kotlinx.coroutines.Dispatchers
@@ -83,7 +82,8 @@ class EditGradeViewModel(
                     EditGradeViewModel(
                         initialGrade = grade,
                         repository = get(),
-                        userType = userType)
+                        userType = userType
+                    )
                 }
             }
         }

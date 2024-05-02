@@ -27,7 +27,8 @@ class GradeListUseCaseTest {
                     score = 10,
                     studentFirstName = "First-N1",
                     studentLastName = "Last-N1",
-                    studentId = "1"
+                    studentId = "1",
+                    submissionLink = null
                 )
             )
         )
