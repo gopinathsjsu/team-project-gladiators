@@ -35,22 +35,6 @@ public class CourseService {
     }
 
     public List<User> findStudentsByCourseId(String courseId) {
-        // Fetch courses by name
-        List<Course> courses = courseRepository.findByEnrolledStudent(courseId);
-
-        // Stream courses to extract unique names of enrolled students
-        Set<String> studentNames = courses.stream()
-                .map(Course::getEnrolledStudents)  // Get student names from each course
-                .filter(Objects::nonNull)          // Ensure the set is not null
-                .flatMap(Set::stream)              // Flatten all sets into one stream
-                .collect(Collectors.toSet());      // Collect into a set to remove duplicates
-
-        // Return an empty list if no student names are collected
-        if (studentNames.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        // Use the new repository method to find all users by their names
-        return userRepository.findByFirstNameIn(studentNames);
+        return userRepository.findByCourseId(courseId);
     }
 }
