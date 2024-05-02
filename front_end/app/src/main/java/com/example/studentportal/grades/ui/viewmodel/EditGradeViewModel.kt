@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.service.GradeRepository
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import kotlinx.coroutines.Dispatchers
@@ -18,10 +19,9 @@ import org.koin.dsl.module
 
 class EditGradeViewModel(
     val initialGrade: GradeUiModel,
-    val repository: GradeRepository
+    val repository: GradeRepository,
+    val userType: String
 ) : ViewModel() {
-
-    val userType = "FACULTY"
 
     private val _grade = MutableStateFlow(initialGrade)
     val grade = _grade.asStateFlow()
@@ -79,8 +79,11 @@ class EditGradeViewModel(
     companion object {
         fun koinModule(): Module {
             return module {
-                viewModel { (grade: GradeUiModel) ->
-                    EditGradeViewModel(initialGrade = grade, repository = get())
+                viewModel { (grade: GradeUiModel, userType: String) ->
+                    EditGradeViewModel(
+                        initialGrade = grade,
+                        repository = get(),
+                        userType = userType)
                 }
             }
         }

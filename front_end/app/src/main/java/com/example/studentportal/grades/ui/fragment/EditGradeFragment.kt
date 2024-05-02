@@ -1,29 +1,25 @@
 package com.example.studentportal.grades.ui.fragment
 
 import EditGradeLayout
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.studentportal.common.di.getUserType
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.databinding.FragmentGradesBinding
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.ui.viewmodel.EditGradeViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
-//    val grade = GradeUiModel(
-//        gradeId = "1",
-//        score = 5,
-//        studentId = "1",
-//        studentFirstName = "Gerardo",
-//        studentLastName = "Moreno",
-//        submissionLink = "www.com"
-//    )
-
     private lateinit var grade: GradeUiModel
+
+    private val sharedPreferences: SharedPreferences by inject()
     private val viewModel: EditGradeViewModel by viewModel {
-        parametersOf(grade)
+        parametersOf(grade, sharedPreferences.getUserType())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
