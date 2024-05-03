@@ -11,6 +11,7 @@ import com.example.studentportal.course.ui.layout.CourseMenuLayout
 import com.example.studentportal.course.ui.model.Command
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentCourseBinding
+import com.example.studentportal.students.ui.fragment.StudentsFragment
 
 class CourseFragment : BaseFragment<FragmentCourseBinding>(TAG) {
 
@@ -44,6 +45,14 @@ class CourseFragment : BaseFragment<FragmentCourseBinding>(TAG) {
                     }
                     Command.ShowStudents -> {
                         // TODO show students
+                        val fragment = StudentsFragment.newInstance(
+                            requireArguments().getString(KEY_COURSE_ID).orEmpty()
+                        )
+                        parentFragmentManager.showBaseFragment(
+                            fragment = fragment,
+                            addToBackStack = true,
+                            containerId = R.id.fl_content
+                        )
                     }
                     Command.Nothing -> Unit // Default
                 }

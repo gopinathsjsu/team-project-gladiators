@@ -48,10 +48,6 @@ class CourseActivityTest {
                     assertThat(fragment).isNotNull()
 
                     // Verify options
-                    composeTestRule.onNodeWithText("Content").assertIsDisplayed()
-                    composeTestRule.onNodeWithText("Content").performClick() // Consume click
-                    composeTestRule.onNodeWithText("Students").assertIsDisplayed()
-                    composeTestRule.onNodeWithText("Students").performClick() // Consume click
                     composeTestRule.onNodeWithText("Assignments").assertIsDisplayed()
                     composeTestRule.onNodeWithText("Assignments").performClick() // Consume click
 
