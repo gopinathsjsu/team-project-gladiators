@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.studentportal.grades.service.GradeRepository
 import com.example.studentportal.grades.ui.model.GradeUiModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,8 @@ import org.koin.dsl.module
 class EditGradeViewModel(
     val initialGrade: GradeUiModel,
     val repository: GradeRepository,
-    val userType: String
+    val userType: String,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _grade = MutableStateFlow(initialGrade)
@@ -58,7 +60,7 @@ class EditGradeViewModel(
     }
 
     fun updateObject(updatedGrade: GradeUiModel) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             val response = repository.updateGrade(updatedGrade)
             if (response.isSuccessful) {
                 _grade.value = updatedGrade

@@ -2,6 +2,7 @@ package com.example.studentportal.grades.service
 
 import GradeService
 import com.example.studentportal.common.di.koin
+import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -54,6 +55,32 @@ class GradeServiceRepositoryTest {
         // Assert
         verify {
             service.fetchGradesByAssignment(expectedAssignmentId, expectedUserId)
+        }
+        assertThat(response.isSuccessful).isTrue()
+    }
+
+    @Test
+    fun `test updateGrade call`() = runTest {
+        // Arrange
+        every { service.updateGrade(any()) } returns mockk(relaxed = true) {
+            every { execute() } returns Response.success(mockk(relaxed = true))
+        }
+        val repository: GradeRepository = koin.get()
+        val expectedGrade = GradeUiModel(
+            "1",
+            50,
+            "Arnold",
+            "Smitt",
+            "s123",
+            "www.test.com"
+        )
+
+        // Act
+        val response = repository.updateGrade(expectedGrade)
+
+        // Assert
+        verify {
+            service.updateGrade(expectedGrade)
         }
         assertThat(response.isSuccessful).isTrue()
     }
