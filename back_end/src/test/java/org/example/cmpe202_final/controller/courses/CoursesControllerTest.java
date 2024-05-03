@@ -508,4 +508,31 @@ public class CoursesControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(mockUsers)))
                 .andReturn();
     }
+
+    @Test
+    public void testGetCourseByCourseId() throws Exception {
+        // Given
+        String courseId = "course1";
+        Course mockCourse = new Course(
+                courseId,
+                "Dr. John Doe",
+                new HashSet<>(Arrays.asList("student1", "student2")),
+                new HashSet<>(Arrays.asList("assignment1", "assignment2")),
+                "Fall 2021",
+                true,
+                "Advanced Software Engineering",
+                "Learn advanced topics in software engineering."
+        );
+
+        // When
+        given(courseService.findCourseById(courseId)).willReturn(mockCourse);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/{courseId}/content", courseId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(mockCourse)))
+                .andReturn();
+    }
+
 }

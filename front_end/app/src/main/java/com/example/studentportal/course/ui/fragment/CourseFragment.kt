@@ -23,6 +23,7 @@ import com.example.studentportal.course.ui.viewmodel.CourseDetailsViewModel
 import com.example.studentportal.databinding.FragmentCourseBinding
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.students.ui.fragment.StudentsFragment
+import com.example.studentportal.syllabus.ui.fragment.SyllabusFragment
 
 class CourseFragment(
     viewModelFactory: ViewModelProvider.Factory = CourseDetailsViewModel.CourseViewModelFactory
@@ -69,7 +70,15 @@ class CourseFragment(
                         }
 
                         Command.ShowContent -> {
-                            // TODO show course content
+                            val fragment = SyllabusFragment.newInstance(
+                                course?.id.orEmpty(),
+                                userType.name
+                            )
+                            parentFragmentManager.showBaseFragment(
+                                fragment = fragment,
+                                addToBackStack = true,
+                                containerId = R.id.fl_content
+                            )
                         }
 
                         Command.ShowStudents -> {

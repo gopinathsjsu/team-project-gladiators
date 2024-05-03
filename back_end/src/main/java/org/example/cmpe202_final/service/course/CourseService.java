@@ -51,4 +51,19 @@ public class CourseService {
         // Fetch and return the student Users
         return userRepository.findStudentsByEnrolledIds(enrolledStudentIds);
     }
+
+    public Course findCourseById(String courseId){
+        return courseRepository.findContentByCourseId(courseId);
+    }
+
+    public Course updateCourseDescription(String courseId, String description) {
+        Course course = findCourseById(courseId);
+        course.setDescription(description);
+        courseRepository.save(course);
+        return course;
+    }
+
+    public Course editCourseDescription(String courseId, String description) {
+        return updateCourseDescription(courseId, description);
+    }
 }
