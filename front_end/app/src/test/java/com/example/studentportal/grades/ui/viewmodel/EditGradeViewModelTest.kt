@@ -14,7 +14,6 @@ import kotlinx.coroutines.test.setMain
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import retrofit2.Response
 import kotlin.test.assertEquals
@@ -50,6 +49,7 @@ class EditGradeViewModelTest {
 
     @Test
     fun `onButtonClick updates the submission link for STUDENT userType`() = runBlockingTest {
+        viewModel = EditGradeViewModel(initialGrade, gradeRepository, "STUDENT", testDispatcher)
         val newText = "updated link"
         viewModel.updateText(newText)
         coEvery { gradeRepository.updateGrade(any()) } returns Response.success(Unit)
@@ -61,9 +61,8 @@ class EditGradeViewModelTest {
     }
 
     @Test
-    @Ignore("Failing, fix later")
     fun `onButtonClick updates the score for non-STUDENT userType`() = runBlockingTest {
-        viewModel = EditGradeViewModel(initialGrade, gradeRepository, "FACULTY")
+        viewModel = EditGradeViewModel(initialGrade, gradeRepository, "FACULTY", testDispatcher)
         val newScore = "92"
         viewModel.updateText(newScore)
         assertEquals("92", viewModel.text.value)
@@ -76,7 +75,6 @@ class EditGradeViewModelTest {
     }
 
     @Test
-    @Ignore("Failing, fix later")
     fun `showDialog when update fails`() = runBlockingTest {
         viewModel.updateText("invalid score")
         coEvery { gradeRepository.updateGrade(any()) } returns Response.error(400, "Bad Request".toResponseBody())
