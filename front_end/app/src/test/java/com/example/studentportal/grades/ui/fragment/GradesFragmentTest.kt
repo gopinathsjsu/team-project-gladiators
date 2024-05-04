@@ -46,7 +46,7 @@ class GradesFragmentTest {
                     )
                 )
             )
-            composeTestRule.onNodeWithText("No grades to show").assertIsDisplayed()
+            composeTestRule.onNodeWithText("There are no submissions to review at this time").assertIsDisplayed()
 
             // Test Success State - Multiple items
             fragment.viewModel._uiResultLiveData.postValue(
