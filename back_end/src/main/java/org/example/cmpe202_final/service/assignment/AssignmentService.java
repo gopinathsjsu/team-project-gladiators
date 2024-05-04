@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 public class AssignmentService {
     @Autowired
-    private final AssignmentRepository assignmentRepository;
+    private AssignmentRepository assignmentRepository;
 
     @Autowired
     private CourseRepository courseRepository;
