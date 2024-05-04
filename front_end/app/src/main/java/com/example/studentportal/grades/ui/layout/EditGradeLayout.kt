@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -125,7 +126,8 @@ fun EditGradeSection(
     }
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         FormInput(
             modifier = Modifier
@@ -137,10 +139,23 @@ fun EditGradeSection(
             onValueChange = { viewModel.updateText(it) },
             labelStringRes = labelStringRes
         )
-        Button(onClick = { viewModel.onButtonClick() }) {
+        Button(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            colors = ButtonColors(
+                containerColor = Color.Black,
+                contentColor = Color.White,
+                disabledContainerColor = Color.Gray,
+                disabledContentColor = Color.LightGray
+            ),
+            onClick = { viewModel.onButtonClick() }
+        ) {
             Text(
+                modifier = Modifier.padding(8.dp),
                 text = stringResource(buttonStringRes),
-                fontSize = 16.sp
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             )
         }
     }
