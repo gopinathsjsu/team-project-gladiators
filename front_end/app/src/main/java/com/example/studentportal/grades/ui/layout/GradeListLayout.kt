@@ -71,7 +71,7 @@ fun GradeList(
 ) {
     LazyColumn(modifier) {
         items(gradeList) {
-            GradeCard(
+            GradeListItem(
                 grade = it,
                 modifier = Modifier
                     .padding(4.dp),
@@ -82,7 +82,7 @@ fun GradeList(
 }
 
 @Composable
-fun GradeCard(
+fun GradeListItem(
     grade: GradeUiModel,
     modifier: Modifier,
     onItemClick: (grade: GradeUiModel) -> Unit
@@ -100,7 +100,7 @@ fun GradeCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-                    .height(50.dp)
+                    .height(58.dp)
             ) {
                 Text(
                     text = grade.studentFirstName + " " + grade.studentLastName,
