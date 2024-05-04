@@ -30,7 +30,7 @@
     <string name= "courses_empty">No courses to show</string>
 
     <!-- Grades -->
-    <string name= "grades_empty">No grades to show</string>
+    <string name= "grades_empty">There are no submissions to review at this time</string>
     <string name="edit_score_button">Update score</string>
     <string name="post_submission_link_button">Post submission link</string>
     <string name= "edit_score_label">New score</string>
