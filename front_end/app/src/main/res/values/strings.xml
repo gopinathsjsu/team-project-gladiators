@@ -16,6 +16,13 @@
     <string name="assignment_graded">New assignment</string>
     <string name="announcement_created">New announcement</string>
 
+    <!-- Student message -->
+    <string name= "empty_students">No students to show</string>
+    <string name="undergraduate">Undergraduate</string>
+    <string name="graduate">Graduate</string>
+    <string name="phd">PhD</string>
+    <string name="unknown_student_type">Unknown</string>
+
     <!-- Courses -->
     <string name= "courses_empty">No courses to show</string>
     <string name="courses_menu_students">Students</string>
