@@ -1,5 +1,6 @@
 package com.example.studentportal.students.ui.layout
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +22,6 @@ import com.example.studentportal.R
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.students.ui.model.StudentListUiModel
-import com.example.studentportal.students.ui.model.StudentType
 import com.example.studentportal.students.ui.model.StudentUiModel
 import com.example.studentportal.students.ui.viewmodel.StudentListViewModel
 
@@ -29,7 +29,8 @@ import com.example.studentportal.students.ui.viewmodel.StudentListViewModel
 fun StudentListLayout(
     courseId: String,
     viewModel: StudentListViewModel,
-    modifier: Modifier = Modifier.fillMaxSize()
+    modifier: Modifier = Modifier.fillMaxSize(),
+    onClick: (StudentUiModel) -> Unit
 ) {
     // API call with course ID
     LaunchedEffect(courseId) {
@@ -44,7 +45,8 @@ fun StudentListLayout(
             if (!studentList.isNullOrEmpty()) {
                 StudentList(
                     studentList = studentList,
-                    modifier = modifier
+                    modifier = modifier,
+                    onClick = onClick
                 )
             } else {
                 Text(stringResource(id = R.string.empty_students))
@@ -55,30 +57,34 @@ fun StudentListLayout(
 }
 
 @Composable
-fun StudentList(studentList: List<StudentUiModel>, modifier: Modifier) {
+fun StudentList(
+    studentList: List<StudentUiModel>,
+    modifier: Modifier,
+    onClick: (StudentUiModel) -> Unit) {
     LazyColumn(modifier) {
         items(studentList) { student ->
             StudentCard(
                 student = student,
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier,
+                onClick = onClick
             )
         }
     }
 }
 
 @Composable
-fun StudentCard(student: StudentUiModel, modifier: Modifier) {
+fun StudentCard(
+    student: StudentUiModel,
+    modifier: Modifier,
+    onClick: (StudentUiModel) -> Unit) {
     val textStyle = TextStyle(fontSize = 18.sp)
-    val studentTypeText = when (student.type) {
-        StudentType.UNDERGRADUATE -> stringResource(id = R.string.undergraduate)
-        StudentType.GRADUATE -> stringResource(id = R.string.graduate)
-        StudentType.PHD -> stringResource(id = R.string.phd)
-        else -> stringResource(id = R.string.unknown_student_type)
-    }
 
-    Box(modifier = modifier.padding(4.dp)) {
+    Box(modifier = modifier.padding(horizontal = 16.dp).clickable {
+        onClick.invoke(student)
+    }) {
         Column {
             Text(
+                modifier = Modifier.padding(top = 8.dp),
                 text = "${student.firstName} ${student.lastName}",
                 style = textStyle
             )
@@ -92,11 +98,7 @@ fun StudentCard(student: StudentUiModel, modifier: Modifier) {
                     style = textStyle
                 )
             }
-            Text(
-                text = "Type: $studentTypeText",
-                style = textStyle.copy(fontSize = 16.sp) // Smaller text for type
-            )
-            Divider()
+            Divider(modifier = Modifier.padding(top = 8.dp))
         }
     }
 }

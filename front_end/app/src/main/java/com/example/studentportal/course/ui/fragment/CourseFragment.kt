@@ -44,7 +44,6 @@ class CourseFragment : BaseFragment<FragmentCourseBinding>(TAG) {
                         // TODO show course content
                     }
                     Command.ShowStudents -> {
-                        // TODO show students
                         val fragment = StudentsFragment.newInstance(
                             requireArguments().getString(KEY_COURSE_ID).orEmpty()
                         )

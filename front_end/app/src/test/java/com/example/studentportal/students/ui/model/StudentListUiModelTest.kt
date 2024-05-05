@@ -1,5 +1,6 @@
 package com.example.studentportal.students.ui.model
 
+import com.example.studentportal.course.ui.model.UserType
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
@@ -16,8 +17,8 @@ class StudentListUiModelTest {
     fun `StudentListUiModel stores and retrieves students correctly`() {
         // Arrange
         val students = listOf(
-            StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", StudentType.UNDERGRADUATE, "Short bio."),
-            StudentUiModel("2", "Jane", "Smith", "jane@example.com", null, StudentType.UNDERGRADUATE, "Another short bio.")
+            StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", UserType.STUDENT, "Short bio."),
+            StudentUiModel("2", "Jane", "Smith", "jane@example.com", null, UserType.STUDENT, "Another short bio.")
         )
 
         // Act
@@ -33,8 +34,8 @@ class StudentListUiModelTest {
     @Test
     fun `StudentListUiModel equality check`() {
         // Arrange
-        val student1 = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", StudentType.GRADUATE, "Short bio.")
-        val student2 = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", StudentType.GRADUATE, "Short bio.")
+        val student1 = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", UserType.STUDENT, "Short bio.")
+        val student2 = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", UserType.STUDENT, "Short bio.")
 
         // Act
         val model1 = StudentListUiModel(listOf(student1))
@@ -47,7 +48,7 @@ class StudentListUiModelTest {
     @Test
     fun `hashCode consistency check`() {
         // Arrange
-        val student = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", StudentType.GRADUATE, "Short bio.")
+        val student = StudentUiModel("1", "John", "Doe", "john@example.com", "555-1234", UserType.STUDENT, "Short bio.")
         val model1 = StudentListUiModel(listOf(student))
         val model2 = StudentListUiModel(listOf(student))
 

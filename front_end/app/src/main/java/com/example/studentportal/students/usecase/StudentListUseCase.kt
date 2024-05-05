@@ -17,7 +17,6 @@ class StudentListUseCase(
 
     override suspend fun launch(): Flow<UseCaseResult<StudentListUseCaseModel, DefaultError, StudentListUiModel>> {
         return try {
-            // CHANGE MOCK SOURCE
             val response = repository.fetchStudents(courseId)
             val students = response.body()
             val errorResponse = response.errorBody()

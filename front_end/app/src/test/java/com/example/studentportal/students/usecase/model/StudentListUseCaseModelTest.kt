@@ -1,5 +1,6 @@
 package com.example.studentportal.students.usecase.model
 
+import com.example.studentportal.course.ui.model.UserType
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
@@ -22,7 +23,7 @@ class StudentListUseCaseModelTest {
                 lastName = "Doe",
                 email = "john.doe@example.com",
                 phone = "555-1234",
-                type = "GRADUATE",
+                type = UserType.STUDENT.name,
                 biography = "Some bio"
             ),
             StudentUseCaseModel(
@@ -31,7 +32,7 @@ class StudentListUseCaseModelTest {
                 lastName = "Doe",
                 email = "jane.doe@example.com",
                 phone = "555-4321",
-                type = "UNDERGRADUATE",
+                type = UserType.STUDENT.name,
                 biography = "Another bio"
             )
         )

@@ -1,7 +1,7 @@
 package com.example.studentportal.students.usecase.model
 
 import com.example.studentportal.common.usecase.BaseUseCaseModel
-import com.example.studentportal.students.ui.model.StudentType
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.students.ui.model.StudentUiModel
 import com.squareup.moshi.JsonClass
 
@@ -22,11 +22,7 @@ data class StudentUseCaseModel(
             lastName = lastName,
             email = email,
             phone = phone,
-            type = when (type) {
-                "UNDERGRADUATE" -> StudentType.UNDERGRADUATE
-                "GRADUATE" -> StudentType.GRADUATE
-                else -> StudentType.PHD
-            },
+            type = UserType.valueOf(type),
             biography = biography // Passing the biography as it is from the use case model
         )
     }
