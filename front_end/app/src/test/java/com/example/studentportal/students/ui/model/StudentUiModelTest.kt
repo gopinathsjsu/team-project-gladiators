@@ -1,5 +1,6 @@
 package com.example.studentportal.students.ui.model
 
+import com.example.studentportal.course.ui.model.UserType
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
@@ -21,7 +22,7 @@ class StudentUiModelTest {
             lastName = "Johnson",
             email = "alice.johnson@example.com",
             phone = "123-456-7890",
-            type = StudentType.GRADUATE,
+            type = UserType.STUDENT,
             biography = "Alice is a graduate student in Computer Science."
         )
 
@@ -31,7 +32,7 @@ class StudentUiModelTest {
         assertThat(student.lastName).isEqualTo("Johnson")
         assertThat(student.email).isEqualTo("alice.johnson@example.com")
         assertThat(student.phone).isEqualTo("123-456-7890")
-        assertThat(student.type).isEqualTo(StudentType.GRADUATE)
+        assertThat(student.type).isEqualTo(UserType.STUDENT)
         assertThat(student.biography).isEqualTo("Alice is a graduate student in Computer Science.")
     }
 
@@ -44,7 +45,7 @@ class StudentUiModelTest {
             lastName = "Johnson",
             email = "alice.johnson@example.com",
             phone = "123-456-7890",
-            type = StudentType.GRADUATE,
+            type = UserType.STUDENT,
             biography = "Alice is a graduate student in Computer Science."
         )
         val student2 = StudentUiModel(
@@ -53,7 +54,7 @@ class StudentUiModelTest {
             lastName = "Johnson",
             email = "alice.johnson@example.com",
             phone = "123-456-7890",
-            type = StudentType.GRADUATE,
+            type = UserType.STUDENT,
             biography = "Alice is a graduate student in Computer Science."
         )
 
@@ -70,7 +71,7 @@ class StudentUiModelTest {
             lastName = "Johnson",
             email = "alice.johnson@example.com",
             phone = "123-456-7890",
-            type = StudentType.GRADUATE,
+            type = UserType.STUDENT,
             biography = "Alice is a graduate student in Computer Science."
         )
 
@@ -91,7 +92,7 @@ class StudentUiModelTest {
             lastName = "Johnson",
             email = "alice@example.com",
             phone = "123-456-7890",
-            type = StudentType.GRADUATE,
+            type = UserType.STUDENT,
             biography = "Graduate student in CS."
         )
 

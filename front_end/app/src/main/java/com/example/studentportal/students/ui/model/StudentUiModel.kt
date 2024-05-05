@@ -2,6 +2,7 @@ package com.example.studentportal.students.ui.model
 
 import android.os.Parcelable
 import com.example.studentportal.common.ui.model.BaseUiModel
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.students.usecase.model.StudentUseCaseModel
 import kotlinx.parcelize.Parcelize
 
@@ -12,7 +13,7 @@ data class StudentUiModel(
     val lastName: String,
     val email: String,
     val phone: String?,
-    val type: StudentType,
+    val type: UserType,
     val biography: String?
 ) : BaseUiModel, Parcelable {
 

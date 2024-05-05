@@ -7,8 +7,8 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.studentportal.common.ui.model.BaseUiState
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.students.ui.model.StudentListUiModel
-import com.example.studentportal.students.ui.model.StudentType
 import com.example.studentportal.students.ui.model.StudentUiModel
 import org.junit.After
 import org.junit.Ignore
@@ -56,7 +56,7 @@ class StudentsFragmentTest {
                                 lastName = "Doe",
                                 email = "john.doe@example.com",
                                 phone = "555-1234",
-                                type = StudentType.GRADUATE,
+                                type = UserType.STUDENT,
                                 biography = "A brief bio of John."
                             ),
                             StudentUiModel(
@@ -65,7 +65,7 @@ class StudentsFragmentTest {
                                 lastName = "Smith",
                                 email = "jane.smith@example.com",
                                 phone = "555-4321",
-                                type = StudentType.UNDERGRADUATE,
+                                type = UserType.STUDENT,
                                 biography = "A brief bio of Jane."
                             )
                         )

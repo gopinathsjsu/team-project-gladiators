@@ -21,7 +21,6 @@ import com.example.studentportal.R
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.students.ui.model.StudentListUiModel
-import com.example.studentportal.students.ui.model.StudentType
 import com.example.studentportal.students.ui.model.StudentUiModel
 import com.example.studentportal.students.ui.viewmodel.StudentListViewModel
 
@@ -69,12 +68,6 @@ fun StudentList(studentList: List<StudentUiModel>, modifier: Modifier) {
 @Composable
 fun StudentCard(student: StudentUiModel, modifier: Modifier) {
     val textStyle = TextStyle(fontSize = 18.sp)
-    val studentTypeText = when (student.type) {
-        StudentType.UNDERGRADUATE -> stringResource(id = R.string.undergraduate)
-        StudentType.GRADUATE -> stringResource(id = R.string.graduate)
-        StudentType.PHD -> stringResource(id = R.string.phd)
-        else -> stringResource(id = R.string.unknown_student_type)
-    }
 
     Box(modifier = modifier.padding(4.dp)) {
         Column {
@@ -92,10 +85,6 @@ fun StudentCard(student: StudentUiModel, modifier: Modifier) {
                     style = textStyle
                 )
             }
-            Text(
-                text = "Type: $studentTypeText",
-                style = textStyle.copy(fontSize = 16.sp) // Smaller text for type
-            )
             Divider()
         }
     }
