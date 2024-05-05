@@ -1,5 +1,4 @@
 package com.example.studentportal.students.service
-import com.example.studentportal.students.usecase.model.StudentListUseCaseModel
 import com.example.studentportal.students.usecase.model.StudentUseCaseModel
 import retrofit2.Call
 import retrofit2.http.GET

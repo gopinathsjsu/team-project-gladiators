@@ -1,6 +1,5 @@
 package com.example.studentportal.students.ui.fragment
 
-import android.provider.ContactsContract.Profile
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseFragment
-import com.example.studentportal.course.ui.fragment.CourseFragment
 import com.example.studentportal.databinding.FragmentStudentsBinding
 import com.example.studentportal.profile.ui.fragment.ProfileFragment
 import com.example.studentportal.students.ui.layout.StudentListLayout

@@ -60,7 +60,8 @@ fun StudentListLayout(
 fun StudentList(
     studentList: List<StudentUiModel>,
     modifier: Modifier,
-    onClick: (StudentUiModel) -> Unit) {
+    onClick: (StudentUiModel) -> Unit
+) {
     LazyColumn(modifier) {
         items(studentList) { student ->
             StudentCard(
@@ -76,12 +77,15 @@ fun StudentList(
 fun StudentCard(
     student: StudentUiModel,
     modifier: Modifier,
-    onClick: (StudentUiModel) -> Unit) {
+    onClick: (StudentUiModel) -> Unit
+) {
     val textStyle = TextStyle(fontSize = 18.sp)
 
-    Box(modifier = modifier.padding(horizontal = 16.dp).clickable {
-        onClick.invoke(student)
-    }) {
+    Box(
+        modifier = modifier.padding(horizontal = 16.dp).clickable {
+            onClick.invoke(student)
+        }
+    ) {
         Column {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
