@@ -15,6 +15,7 @@ import org.example.cmpe202_final.view.course.CourseViewSemester;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,6 +52,9 @@ public class AdminCourseStrategy implements CourseStrategy{
             existingCoursesByInstructor.put(course.getSemester(), existingCourses);
             coursesByProfessorBySemester.put(instructor, existingCoursesByInstructor);
         }
+
+        // Sort professors alphabetically
+        professors.sort(new UserSortComparator());
 
         // Compile final List
         ArrayList<CourseViewEntity> views = new ArrayList<>();
