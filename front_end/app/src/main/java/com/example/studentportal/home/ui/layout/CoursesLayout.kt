@@ -71,7 +71,7 @@ fun CoursesLayout(
                         FloatingActionButton(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .testTag("addAssignment")
+                                .testTag("addCourse")
                                 .constrainAs(button) {
                                     end.linkTo(parent.end)
                                     bottom.linkTo(parent.bottom)
@@ -88,9 +88,42 @@ fun CoursesLayout(
                     }
                 }
             } else {
-                Text(stringResource(id = R.string.courses_empty))
+                ConstraintLayout(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    val (text, button) = createRefs()
+                    Text(
+                        modifier = Modifier.constrainAs(text) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                        text = stringResource(id = R.string.courses_empty)
+                    )
+                    if (args.getString(KEY_USER_TYPE) == UserType.ADMIN.name) {
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .testTag("addCourse")
+                                .constrainAs(button) {
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                },
+                            containerColor = Color.Black,
+                            contentColor = Color.White,
+                            onClick = onAddClicked
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
             }
         }
+
         else -> Text(text = "Loading...")
     }
 }
@@ -108,9 +141,11 @@ fun CoursesList(
                     course = item,
                     onCourseClicked = onCourseClicked
                 )
+
                 is BaseCourseUiModel.FacultyUiModel -> FacultyHeaderCard(
                     professor = item
                 )
+
                 is BaseCourseUiModel.SemesterUiModel -> SemesterHeaderCard(
                     semester = item
                 )

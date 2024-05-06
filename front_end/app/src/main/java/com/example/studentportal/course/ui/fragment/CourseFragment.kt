@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.studentportal.R
 import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
 import com.example.studentportal.common.ui.fragment.BaseFragment
@@ -23,10 +24,12 @@ import com.example.studentportal.databinding.FragmentCourseBinding
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.students.ui.fragment.StudentsFragment
 
-class CourseFragment : BaseFragment<FragmentCourseBinding>(TAG) {
+class CourseFragment(
+    viewModelFactory: ViewModelProvider.Factory = CourseDetailsViewModel.CourseViewModelFactory
+) : BaseFragment<FragmentCourseBinding>(TAG) {
 
     internal val viewModel by viewModels<CourseDetailsViewModel> {
-        CourseDetailsViewModel.CourseViewModelFactory
+        viewModelFactory
     }
 
     private val userType: UserType

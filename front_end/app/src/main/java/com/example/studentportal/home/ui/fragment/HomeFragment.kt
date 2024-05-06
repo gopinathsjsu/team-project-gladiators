@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
@@ -21,9 +22,11 @@ import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.home.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
-class HomeFragment : BaseFragment<FragmentCoursesBinding>(TAG) {
+class HomeFragment(
+    viewModelFactory: ViewModelProvider.Factory = HomeViewModel.HomeViewModelFactory
+) : BaseFragment<FragmentCoursesBinding>(TAG) {
     internal val viewModel by viewModels<HomeViewModel> {
-        HomeViewModel.HomeViewModelFactory
+        viewModelFactory
     }
 
     override fun inflateBinding(
