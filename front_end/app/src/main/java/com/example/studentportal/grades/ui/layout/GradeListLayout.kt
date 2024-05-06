@@ -73,8 +73,6 @@ fun GradeList(
         items(gradeList) {
             GradeListItem(
                 grade = it,
-                modifier = Modifier
-                    .padding(16.dp),
                 onItemClick = onItemClick
             )
         }
@@ -84,7 +82,7 @@ fun GradeList(
 @Composable
 fun GradeListItem(
     grade: GradeUiModel,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onItemClick: (grade: GradeUiModel) -> Unit
 ) {
     val textStyle = TextStyle(fontSize = 22.sp)
@@ -100,7 +98,8 @@ fun GradeListItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-                    .height(58.dp)
+                    .height(64.dp)
+                    .padding(start = 16.dp, end = 16.dp)
             ) {
                 Text(
                     text = grade.studentFirstName + " " + grade.studentLastName,
