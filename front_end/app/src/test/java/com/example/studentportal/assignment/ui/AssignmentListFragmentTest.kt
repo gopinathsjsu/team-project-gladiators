@@ -69,20 +69,6 @@ class AssignmentListFragmentTest {
     @Before
     fun setUp() {
         mockRepo = mockk(relaxed = true)
-        val mockSharedPreferences = mockk<SharedPreferences>(relaxed = true)
-        val mockSharedPreferencesEditor = mockk<SharedPreferences.Editor>(relaxed = true)
-
-        // Mock the behavior of SharedPreferences.Editor
-        every { mockSharedPreferences.edit() } returns mockSharedPreferencesEditor
-        every { mockSharedPreferencesEditor.putString(any(), any()) } returns mockSharedPreferencesEditor
-        every { mockSharedPreferencesEditor.remove(any()) } returns mockSharedPreferencesEditor
-        every { mockSharedPreferencesEditor.apply() } just Runs
-        every { mockSharedPreferencesEditor.commit() } returns true
-
-        // Mock the SharedPreferences getters based on the keys
-        every { mockSharedPreferences.getString(APP_JWT_TOKEN_KEY, any()) } returns "mockJwtToken"
-        every { mockSharedPreferences.getString(APP_USER_ID, any()) } returns "mockUserId"
-        every { mockSharedPreferences.getString(APP_USER_TYPE, any()) } returns "mockUserType"
 
         stopKoin()
         startKoin {
@@ -91,7 +77,6 @@ class AssignmentListFragmentTest {
                     single {
                         mockRepo
                     }
-                    single { mockSharedPreferences }
                 }
             )
         }
@@ -117,7 +102,8 @@ class AssignmentListFragmentTest {
         launchFragmentInContainer<AssignmentsFragment>(
             fragmentArgs = bundleOf(
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
-                AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
+                AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name,
+                AssignmentsFragment.KEY_USER_ID to "userId"
             ),
             factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
