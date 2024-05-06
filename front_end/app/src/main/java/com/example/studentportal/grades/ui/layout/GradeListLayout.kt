@@ -74,7 +74,7 @@ fun GradeList(
             GradeListItem(
                 grade = it,
                 modifier = Modifier
-                    .padding(4.dp),
+                    .padding(16.dp),
                 onItemClick = onItemClick
             )
         }
