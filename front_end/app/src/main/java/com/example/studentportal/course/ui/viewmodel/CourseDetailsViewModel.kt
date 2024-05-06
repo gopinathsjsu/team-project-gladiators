@@ -1,4 +1,4 @@
-package com.example.studentportal.home.ui.viewmodel
+package com.example.studentportal.course.ui.viewmodel
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -15,66 +15,64 @@ import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
-import com.example.studentportal.course.usecase.CreateCourseUseCase
+import com.example.studentportal.course.ui.model.CourseDetailsUiModel
+import com.example.studentportal.course.usecase.CourseDetailsUseCase
+import com.example.studentportal.course.usecase.UpdateCourseUseCase
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
-import com.example.studentportal.home.ui.model.CourseListUiModel
-import com.example.studentportal.home.usecase.CoursesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class CourseDetailsViewModel(
     dispatcher: CoroutineDispatcher
-) : BaseViewModel(dispatcher) {
-
+) : BaseViewModel(dispatcher = dispatcher) {
     @VisibleForTesting
-    internal val _uiResultLiveData = MutableLiveData<CourseListUiResult>()
-    val uiResultLiveData: LiveData<CourseListUiResult>
+    internal val _uiResultLiveData = MutableLiveData<CourseDetailsUiResult>()
+    val uiResultLiveData: LiveData<CourseDetailsUiResult>
         get() = _uiResultLiveData
 
-    suspend fun fetchCourses(userId: String?) {
-        userId?.let {
-            _uiResultLiveData.value = BaseUiState.Loading()
-            viewModelScope.launch(dispatcher) {
-                CoursesUseCase(userId = userId, repository = koin.get())
-                    .launch()
-                    .collectLatest { result ->
-                        when (result) {
-                            is UseCaseResult.Failure -> {
-                                viewModelScope.launch {
-                                    _uiResultLiveData.value = result.failure()
-                                }
+    suspend fun fetchCourseDetails(courseId: String) {
+        _uiResultLiveData.value = BaseUiState.Loading()
+        viewModelScope.launch(dispatcher) {
+            CourseDetailsUseCase(courseId = courseId, repository = koin.get())
+                .launch()
+                .collectLatest { result ->
+                    when (result) {
+                        is UseCaseResult.Failure -> {
+                            viewModelScope.launch {
+                                _uiResultLiveData.value = result.failure()
                             }
-                            is UseCaseResult.Success -> {
-                                viewModelScope.launch {
-                                    _uiResultLiveData.value = result.success()
-                                }
+                        }
+                        is UseCaseResult.Success -> {
+                            viewModelScope.launch {
+                                _uiResultLiveData.value = result.success()
                             }
                         }
                     }
-            }
+                }
         }
     }
 
-    fun createNewCourse(
+    fun updateCourse(
         course: BaseCourseUiModel.CourseUiModel,
-        onError: (BaseUiState<CourseListUiModel, DefaultError>) -> Unit
+        onError: (BaseUiState<CourseDetailsUiModel, DefaultError>) -> Unit
     ) {
-        val previousCourses = _uiResultLiveData.value
+        val previousCourseDetails = _uiResultLiveData.value.data()
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
-            CreateCourseUseCase(
+            UpdateCourseUseCase(
                 repository = koin.get(),
-                courseUseCaseModel = course.toUseCaseModel()
+                course = course.toUseCaseModel()
             ).launch().collectLatest { result ->
                 when (result) {
                     is UseCaseResult.Failure -> {
                         viewModelScope.launch {
                             // Post previous list
                             _uiResultLiveData.value = BaseUiState.Success(
-                                CourseListUiModel(
-                                    uiModels = previousCourses.data()?.uiModels.orEmpty()
+                                CourseDetailsUiModel(
+                                    previousCourseDetails?.courseUiModel,
+                                    previousCourseDetails?.instructorUiModel
                                 )
                             )
                             // Notify UI post failed
@@ -93,14 +91,13 @@ class HomeViewModel(
     }
 
     companion object {
-        val HomeViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        val CourseViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                HomeViewModel(
+                CourseDetailsViewModel(
                     Dispatchers.IO
                 )
             }
         }
     }
 }
-
-typealias CourseListUiResult = BaseUiState<CourseListUiModel, DefaultError>
+typealias CourseDetailsUiResult = BaseUiState<CourseDetailsUiModel, DefaultError>

@@ -28,9 +28,9 @@ class CourseActivity : FragmentActivity() {
             return intent.getStringExtra(KEY_USER_ID).orEmpty()
         }
 
-    private val courseId: String
+    private val course: BaseCourseUiModel.CourseUiModel?
         get() {
-            return intent.getStringExtra(KEY_COURSE_ID).orEmpty()
+            return intent.getParcelableExtra(KEY_COURSE)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class CourseActivity : FragmentActivity() {
             fragment = CourseFragment.newInstance(
                 userType = userType,
                 userId = userId,
-                courseId = courseId
+                course = course
             ),
             addToBackStack = false,
             containerId = binding.flContent.id
@@ -54,7 +54,7 @@ class CourseActivity : FragmentActivity() {
     }
 
     private fun ActivityCourseBinding.initUi(): ActivityCourseBinding {
-        toolbar.setTitle(intent.getStringExtra(KEY_USER_COURSE_NAME))
+        toolbar.setTitle(course?.name)
         setActionBar(this.toolbar)
         return this
     }
@@ -67,8 +67,7 @@ class CourseActivity : FragmentActivity() {
     companion object {
         const val KEY_USER_ID = "KEY_USER_ID"
         const val KEY_USER_TYPE = "KEY_USER_TYPE"
-        const val KEY_COURSE_ID = "KEY_COURSE_ID"
-        const val KEY_USER_COURSE_NAME = "KEY_COURSE_NAME"
+        const val KEY_COURSE = "KEY_COURSE"
         fun intent(
             owner: Context,
             course: BaseCourseUiModel.CourseUiModel,
@@ -78,8 +77,7 @@ class CourseActivity : FragmentActivity() {
             val intent = Intent(owner, CourseActivity::class.java)
             intent.putExtra(KEY_USER_ID, userId)
             intent.putExtra(KEY_USER_TYPE, userType)
-            intent.putExtra(KEY_COURSE_ID, course.id)
-            intent.putExtra(KEY_USER_COURSE_NAME, course.name)
+            intent.putExtra(KEY_COURSE, course)
             return intent
         }
     }
