@@ -170,7 +170,7 @@ fun GradeSection(title: String, information: String) {
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = if (information == "") stringResource(R.string.no_submission) else information,
+            text = if (information == "null") stringResource(R.string.no_submission) else information,
             style = MaterialTheme.typography.bodyLarge
         )
     }
