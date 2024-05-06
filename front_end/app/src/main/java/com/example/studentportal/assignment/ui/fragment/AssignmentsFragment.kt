@@ -57,7 +57,8 @@ class AssignmentsFragment(
                 onItemClick = {
                     val fragment = GradesFragment.newInstance(
                         it,
-                        userId = userId
+                        userId = userId,
+                        userType = userType.name
                     )
                     parentFragmentManager.showBaseFragment(
                         fragment = fragment,

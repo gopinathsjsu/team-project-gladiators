@@ -5,26 +5,30 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.studentportal.common.di.getUserType
 import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentGradesBinding
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.ui.viewmodel.EditGradeViewModel
+import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
-    private lateinit var grade: GradeUiModel
 
-    private val sharedPreferences: SharedPreferences by inject()
-    private val viewModel: EditGradeViewModel by viewModel {
-        parametersOf(grade, sharedPreferences.getUserType())
+    internal val viewModel by viewModels<EditGradeViewModel> {
+        EditGradeViewModel.EditGradeViewModelFactory
     }
 
+    private lateinit var grade: GradeUiModel
+    private lateinit var userType: UserType
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         grade = arguments?.getParcelable(KEY_GRADE) ?: throw IllegalArgumentException("Assignment ID is required")
+        userType = UserType.valueOf(requireArguments().getString(KEY_USER_TYPE).orEmpty())
     }
 
     override fun inflateBinding(
@@ -34,7 +38,9 @@ class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
         val binding = FragmentGradesBinding.inflate(inflater, container, false)
         binding.composeView.setContent {
             EditGradeLayout(
-                viewModel = viewModel
+                viewModel = viewModel,
+                grade = grade,
+                userType = userType,
             )
         }
         return binding
@@ -44,12 +50,14 @@ class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
 
     companion object {
         const val KEY_GRADE = "key_grade"
+        const val KEY_USER_TYPE = "key_user_type"
         const val TAG = "EDIT_GRADE"
 
-        fun newInstance(grade: GradeUiModel): EditGradeFragment {
+        fun newInstance(grade: GradeUiModel, userType: String): EditGradeFragment {
             val fragment = EditGradeFragment()
             val args = Bundle()
-            args.putParcelable(EditGradeFragment.KEY_GRADE, grade)
+            args.putParcelable(KEY_GRADE, grade)
+            args.putString(KEY_USER_TYPE, userType)
             fragment.arguments = args
             return fragment
         }

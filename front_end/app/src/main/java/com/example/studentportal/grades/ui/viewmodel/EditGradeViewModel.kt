@@ -1,94 +1,142 @@
 package com.example.studentportal.grades.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.studentportal.grades.service.GradeRepository
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.studentportal.common.di.koin
+import com.example.studentportal.common.ui.viewmodel.BaseViewModel
+import com.example.studentportal.common.usecase.UseCaseResult
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.ui.model.GradeUiModel
+import com.example.studentportal.grades.usecase.EditGradeUseCase
 import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import org.jetbrains.annotations.VisibleForTesting
 
 class EditGradeViewModel(
-    val initialGrade: GradeUseCaseModel,
-    val repository: GradeRepository,
-    val userType: String,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel() {
+    dispatcher: CoroutineDispatcher
+) : BaseViewModel(dispatcher) {
+    @VisibleForTesting
+    internal val _uiResultLiveData = MutableLiveData(UiState.INITIAL)
+    val uiResultLiveData: LiveData<UiState>
+        get() = _uiResultLiveData
 
-    private val _grade = MutableStateFlow(initialGrade)
-    val grade = _grade.asStateFlow()
-
-    private val _text = MutableStateFlow("")
-    val text: StateFlow<String> = _text
-
-    var showDialog by mutableStateOf(false)
-    var dialogMessage by mutableStateOf("")
-
-    fun updateText(newText: String) {
-        _text.value = newText
+    fun updateScore(score: String) {
+        val state = _uiResultLiveData.value ?: UiState.INITIAL
+        _uiResultLiveData.value = state.copy(score = score)
+    }
+    fun updateSubmissionLink(submissionLink: String) {
+        val state = _uiResultLiveData.value ?: UiState.INITIAL
+        _uiResultLiveData.value = state.copy(submissionLink = submissionLink)
+    }
+    fun updateText(inputText: String) {
+        val state = _uiResultLiveData.value ?: UiState.INITIAL
+        _uiResultLiveData.value = state.copy(text = inputText)
     }
 
-    fun onButtonClick() {
-        val updatedGrade = when (userType) {
-            "STUDENT" -> GradeUseCaseModel(
+    fun onButtonClick(
+    initialGrade: GradeUiModel,
+    userType: UserType
+    ) {
+        val updatedGrade = _uiResultLiveData.value?.toUiModel(initialGrade, userType)
+        if (updatedGrade != null) {
+            Log.d("TEST_LOG", "Before updating Grade")
+            updateObject(updatedGrade)
+        }
+    }
+
+    fun updateObject(updatedGrade: GradeUiModel) {
+        val newGrade = GradeUseCaseModel(
+            id = updatedGrade.id,
+            score = updatedGrade.score,
+            studentId = updatedGrade.studentId,
+            studentFirstName = updatedGrade.studentFirstName,
+            studentLastName = updatedGrade.studentLastName,
+            submissionLink = updatedGrade.submissionLink,
+            assignmentId = null
+        )
+        viewModelScope.launch(dispatcher) {
+            EditGradeUseCase(
+                grade = newGrade,
+                repository = koin.get()
+            )
+                .launch()
+                .collectLatest { result ->
+                    when (result) {
+                        is UseCaseResult.Failure -> {
+                            viewModelScope.launch {
+                                Log.d("TEST_LOG", "FAILURE")
+                                Log.d("TEST_LOG", "score: ${newGrade.score}")
+                                Log.d("TEST_LOG", "submissionLink: ${newGrade.submissionLink}")
+                                Log.d("TEST_LOG", "text: ${_uiResultLiveData.value?.text}")
+                            }
+                        }
+
+                        is UseCaseResult.Success -> {
+                            viewModelScope.launch {
+                                Log.d("TEST_LOG", "SUCCESS")
+                                Log.d("TEST_LOG", "score before: ${newGrade.score}")
+                                Log.d("TEST_LOG", "submissionLink before: ${newGrade.submissionLink}")
+                                Log.d("TEST_LOG", "text before: ${_uiResultLiveData.value?.text}")
+                                updateScore(newGrade.score.toString())
+                                Log.d("TEST_LOG", "score after: ${newGrade.score}")
+                                updateSubmissionLink(newGrade.submissionLink.toString())
+                                Log.d("TEST_LOG", "submissionLink after: ${newGrade.submissionLink}")
+                                updateText("")
+                                Log.d("TEST_LOG", "text after: ${_uiResultLiveData.value?.text}")
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    companion object {
+        val EditGradeViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                EditGradeViewModel(
+                    Dispatchers.IO
+                )
+            }
+        }
+    }
+}
+data class UiState(
+    val text: String = "",
+    val score: String = "-",
+    val submissionLink: String = "",
+) {
+    fun toUiModel(
+        initialGrade: GradeUiModel,
+        userType: UserType
+    ): GradeUiModel {
+        return when (userType) {
+            UserType.STUDENT -> GradeUiModel(
                 id = initialGrade.id,
                 score = initialGrade.score,
                 studentFirstName = initialGrade.studentFirstName,
                 studentLastName = initialGrade.studentLastName,
                 studentId = initialGrade.studentId,
-                submissionLink = text.value
+                submissionLink = text
             )
-            else -> GradeUseCaseModel(
+            else -> GradeUiModel(
                 id = initialGrade.id,
-                score = text.value.toIntOrNull() ?: -1,
+                score = text.toIntOrNull() ?: -1,
                 studentFirstName = initialGrade.studentFirstName,
                 studentLastName = initialGrade.studentLastName,
                 studentId = initialGrade.studentId,
                 submissionLink = initialGrade.submissionLink
             )
         }
-        updateObject(updatedGrade)
     }
-
-    fun updateObject(updatedGrade: GradeUseCaseModel) {
-        viewModelScope.launch(dispatcher) {
-            val response = repository.updateGrade(updatedGrade)
-            if (response.isSuccessful) {
-                _grade.value = updatedGrade
-                _text.value = ""
-            } else {
-                val message = response.errorBody()?.string() ?: "Unknown error"
-                dialogMessage = "Failed to update grade: $message"
-                showDialog = true
-            }
-        }
-    }
-
-    fun dismissDialog() {
-        showDialog = false
-    }
-
     companion object {
-        fun koinModule(): Module {
-            return module {
-                viewModel { (grade: GradeUseCaseModel, userType: String) ->
-                    EditGradeViewModel(
-                        initialGrade = grade,
-                        repository = get(),
-                        userType = userType
-                    )
-                }
-            }
-        }
+        val INITIAL = UiState()
     }
 }

@@ -14,8 +14,10 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -28,36 +30,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.layout.FormInput
+import com.example.studentportal.course.ui.model.UserType
+import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.ui.viewmodel.EditGradeViewModel
+import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 
 @Composable
 fun EditGradeLayout(
-    viewModel: EditGradeViewModel
+    viewModel: EditGradeViewModel,
+    grade: GradeUiModel,
+    userType: UserType,
 ) {
-    val grade by viewModel.grade.collectAsState()
 
-    val scoreToRender = if (grade.score == -1) "-" else grade.score
-    if (viewModel.showDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                viewModel.dismissDialog()
-            },
-            title = {
-                Text(text = "Error")
-            },
-            text = {
-                Text(viewModel.dialogMessage)
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        viewModel.dismissDialog()
-                    }
-                ) {
-                    Text("OK")
-                }
-            }
-        )
+    val uiState by viewModel.uiResultLiveData.observeAsState()
+    LaunchedEffect(Unit) {
+        viewModel.updateScore(grade.score.toString())
+        viewModel.updateSubmissionLink(grade.submissionLink.toString())
     }
 
     Column(
@@ -97,31 +85,32 @@ fun EditGradeLayout(
                 )
             }
         }
-        GradeSection(title = "Score", information = "$scoreToRender/100")
-        GradeSection(title = "Submission Link", information = grade.submissionLink)
-        EditGradeSection(viewModel = viewModel)
+        GradeSection(title = "Score", information = "${uiState?.score}/100")
+        GradeSection(title = "Submission Link", information = uiState?.submissionLink)
+        EditGradeSection(viewModel = viewModel, grade = grade, userType = userType)
     }
 }
 
 @Composable
 fun EditGradeSection(
-    viewModel: EditGradeViewModel
+    grade: GradeUiModel,
+    viewModel: EditGradeViewModel,
+    userType: UserType,
 ) {
-    val userType = viewModel.userType
-    val text by viewModel.text.collectAsState()
+    val uiState by viewModel.uiResultLiveData.observeAsState()
 
     val labelStringRes = when (userType) {
-        "STUDENT" -> R.string.post_submission_link_label
+        UserType.STUDENT -> R.string.post_submission_link_label
         else -> R.string.edit_score_label
     }
 
     val buttonStringRes = when (userType) {
-        "STUDENT" -> R.string.post_submission_link_button
+        UserType.STUDENT -> R.string.post_submission_link_button
         else -> R.string.edit_score_button
     }
 
     val keyboardOptions = when (userType) {
-        "STUDENT" -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        UserType.STUDENT -> KeyboardOptions(keyboardType = KeyboardType.Text)
         else -> KeyboardOptions(keyboardType = KeyboardType.Number)
     }
 
@@ -129,16 +118,18 @@ fun EditGradeSection(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        FormInput(
-            modifier = Modifier
-                .testTag("nameInput")
-                .padding(16.dp)
-                .fillMaxWidth(),
-            value = text,
-            keyboardOptions = keyboardOptions,
-            onValueChange = { viewModel.updateText(it) },
-            labelStringRes = labelStringRes
-        )
+        uiState?.let { state ->
+            FormInput(
+                modifier = Modifier
+                    .testTag("nameInput")
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                value = state.text,
+                keyboardOptions = keyboardOptions,
+                onValueChange = { viewModel.updateText(it) },
+                labelStringRes = labelStringRes
+            )
+        }
         Button(
             modifier = Modifier
                 .padding(16.dp)
@@ -149,7 +140,7 @@ fun EditGradeSection(
                 disabledContainerColor = Color.Gray,
                 disabledContentColor = Color.LightGray
             ),
-            onClick = { viewModel.onButtonClick() }
+            onClick = { viewModel.onButtonClick(initialGrade = grade, userType = userType) }
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),

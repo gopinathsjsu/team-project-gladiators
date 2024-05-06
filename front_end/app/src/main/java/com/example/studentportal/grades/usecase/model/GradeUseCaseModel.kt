@@ -8,17 +8,18 @@ import com.squareup.moshi.JsonClass
 data class GradeUseCaseModel(
     val id: String,
     val score: Int,
-    val studentFirstName: String,
-    val studentLastName: String,
+    val studentFirstName: String?,
+    val studentLastName: String?,
     val studentId: String,
+    val assignmentId: String?,
     val submissionLink: String?
 ) : BaseUseCaseModel<GradeUiModel> {
     override fun toUiModel(): GradeUiModel {
         return GradeUiModel(
             id = id,
             score = score,
-            studentFirstName = studentFirstName,
-            studentLastName = studentLastName,
+            studentFirstName = studentFirstName ?: "",
+            studentLastName = studentLastName ?: "",
             studentId = studentId,
             submissionLink = submissionLink
         )

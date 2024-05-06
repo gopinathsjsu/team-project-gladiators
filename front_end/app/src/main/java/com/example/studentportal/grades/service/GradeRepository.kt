@@ -39,6 +39,7 @@ class GradeRepository(
                     score = responseBody.score,
                     studentFirstName = "",
                     studentLastName = "",
+                    assignmentId = "",
                     studentId = responseBody.studentId,
                     submissionLink = responseBody.submissionLink
                 ))
