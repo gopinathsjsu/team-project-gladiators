@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.studentportal.grades.service.GradeRepository
 import com.example.studentportal.grades.ui.model.GradeUiModel
+import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 class EditGradeViewModel(
-    val initialGrade: GradeUiModel,
+    val initialGrade: GradeUseCaseModel,
     val repository: GradeRepository,
     val userType: String,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -39,7 +40,7 @@ class EditGradeViewModel(
 
     fun onButtonClick() {
         val updatedGrade = when (userType) {
-            "STUDENT" -> GradeUiModel(
+            "STUDENT" -> GradeUseCaseModel(
                 id = initialGrade.id,
                 score = initialGrade.score,
                 studentFirstName = initialGrade.studentFirstName,
@@ -47,7 +48,7 @@ class EditGradeViewModel(
                 studentId = initialGrade.studentId,
                 submissionLink = text.value
             )
-            else -> GradeUiModel(
+            else -> GradeUseCaseModel(
                 id = initialGrade.id,
                 score = text.value.toIntOrNull() ?: -1,
                 studentFirstName = initialGrade.studentFirstName,
@@ -59,7 +60,7 @@ class EditGradeViewModel(
         updateObject(updatedGrade)
     }
 
-    fun updateObject(updatedGrade: GradeUiModel) {
+    fun updateObject(updatedGrade: GradeUseCaseModel) {
         viewModelScope.launch(dispatcher) {
             val response = repository.updateGrade(updatedGrade)
             if (response.isSuccessful) {
@@ -80,7 +81,7 @@ class EditGradeViewModel(
     companion object {
         fun koinModule(): Module {
             return module {
-                viewModel { (grade: GradeUiModel, userType: String) ->
+                viewModel { (grade: GradeUseCaseModel, userType: String) ->
                     EditGradeViewModel(
                         initialGrade = grade,
                         repository = get(),

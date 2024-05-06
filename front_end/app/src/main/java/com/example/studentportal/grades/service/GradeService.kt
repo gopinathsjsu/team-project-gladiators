@@ -17,6 +17,6 @@ interface GradeService {
 
     @PUT("/grades/update")
     fun updateGrade(
-        @Body gradeWithStudentName: GradeUiModel
-    ): Call<GradeUiModel>
+        @Body gradeWithStudentName: GradeUseCaseModel
+    ): Call<GradeUseCaseModel>
 }

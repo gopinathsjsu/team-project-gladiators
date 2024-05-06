@@ -5,6 +5,7 @@ import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
+import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Response
@@ -28,21 +29,23 @@ class GradeRepository(
         }
     }
 
-    suspend fun updateGrade(grade: GradeUiModel): Response<Unit> {
-        return try {
-            val response = provider.service().updateGrade(grade).execute()
-            if (response.isSuccessful) {
-                Response.success(Unit) // Indicate success
-            } else {
-                // Handle the failure case by returning or throwing an appropriate exception
-                Response.error(
-                    response.code(),
-                    response.errorBody() ?: throw IllegalAccessException("Response does not contain an error body")
-                )
-            }
-        } catch (e: Exception) {
-            // Handle exceptions possibly thrown by network issues, serialization/deserialization issues, etc.
-            throw RuntimeException("Network call failed", e)
+    suspend fun updateGrade(grade: GradeUseCaseModel): Response<GradeUseCaseModel> {
+        val response = provider.service().updateGrade(grade).execute()
+        val responseBody = response.body()
+        return if (response.isSuccessful && responseBody != null) {
+            Response.success(
+                GradeUseCaseModel(
+                    id = responseBody.id,
+                    score = responseBody.score,
+                    studentFirstName = "",
+                    studentLastName = "",
+                    studentId = responseBody.studentId,
+                    submissionLink = responseBody.submissionLink
+                ))
+        } else {
+            val error = response.errorBody()
+                ?: throw IllegalAccessException("Response does not return error")
+            Response.error(response.code(), error)
         }
     }
 
