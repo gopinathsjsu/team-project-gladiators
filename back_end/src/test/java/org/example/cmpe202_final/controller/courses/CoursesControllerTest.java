@@ -30,8 +30,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.*;
 
@@ -68,7 +71,7 @@ public class CoursesControllerTest {
 
         // Test Response without userId
         mockMvc.perform(MockMvcRequestBuilders.get("/courses"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(getDefaultResponseViews())))
                 .andReturn();
@@ -84,7 +87,7 @@ public class CoursesControllerTest {
 
         // Test Response without userId
         mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=studentId"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(getStudentResponseViews(mockDate))))
                 .andReturn();
@@ -100,7 +103,7 @@ public class CoursesControllerTest {
 
         // Test Response without userId
         mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=instructor1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(getProfessorResponseViews(mockDate))))
                 .andReturn();
@@ -112,15 +115,160 @@ public class CoursesControllerTest {
         // Mock Response
         given(courseService.findAllCourses()).willReturn(getCourses());
         given(semesterService.findAllSemesters()).willReturn(getSemesters(mockDate));
-        given(userService.findByType(UserType.FACULTY)).willReturn(List.of(getFaculty()));
+        given(userService.findByType(UserType.FACULTY)).willReturn(new ArrayList<>(List.of(getFaculty())));
         given(userService.findById("admin1")).willReturn(getAdmin());
 
         // Test Response without userId
         mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=admin1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(getAdminViews(mockDate))))
                 .andReturn();
+    }
+
+    @Test
+    public void testCreateNewCourse() throws Exception {
+        // Create mocks for the services
+        UserService userService = mock(UserService.class);
+        SemesterService semesterService = mock(SemesterService.class);
+        CourseService courseService = mock(CourseService.class);
+
+        // Create the controller instance with mocks injected
+        CourseController controller = new CourseController(userService, semesterService, courseService);
+
+        // Mock the behavior of UserType.ADMIN.getCourseStrategy().getCourseViews()
+        ArrayList<CourseViewEntity> expectedCourseViews = new ArrayList<>();
+        when(UserType.ADMIN.getCourseStrategy().getCourseViews(
+                courseService,
+                semesterService,
+                userService,
+                ""
+        )).thenReturn(expectedCourseViews);
+
+        // Set up MockMvc for controller testing
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        // Perform a POST request to create a course
+        mockMvc.perform(MockMvcRequestBuilders.post("/courses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"courseId\":\"123\", \"courseName\":\"Example Course\"}"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$").isArray()) // Expect response to be an array
+                .andExpect(jsonPath("$").isEmpty()); // Expect response array to be empty
+
+        // Verify that courseService.addItem(course) was called once
+        verify(courseService, times(1)).addItem(any());
+
+    }
+
+    @Test
+    public void testUpdateCourse() throws Exception {
+        // Create mocks for the services
+        UserService userService = mock(UserService.class);
+        SemesterService semesterService = mock(SemesterService.class);
+        CourseService courseService = mock(CourseService.class);
+
+        // Create the controller instance with mocks injected
+        CourseController controller = new CourseController(userService, semesterService, courseService);
+
+        // Create a sample course object
+        Course sampleCourse = new Course("123", "InstructorId", new HashSet<>(), new HashSet<>(), "Semester", true, "Example Course", "Description");
+
+        // Mock the behavior of courseService.addItem(course) to return the updated course
+        when(courseService.addItem(any())).thenReturn(sampleCourse);
+
+        // Set up MockMvc for controller testing
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        // Perform a POST request to update the course
+        mockMvc.perform(MockMvcRequestBuilders.post("/courses/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"123\", \"instructor\":\"NewInstructorId\", \"enrolledStudents\":[], \"assignments\":[], \"semester\":\"NewSemester\", \"published\":true, \"name\":\"Updated Course\", \"description\":\"New Description\"}"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$.course.id").value("123")); // Expect courseId to be "123"// Expect instructor to be "NewInstructorId"
+
+        // Verify that courseService.addItem(course) was called once
+        verify(courseService, times(1)).addItem(any());
+    }
+
+    @Test
+    public void testGetCourseInputData() throws Exception {
+        // Create mocks for the services
+        UserService userService = mock(UserService.class);
+        SemesterService semesterService = mock(SemesterService.class);
+        CourseService courseService = mock(CourseService.class);
+
+        // Create the controller instance with mocks injected
+        CourseController controller = new CourseController(userService, semesterService, courseService);
+
+        // Create sample data for semesters and users
+        List<Semester> sampleSemesters = Arrays.asList(new Semester(/* provide necessary constructor arguments */));
+        List<User> sampleUsers = Arrays.asList(new User(/* provide necessary constructor arguments */));
+
+        // Mock the behavior of semesterService.findAllSemesters() and userService.findByType(UserType.FACULTY)
+        when(semesterService.findAllSemesters()).thenReturn(sampleSemesters);
+        when(userService.findByType(UserType.FACULTY)).thenReturn(sampleUsers);
+
+        // Set up MockMvc for controller testing
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        // Perform a GET request to get course input data
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/input"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$.semesters").isArray()) // Expect semesters array
+                .andExpect(jsonPath("$.semesters[0]").exists()) // Expect at least one semester
+                .andExpect(jsonPath("$.users").isArray()) // Expect users array
+                .andExpect(jsonPath("$.users[0]").exists()); // Expect at least one user
+
+        // Verify that semesterService.findAllSemesters() and userService.findByType(UserType.FACULTY) were called once
+        verify(semesterService, times(1)).findAllSemesters();
+        verify(userService, times(1)).findByType(UserType.FACULTY);
+    }
+
+    @Test
+    public void testGetCourseDetails() throws Exception {
+        // Create mocks for the services
+        UserService userService = mock(UserService.class);
+        SemesterService semesterService = mock(SemesterService.class);
+        CourseService courseService = mock(CourseService.class);
+
+        // Create the controller instance with mocks injected
+        CourseController controller = new CourseController(userService, semesterService, courseService);
+
+        // Create a sample course object
+        Course sampleCourse = new Course("123", "InstructorId", new HashSet<>(), new HashSet<>(), "Semester", true, "Example Course", "Description");
+
+        // Create a sample instructor object
+        User sampleInstructor = User.builder()
+                .id("InstructorId")
+                .password("password")
+                .type("type")
+                .firstName("John")
+                .lastName("Doe")
+                .biography("Biography")
+                .email("john.doe@example.com")
+                .phone("1234567890")
+                .build();
+
+        // Mock the behavior of courseService.findById(courseId) and userService.findById(instructorId)
+        when(courseService.findById("123")).thenReturn(Optional.of(sampleCourse));
+        when(userService.findById("InstructorId")).thenReturn(Optional.of(sampleInstructor));
+
+        // Set up MockMvc for controller testing
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        // Perform a GET request to get course details
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/123/details"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$.course.id").value("123")) // Expect courseId to be "123"
+                .andExpect(jsonPath("$.course.name").value("Example Course")) // Expect courseName to be "Example Course"
+                .andExpect(jsonPath("$.instructor.id").value("InstructorId")) // Expect instructorId to be "InstructorId"
+                .andExpect(jsonPath("$.instructor.firstName").value("John")) // Expect firstName to be "John"
+                .andExpect(jsonPath("$.instructor.lastName").value("Doe")); // Expect lastName to be "Doe"
+
+        // Verify that courseService.findById(courseId) and userService.findById(instructorId) were called once
+        verify(courseService, times(1)).findById("123");
+        verify(userService, times(1)).findById("InstructorId");
     }
 
     List<CourseViewCourse> getDefaultResponseViews() {
@@ -355,7 +503,7 @@ public class CoursesControllerTest {
 
         // Then
         mockMvc.perform(MockMvcRequestBuilders.get("/courses/{courseId}/students", courseId))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(mockUsers)))
                 .andReturn();

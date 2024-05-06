@@ -1,6 +1,7 @@
 package org.example.cmpe202_final.service.course;
 
 import lombok.AllArgsConstructor;
+import org.example.cmpe202_final.model.assignment.Assignment;
 import org.example.cmpe202_final.model.course.Course;
 import org.example.cmpe202_final.model.user.User;
 import org.example.cmpe202_final.repository.courses.CourseRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -24,8 +26,16 @@ public class CourseService {
         return courseRepository.findAllBy();
     }
 
+    public Optional<Course> findById(String courseId){
+        return courseRepository.findById(courseId);
+    }
+
     public List<Course> findByEnrolledStudent(String studentId){
         return courseRepository.findByEnrolledStudent(studentId);
+    }
+
+    public Course addItem(Course course){
+        return courseRepository.save(course);
     }
 
     public List<Course> findByInstructor(String instructor){
