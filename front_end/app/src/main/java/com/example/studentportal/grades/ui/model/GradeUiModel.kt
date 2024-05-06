@@ -12,4 +12,9 @@ data class GradeUiModel(
     val studentLastName: String = "",
     val studentId: String,
     val submissionLink: String?
-) : BaseUiModel, Parcelable
+) : BaseUiModel, Parcelable {
+    companion object {
+        const val DEFAULT_SCORE = -1
+        const val DEFAULT_SCORE_STRING = "-"
+    }
+}

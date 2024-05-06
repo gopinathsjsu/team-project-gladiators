@@ -3,7 +3,6 @@ package com.example.studentportal.grades.service
 import GradeService
 import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
-import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.usecase.model.GradeListUseCaseModel
 import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import org.koin.core.module.Module
@@ -42,7 +41,8 @@ class GradeRepository(
                     assignmentId = "",
                     studentId = responseBody.studentId,
                     submissionLink = responseBody.submissionLink
-                ))
+                )
+            )
         } else {
             val error = response.errorBody()
                 ?: throw IllegalAccessException("Response does not return error")

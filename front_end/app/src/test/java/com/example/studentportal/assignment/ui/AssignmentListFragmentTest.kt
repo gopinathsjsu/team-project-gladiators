@@ -1,6 +1,5 @@
 package com.example.studentportal.assignment.ui
 
-import android.content.SharedPreferences
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -23,9 +22,6 @@ import com.example.studentportal.assignment.ui.model.AssignmentListUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
 import com.example.studentportal.assignment.usecase.models.AssignmentListUseCaseModel
 import com.example.studentportal.assignment.usecase.models.AssignmentUseCaseModel
-import com.example.studentportal.common.di.APP_JWT_TOKEN_KEY
-import com.example.studentportal.common.di.APP_USER_ID
-import com.example.studentportal.common.di.APP_USER_TYPE
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
@@ -33,11 +29,9 @@ import com.example.studentportal.common.ui.model.isLoading
 import com.example.studentportal.common.ui.model.isSuccess
 import com.example.studentportal.course.ui.model.UserType
 import com.google.common.truth.Truth.assertThat
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest

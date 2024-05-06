@@ -1,21 +1,16 @@
 package com.example.studentportal.grades.ui.fragment
 
 import EditGradeLayout
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.studentportal.common.di.getUserType
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentGradesBinding
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.ui.viewmodel.EditGradeViewModel
-import com.example.studentportal.grades.ui.viewmodel.GradeListViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
 
@@ -27,7 +22,7 @@ class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
     private lateinit var userType: UserType
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        grade = arguments?.getParcelable(KEY_GRADE) ?: throw IllegalArgumentException("Assignment ID is required")
+        grade = arguments?.getParcelable(KEY_GRADE) ?: throw IllegalArgumentException("Grade is required")
         userType = UserType.valueOf(requireArguments().getString(KEY_USER_TYPE).orEmpty())
     }
 
@@ -40,7 +35,7 @@ class EditGradeFragment : BaseFragment<FragmentGradesBinding>(TAG) {
             EditGradeLayout(
                 viewModel = viewModel,
                 grade = grade,
-                userType = userType,
+                userType = userType
             )
         }
         return binding

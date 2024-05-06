@@ -1,5 +1,4 @@
 
-import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import retrofit2.Call
 import retrofit2.http.Body

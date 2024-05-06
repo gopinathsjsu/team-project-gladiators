@@ -1,6 +1,5 @@
 package com.example.studentportal.assignment.ui.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,14 +13,12 @@ import com.example.studentportal.R
 import com.example.studentportal.assignment.ui.layout.AssignmentListLayout
 import com.example.studentportal.assignment.ui.model.AssignmentUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
-import com.example.studentportal.common.di.getUserId
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentAssignmentsBinding
 import com.example.studentportal.grades.ui.fragment.GradesFragment
-import org.koin.android.ext.android.inject
 
 class AssignmentsFragment(
     viewModelFactory: ViewModelProvider.Factory = AssignmentsViewModel.AssignmentsViewModelFactory
@@ -101,7 +98,7 @@ class AssignmentsFragment(
             fragment.arguments = bundleOf(
                 KEY_COURSE_ID to courseId,
                 KEY_USER_TYPE to userType,
-                KEY_USER_ID to userId,
+                KEY_USER_ID to userId
             )
             return fragment
         }

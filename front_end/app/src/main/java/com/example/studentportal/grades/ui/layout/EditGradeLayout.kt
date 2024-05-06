@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -33,15 +31,13 @@ import com.example.studentportal.common.ui.layout.FormInput
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.ui.viewmodel.EditGradeViewModel
-import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 
 @Composable
 fun EditGradeLayout(
     viewModel: EditGradeViewModel,
     grade: GradeUiModel,
-    userType: UserType,
+    userType: UserType
 ) {
-
     val uiState by viewModel.uiResultLiveData.observeAsState()
     LaunchedEffect(Unit) {
         viewModel.updateScore(grade.score.toString())
@@ -85,8 +81,17 @@ fun EditGradeLayout(
                 )
             }
         }
-        GradeSection(title = "Score", information = "${uiState?.score}/100")
-        GradeSection(title = "Submission Link", information = uiState?.submissionLink)
+        GradeSection(
+            title = stringResource(R.string.edit_grade_score_label),
+            information = "${
+            if ((uiState?.score?.toIntOrNull() ?: -1) == -1) {
+                GradeUiModel.DEFAULT_SCORE_STRING
+            } else {
+                uiState?.score
+            }
+            }/100"
+        )
+        GradeSection(title = stringResource(R.string.edit_grade_submission_link_label), information = uiState?.submissionLink.toString())
         EditGradeSection(viewModel = viewModel, grade = grade, userType = userType)
     }
 }
@@ -95,7 +100,7 @@ fun EditGradeLayout(
 fun EditGradeSection(
     grade: GradeUiModel,
     viewModel: EditGradeViewModel,
-    userType: UserType,
+    userType: UserType
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
@@ -153,7 +158,7 @@ fun EditGradeSection(
 }
 
 @Composable
-fun GradeSection(title: String, information: String?) {
+fun GradeSection(title: String, information: String) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
             text = title.uppercase(),
@@ -165,7 +170,7 @@ fun GradeSection(title: String, information: String?) {
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = information ?: "No submission",
+            text = if (information == "") stringResource(R.string.no_submission) else information,
             style = MaterialTheme.typography.bodyLarge
         )
     }

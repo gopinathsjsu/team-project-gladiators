@@ -73,4 +73,7 @@
 
     <!-- Grades -->
     <string name= "grades_empty">No grades to show</string>
+    <string name="edit_grade_score_label">Score</string>
+    <string name="edit_grade_submission_link_label">Submission Link</string>
+    <string name="no_submission">No submission</string>
 </resources>

@@ -89,7 +89,7 @@ fun GradeListItem(
 ) {
     val textStyle = TextStyle(fontSize = 22.sp)
     val scoreToRender = when (grade.score) {
-        -1 -> "-"
+        GradeUiModel.DEFAULT_SCORE -> GradeUiModel.DEFAULT_SCORE_STRING
         else -> grade.score
     }
     Box(

@@ -42,8 +42,8 @@ class EditGradeViewModel(
     }
 
     fun onButtonClick(
-    initialGrade: GradeUiModel,
-    userType: UserType
+        initialGrade: GradeUiModel,
+        userType: UserType
     ) {
         val updatedGrade = _uiResultLiveData.value?.toUiModel(initialGrade, userType)
         if (updatedGrade != null) {
@@ -111,7 +111,7 @@ class EditGradeViewModel(
 data class UiState(
     val text: String = "",
     val score: String = "-",
-    val submissionLink: String = "",
+    val submissionLink: String = ""
 ) {
     fun toUiModel(
         initialGrade: GradeUiModel,
