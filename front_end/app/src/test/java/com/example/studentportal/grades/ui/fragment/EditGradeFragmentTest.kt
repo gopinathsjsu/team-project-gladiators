@@ -28,7 +28,7 @@ class EditGradeFragmentTest {
             studentId = "1",
             submissionLink = null
         )
-        fragment = EditGradeFragment.newInstance(grade).also {
+        fragment = EditGradeFragment.newInstance(grade, "STUDENT").also {
             it.arguments = Bundle().apply {
                 putParcelable(EditGradeFragment.KEY_GRADE, grade)
             }
@@ -53,7 +53,7 @@ class EditGradeFragmentTest {
             studentId = "1",
             submissionLink = null
         )
-        val fragment = EditGradeFragment.newInstance(grade)
+        val fragment = EditGradeFragment.newInstance(grade, "STUDENT")
         val bundle = fragment.arguments
         assertNotNull(bundle)
         assertEquals(grade, bundle?.getParcelable(EditGradeFragment.KEY_GRADE))

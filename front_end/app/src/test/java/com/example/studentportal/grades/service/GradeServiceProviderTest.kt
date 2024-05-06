@@ -1,7 +1,6 @@
 package com.example.studentportal.grades.service
 
 import GradeService
-import com.example.studentportal.grades.ui.model.GradeUiModel
 import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
@@ -53,7 +52,7 @@ class GradeServiceProviderTest {
             return mockk(relaxed = true)
         }
 
-        override fun updateGrade(gradeWithStudentName: GradeUiModel): Call<GradeUiModel> {
+        override fun updateGrade(gradeWithStudentName: GradeUseCaseModel): Call<GradeUseCaseModel> {
             return mockk(relaxed = true)
         }
     }

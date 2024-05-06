@@ -31,7 +31,8 @@ class GradesFragmentTest {
         launchFragmentInContainer<GradesFragment>(
             fragmentArgs = bundleOf(
                 GradesFragment.KEY_ASSIGNMENT_ID to "assignmentId",
-                GradesFragment.KEY_USER_ID to "userId"
+                GradesFragment.KEY_USER_ID to "userId",
+                GradesFragment.KEY_USER_TYPE to "STUDENT"
             )
         ).onFragment { fragment ->
             // Test Loading State
@@ -95,7 +96,8 @@ class GradesFragmentTest {
         launchFragmentInContainer<GradesFragment>(
             fragmentArgs = bundleOf(
                 GradesFragment.KEY_ASSIGNMENT_ID to "assignmentId",
-                GradesFragment.KEY_USER_ID to "userId"
+                GradesFragment.KEY_USER_ID to "userId",
+                GradesFragment.KEY_USER_TYPE to "STUDENT"
             )
         ).onFragment {
             fragment = it

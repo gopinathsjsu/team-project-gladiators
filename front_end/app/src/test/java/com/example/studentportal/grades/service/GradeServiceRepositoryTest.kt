@@ -2,7 +2,7 @@ package com.example.studentportal.grades.service
 
 import GradeService
 import com.example.studentportal.common.di.koin
-import com.example.studentportal.grades.ui.model.GradeUiModel
+import com.example.studentportal.grades.usecase.model.GradeUseCaseModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -66,13 +66,14 @@ class GradeServiceRepositoryTest {
             every { execute() } returns Response.success(mockk(relaxed = true))
         }
         val repository: GradeRepository = koin.get()
-        val expectedGrade = GradeUiModel(
+        val expectedGrade = GradeUseCaseModel(
             "1",
             50,
             "Arnold",
             "Smitt",
             "s123",
-            "www.test.com"
+            "1",
+            "www.com"
         )
 
         // Act

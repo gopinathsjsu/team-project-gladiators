@@ -28,7 +28,8 @@ class GradeListUseCaseTest {
                     studentFirstName = "First-N1",
                     studentLastName = "Last-N1",
                     studentId = "1",
-                    submissionLink = null
+                    submissionLink = null,
+                    assignmentId = "1"
                 )
             )
         )
