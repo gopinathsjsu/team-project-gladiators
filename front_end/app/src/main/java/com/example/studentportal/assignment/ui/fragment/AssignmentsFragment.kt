@@ -29,16 +29,14 @@ class AssignmentsFragment(
 
     internal val viewModel by viewModels<AssignmentsViewModel> { viewModelFactory }
 
-    // Inject SharedPreferences
-    private val sharedPreferences: SharedPreferences by inject()
-
     val courseId: String
         get() = requireArguments().getString(KEY_COURSE_ID).orEmpty()
 
     val userType: UserType
         get() = UserType.valueOf(requireArguments().getString(KEY_USER_TYPE).orEmpty())
 
-    val userId: String = sharedPreferences.getUserId()
+    val userId: String
+        get() = requireArguments().getString(KEY_USER_ID).orEmpty()
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -96,11 +94,13 @@ class AssignmentsFragment(
         const val TAG = "ASSIGNMENTS"
         const val KEY_COURSE_ID = "KET_COURSE_ID"
         const val KEY_USER_TYPE = "KEY_USER_TYPE"
-        fun newInstance(courseId: String, userType: String): AssignmentsFragment {
+        const val KEY_USER_ID = "KEY_USER_IDE"
+        fun newInstance(courseId: String, userType: String, userId: String): AssignmentsFragment {
             val fragment = AssignmentsFragment()
             fragment.arguments = bundleOf(
                 KEY_COURSE_ID to courseId,
-                KEY_USER_TYPE to userType
+                KEY_USER_TYPE to userType,
+                KEY_USER_ID to userId,
             )
             return fragment
         }
