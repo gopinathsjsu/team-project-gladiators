@@ -43,6 +43,7 @@ fun AssignmentListLayout(
     userType: UserType,
     viewModel: AssignmentsViewModel,
     onAddClicked: () -> Unit,
+    onItemClick: (assignmentId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // API call
@@ -59,7 +60,8 @@ fun AssignmentListLayout(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            }
+            },
+            onItemClick = onItemClick
         )
         if (userType == UserType.FACULTY) {
             FloatingActionButton(
@@ -86,7 +88,8 @@ fun AssignmentListLayout(
 @Composable
 fun AssignmentList(
     viewModel: AssignmentsViewModel,
-    modifier: Modifier
+    modifier: Modifier,
+    onItemClick: (assignmentId: String) -> Unit
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
     when (uiState) {
@@ -96,7 +99,10 @@ fun AssignmentList(
             if (!assignments.isNullOrEmpty()) {
                 LazyColumn(modifier.fillMaxSize()) {
                     items(assignments) {
-                        AssignmentItem(assignment = it)
+                        AssignmentItem(
+                            assignment = it,
+                            onItemClick = onItemClick
+                        )
                     }
                 }
             } else {
@@ -117,14 +123,15 @@ fun AssignmentList(
 @Composable
 fun AssignmentItem(
     assignment: AssignmentUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (assignmentId: String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
             .height(64.dp)
             .fillMaxWidth()
             .clickable {
-                // TODO: Set up Click Listener
+                onItemClick.invoke(assignment.id)
             }
     ) {
         val (title, arrow, divider) = createRefs()

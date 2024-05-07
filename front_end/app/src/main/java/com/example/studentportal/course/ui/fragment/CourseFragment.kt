@@ -43,6 +43,11 @@ class CourseFragment(
             return requireArguments().getParcelable(KEY_COURSE)
         }
 
+    private val userId: String
+        get() {
+            return requireArguments().getString(KEY_USER_ID) ?: ""
+        }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -59,7 +64,8 @@ class CourseFragment(
                         Command.ShowAssignments -> {
                             val fragment = AssignmentsFragment.newInstance(
                                 course?.id.orEmpty(),
-                                userType.name
+                                userId = userId,
+                                userType = userType.name
                             )
                             parentFragmentManager.showBaseFragment(
                                 fragment = fragment,

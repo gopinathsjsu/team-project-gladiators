@@ -4,20 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("grades")
-public class Grade {
-    public static final int NOT_GRADED = -1;
-    @Id
+public class GradeWithStudentName {
     private String id;
-    private int score = NOT_GRADED;
+    private int score;
+    private String studentFirstName;
+    private String studentLastName;
     private String studentId;
-    private String assignmentId;
     private String submissionLink;
 }
+
