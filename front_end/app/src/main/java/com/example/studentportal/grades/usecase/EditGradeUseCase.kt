@@ -20,7 +20,6 @@ class EditGradeUseCase(
         return try {
             val response = repository.updateGrade(grade)
             val grades = response.body()
-            Log.d("USECASE", "response: $grades")
             val errorResponse = response.errorBody()
             when {
                 grades != null -> successFlow(grades)

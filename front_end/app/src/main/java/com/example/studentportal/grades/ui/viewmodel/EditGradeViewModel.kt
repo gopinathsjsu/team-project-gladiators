@@ -47,7 +47,6 @@ class EditGradeViewModel(
     ) {
         val updatedGrade = _uiResultLiveData.value?.toUiModel(initialGrade, userType)
         if (updatedGrade != null) {
-            Log.d("TEST_LOG", "Before updating Grade")
             updateObject(updatedGrade)
         }
     }
@@ -72,25 +71,14 @@ class EditGradeViewModel(
                     when (result) {
                         is UseCaseResult.Failure -> {
                             viewModelScope.launch {
-                                Log.d("TEST_LOG", "FAILURE")
-                                Log.d("TEST_LOG", "score: ${newGrade.score}")
-                                Log.d("TEST_LOG", "submissionLink: ${newGrade.submissionLink}")
-                                Log.d("TEST_LOG", "text: ${_uiResultLiveData.value?.text}")
                             }
                         }
 
                         is UseCaseResult.Success -> {
                             viewModelScope.launch {
-                                Log.d("TEST_LOG", "SUCCESS")
-                                Log.d("TEST_LOG", "score before: ${newGrade.score}")
-                                Log.d("TEST_LOG", "submissionLink before: ${newGrade.submissionLink}")
-                                Log.d("TEST_LOG", "text before: ${_uiResultLiveData.value?.text}")
                                 updateScore(newGrade.score.toString())
-                                Log.d("TEST_LOG", "score after: ${newGrade.score}")
                                 updateSubmissionLink(newGrade.submissionLink.toString())
-                                Log.d("TEST_LOG", "submissionLink after: ${newGrade.submissionLink}")
                                 updateText("")
-                                Log.d("TEST_LOG", "text after: ${_uiResultLiveData.value?.text}")
                             }
                         }
                     }

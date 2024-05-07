@@ -60,6 +60,26 @@ class GradeServiceRepositoryTest {
     }
 
     @Test
+    fun `test fetchGradeList call, error`() = runTest {
+        // Arrange
+        every { service.fetchGradesByAssignment(any(), any()) } returns mockk(relaxed = true) {
+            every { execute() } returns Response.error(400, mockk(relaxed = true))
+        }
+        val repository: GradeRepository = koin.get()
+        val expectedAssignmentId = "assignmentId"
+        val expectedUserId = "userId"
+
+        // Act
+        val response = repository.fetchGradesByAssignment(expectedAssignmentId, expectedUserId)
+
+        // Assert
+        verify {
+            service.fetchGradesByAssignment(expectedAssignmentId, expectedUserId)
+        }
+        assertThat(response.isSuccessful).isFalse()
+    }
+
+    @Test
     fun `test updateGrade call`() = runTest {
         // Arrange
         every { service.updateGrade(any()) } returns mockk(relaxed = true) {
@@ -84,5 +104,32 @@ class GradeServiceRepositoryTest {
             service.updateGrade(expectedGrade)
         }
         assertThat(response.isSuccessful).isTrue()
+    }
+
+    @Test
+    fun `test updateGrade call, error`() = runTest {
+        // Arrange
+        every { service.updateGrade(any()) } returns mockk(relaxed = true) {
+            every { execute() } returns Response.error(400, mockk(relaxed = true))
+        }
+        val repository: GradeRepository = koin.get()
+        val expectedGrade = GradeUseCaseModel(
+            "1",
+            50,
+            "Arnold",
+            "Smitt",
+            "s123",
+            "1",
+            "www.com"
+        )
+
+        // Act
+        val response = repository.updateGrade(expectedGrade)
+
+        // Assert
+        verify {
+            service.updateGrade(expectedGrade)
+        }
+        assertThat(response.isSuccessful).isFalse()
     }
 }
