@@ -110,19 +110,4 @@ public class CourseController {
         }
         return new CourseDetails(updatedCourse, instructor.get());
     }
-
-    @GetMapping("/{courseId}/content")
-    public Course getCourseByCourseId(@PathVariable String courseId) {
-        return courseService.findCourseById(courseId);
-    }
-
-    @PostMapping("/{courseId}/description")
-    public ResponseEntity<Course> updateCourseDescription(@PathVariable String courseId, @RequestBody String description) {
-        return ResponseEntity.ok(courseService.updateCourseDescription(courseId, description));
-    }
-
-    @PutMapping("/{courseId}/description")
-    public ResponseEntity<Course> editCourseDescription(@PathVariable String courseId, @RequestBody String description) {
-        return ResponseEntity.ok(courseService.editCourseDescription(courseId, description));
-    }
 }
