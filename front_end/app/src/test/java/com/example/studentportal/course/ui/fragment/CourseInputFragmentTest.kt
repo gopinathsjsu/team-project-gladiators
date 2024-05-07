@@ -352,14 +352,14 @@ class CourseInputFragmentTest {
         launchFragmentInContainer<CourseContentFragment>(
             fragmentArgs = bundleOf(
                 CourseContentFragment.KEY_COURSE_ID to "courseId",
-                CourseContentFragment.KEY_USER_TYPE to UserType.FACULTY.name,
+                CourseContentFragment.KEY_USER_TYPE to UserType.FACULTY.name
             ),
             factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                     return CourseContentFragment(
                         viewModelFactory {
                             initializer {
-                               viewModel
+                                viewModel
                             }
                         }
                     )

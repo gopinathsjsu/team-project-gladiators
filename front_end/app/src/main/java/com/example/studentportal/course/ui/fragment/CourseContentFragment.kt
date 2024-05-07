@@ -13,7 +13,6 @@ import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.course.ui.layout.CourseContentLayout
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.course.ui.viewmodel.CourseContentViewModel
-import com.example.studentportal.course.ui.viewmodel.CourseDetailsViewModel
 import com.example.studentportal.databinding.FragmentCourseBinding
 
 class CourseContentFragment(
