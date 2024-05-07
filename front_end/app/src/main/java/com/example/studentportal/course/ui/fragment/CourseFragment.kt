@@ -75,7 +75,15 @@ class CourseFragment(
                         }
 
                         Command.ShowContent -> {
-                            // TODO show course content
+                            val fragment = CourseContentFragment.newInstance(
+                                course?.id.orEmpty(),
+                                userType.name
+                            )
+                            parentFragmentManager.showBaseFragment(
+                                fragment = fragment,
+                                addToBackStack = true,
+                                containerId = R.id.fl_content
+                            )
                         }
 
                         Command.ShowStudents -> {

@@ -14,6 +14,7 @@ import org.example.cmpe202_final.service.user.UserService;
 import org.example.cmpe202_final.view.course.CourseDetails;
 import org.example.cmpe202_final.view.course.CourseViewEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -98,13 +99,13 @@ public class CourseController {
     }
 
     @PostMapping("/update")
-    public CourseDetails updateCourse(@RequestBody Course course){
+    public CourseDetails updateCourse(@RequestBody Course course) {
         Course updatedCourse = courseService.addItem(course);
-        if(updatedCourse.getInstructor() == null){
+        if (updatedCourse.getInstructor() == null) {
             return new CourseDetails(updatedCourse, null);
         }
         Optional<User> instructor = userService.findById(updatedCourse.getInstructor());
-        if(instructor.isEmpty()){
+        if (instructor.isEmpty()) {
             return new CourseDetails(updatedCourse, null);
         }
         return new CourseDetails(updatedCourse, instructor.get());

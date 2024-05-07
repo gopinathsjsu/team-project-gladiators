@@ -85,7 +85,7 @@ fun CourseInputLayout(
             onValueChange = {
                 viewModel.updateDescription(it)
             },
-            labelStringRes = R.string.courses_description
+            labelStringRes = R.string.courses_menu_content
         )
         DropdownInput(
             modifier = Modifier

@@ -1,6 +1,6 @@
-package com.example.studentportal.students.service.repository
+package com.example.studentportal.students.service
 
-import com.example.studentportal.students.service.StudentService
+import com.example.studentportal.students.service.repository.StudentServiceProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkConstructor

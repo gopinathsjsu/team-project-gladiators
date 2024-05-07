@@ -48,6 +48,7 @@
     <string name= "courses_not_assigned">Not Assigned</string>
     <string name= "courses_unpublished">Unpublished</string>
     <string name= "courses_update">Update Course</string>
+    <string name= "courses_content_edit_title">Update Content</string>
     <string name= "courses_name">Name</string>
     <string name= "courses_description">Description</string>
     <string name= "courses_semester">Semester</string>
@@ -75,4 +76,9 @@
     <string name= "auth_logout">Logout</string>
     <string name= "auth_logout_title">Confirm Logout</string>
     <string name= "auth_logout_message">Are you sure you want to logout?</string>
+
+    <!-- Course Content -->
+    <string name="add_syllabus">Add syllabus</string>
+    <string name="syllabus_details">Syllabus details</string>
+    <string name="submit_syllabus">Submit</string>
 </resources>

@@ -14,4 +14,7 @@ public interface CourseRepository extends MongoRepository<Course, String> {
     List<Course> findByEnrolledStudent(String studentId);
 
     List<Course> findByInstructor(String instructor);
+    default Course findContentByCourseId(String courseId) {
+        return findById(courseId).orElseThrow(() -> new IllegalArgumentException("Course not found"));
+    }
 }

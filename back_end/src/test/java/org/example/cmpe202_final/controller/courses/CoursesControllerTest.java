@@ -508,4 +508,5 @@ public class CoursesControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(mockUsers)))
                 .andReturn();
     }
+
 }
