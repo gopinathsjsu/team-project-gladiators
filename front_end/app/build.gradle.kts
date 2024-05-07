@@ -66,7 +66,7 @@ android {
                 rule {
                     isEnabled = true
                     bound {
-                        minValue = 70 // Minimum coverage percentage
+                        minValue = 80 // Minimum coverage percentage
                     }
                 }
             }

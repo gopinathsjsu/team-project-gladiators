@@ -55,9 +55,7 @@ class CourseInputFragment : BaseDialogFragment<FragmentAddCourseBinding>(TAG) {
 
     companion object {
         const val TAG = "ADD_COURSE"
-
         const val KEY_COURSE = "KEY_COURSE"
-
         const val KEY_FRAGMENT_RESULT = "KEY_FRAGMENT_RESULT"
         const val KEY_COURSE_INPUT = "KEY_COURSE_INPUT"
 

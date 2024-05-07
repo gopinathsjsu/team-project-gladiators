@@ -6,7 +6,6 @@ import com.example.studentportal.home.service.repository.CourseRepository
 import com.example.studentportal.notifications.service.repository.NotificationRepository
 import com.example.studentportal.profile.service.repository.UserRepository
 import com.example.studentportal.students.service.repository.StudentRepository
-import com.example.studentportal.syllabus.service.repository.SyllabusRepository
 import org.koin.core.Koin
 import org.koin.core.context.GlobalContext
 import org.koin.dsl.module
@@ -19,7 +18,6 @@ val appModule = module {
     includes(CourseRepository.koinModule())
     includes(UserRepository.koinModule())
     includes(AssignmentRepository.koinModule())
-    includes(SyllabusRepository.koinModule())
 }
 
 val koin: Koin

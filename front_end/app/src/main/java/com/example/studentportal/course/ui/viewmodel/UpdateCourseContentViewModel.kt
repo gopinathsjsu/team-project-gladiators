@@ -1,4 +1,4 @@
-package com.example.studentportal.syllabus.ui.viewModel
+package com.example.studentportal.course.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.annotations.VisibleForTesting
 
-class AddSyllabusViewModel(
+class UpdateCourseContentViewModel(
     dispatcher: CoroutineDispatcher
 ) : BaseViewModel(dispatcher) {
     @VisibleForTesting
@@ -18,15 +18,15 @@ class AddSyllabusViewModel(
     val uiResultLiveData: LiveData<SyllabusState>
         get() = _uiResultLiveData
 
-    fun updateSyllabus(syllabus: String) {
+    fun updateCourseContent(content: String) {
         val state = _uiResultLiveData.value ?: SyllabusState.INITIAL
-        _uiResultLiveData.value = state.copy(syllabus = syllabus)
+        _uiResultLiveData.value = state.copy(content = content)
     }
 
     companion object {
-        val AddSyllabusViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        val UpdateCourseContentViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                AddSyllabusViewModel(
+                UpdateCourseContentViewModel(
                     Dispatchers.IO
                 )
             }
@@ -35,11 +35,8 @@ class AddSyllabusViewModel(
 }
 
 data class SyllabusState(
-    public val syllabus: String = ""
+    val content: String = ""
 ) {
-    fun readyToSubmit(): Boolean {
-        return syllabus.isNotBlank()
-    }
     companion object {
         val INITIAL = SyllabusState()
     }

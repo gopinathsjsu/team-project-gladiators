@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,9 +29,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.course.ui.model.UserType
@@ -232,7 +235,7 @@ fun CourseCard(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .constrainAs(text1) {
                     top.linkTo(parent.top, margin = 8.dp)
                 },
@@ -242,22 +245,25 @@ fun CourseCard(
         )
         Text(
             modifier = modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(start = 16.dp, end = 24.dp, top = 16.dp)
                 .constrainAs(text2) {
                     top.linkTo(text1.bottom)
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                    width = Dimension.fillToConstraints
                 },
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             text = course.description,
             textAlign = TextAlign.Start,
             style = TextStyle(
-                fontSize = 18.sp
+                fontSize = 16.sp
             )
         )
         Divider(
             modifier = modifier
                 .constrainAs(divider) {
-                    top.linkTo(text2.bottom, margin = 8.dp)
+                    top.linkTo(text2.bottom, margin = 16.dp)
                     start.linkTo(parent.start, margin = 0.dp)
                     end.linkTo(parent.end, margin = 0.dp)
                 }
@@ -279,6 +285,7 @@ fun CourseCard(
                     .wrapContentHeight()
                     .constrainAs(warning) {
                         top.linkTo(text1.top)
+                        bottom.linkTo(text1.bottom)
                         end.linkTo(icon.start)
                     },
                 text = stringResource(id = R.string.courses_unpublished),
