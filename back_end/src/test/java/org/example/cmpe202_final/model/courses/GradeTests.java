@@ -14,28 +14,32 @@ public class GradeTests {
     public void testGettersAndSetters() {
         // Set up test data
         String id = "123";
-        Double score = 85.5;
+        int score = 85;
         String studentId = "456";
         String courseId = "789";
+        String submissionLink ="www.test.com/123";
 
         // Set values using setters
         grade.setId(id);
         grade.setScore(score);
         grade.setStudentId(studentId);
-        grade.setCourseId(courseId);
+        grade.setAssignmentId(courseId);
+        grade.setSubmissionLink(submissionLink);
 
         // Test getters
         assertEquals(id, grade.getId());
         assertEquals(score, grade.getScore());
         assertEquals(studentId, grade.getStudentId());
-        assertEquals(courseId, grade.getCourseId());
+        assertEquals(courseId, grade.getAssignmentId());
+        assertEquals(submissionLink, grade.getSubmissionLink());
 
-        Grade grade2 = new Grade(id, score, studentId, courseId);
+        Grade grade2 = new Grade(id, score, studentId, courseId, submissionLink);
 
         // Test getters
         assertEquals(id, grade2.getId());
         assertEquals(score, grade2.getScore());
         assertEquals(studentId, grade2.getStudentId());
-        assertEquals(courseId, grade2.getCourseId());
+        assertEquals(courseId, grade2.getAssignmentId());
+        assertEquals(submissionLink, grade2.getSubmissionLink());
     }
 }

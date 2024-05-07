@@ -63,6 +63,7 @@ class AssignmentListFragmentTest {
     @Before
     fun setUp() {
         mockRepo = mockk(relaxed = true)
+
         stopKoin()
         startKoin {
             modules(
@@ -95,7 +96,8 @@ class AssignmentListFragmentTest {
         launchFragmentInContainer<AssignmentsFragment>(
             fragmentArgs = bundleOf(
                 AssignmentsFragment.KEY_COURSE_ID to "courseId",
-                AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name
+                AssignmentsFragment.KEY_USER_TYPE to UserType.FACULTY.name,
+                AssignmentsFragment.KEY_USER_ID to "userId"
             ),
             factory = object : FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
