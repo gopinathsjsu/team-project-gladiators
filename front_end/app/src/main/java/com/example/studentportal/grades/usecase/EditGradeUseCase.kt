@@ -1,6 +1,5 @@
 package com.example.studentportal.grades.usecase
 
-import android.util.Log
 import com.example.studentportal.common.service.models.defaultFailureFlow
 import com.example.studentportal.common.service.models.successFlow
 import com.example.studentportal.common.usecase.BaseUseCase
