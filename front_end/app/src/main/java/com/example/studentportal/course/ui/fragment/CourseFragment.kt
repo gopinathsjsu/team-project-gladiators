@@ -23,7 +23,6 @@ import com.example.studentportal.course.ui.viewmodel.CourseDetailsViewModel
 import com.example.studentportal.databinding.FragmentCourseBinding
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.students.ui.fragment.StudentsFragment
-import com.example.studentportal.syllabus.ui.fragment.SyllabusFragment
 
 class CourseFragment(
     viewModelFactory: ViewModelProvider.Factory = CourseDetailsViewModel.CourseViewModelFactory
@@ -70,7 +69,7 @@ class CourseFragment(
                         }
 
                         Command.ShowContent -> {
-                            val fragment = SyllabusFragment.newInstance(
+                            val fragment = CourseContentFragment.newInstance(
                                 course?.id.orEmpty(),
                                 userType.name
                             )

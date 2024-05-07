@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
+import com.example.studentportal.common.ui.viewmodel.BaseViewModel
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
@@ -24,8 +25,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
 
 class CourseContentViewModel(
-    val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+    dispatcher: CoroutineDispatcher
+) : BaseViewModel(dispatcher = dispatcher) {
     @VisibleForTesting
     internal val _uiResultLiveData = MutableLiveData<CourseContentUiResult>()
     val uiResultLiveData: LiveData<CourseContentUiResult>

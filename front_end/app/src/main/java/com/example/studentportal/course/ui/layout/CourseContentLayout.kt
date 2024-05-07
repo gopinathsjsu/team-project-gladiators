@@ -17,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -115,6 +116,7 @@ fun ContentLayout(
             FloatingActionButton(
                 onClick = onAddClicked,
                 modifier = Modifier
+                    .testTag("editContent")
                     .padding(16.dp)
                     .constrainAs(btnAdd) {
                         bottom.linkTo(parent.bottom)

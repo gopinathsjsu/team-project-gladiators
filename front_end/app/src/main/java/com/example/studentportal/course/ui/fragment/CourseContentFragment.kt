@@ -6,17 +6,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.course.ui.layout.CourseContentLayout
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.course.ui.viewmodel.CourseContentViewModel
+import com.example.studentportal.course.ui.viewmodel.CourseDetailsViewModel
 import com.example.studentportal.databinding.FragmentCourseBinding
 
-class CourseContentFragment : BaseFragment<FragmentCourseBinding>(TAG) {
+class CourseContentFragment(
+    viewModelFactory: ViewModelProvider.Factory = CourseContentViewModel.SyllabusViewModelFactory
+) : BaseFragment<FragmentCourseBinding>(TAG) {
     internal val viewModel by viewModels<CourseContentViewModel> {
-        CourseContentViewModel.SyllabusViewModelFactory
+        viewModelFactory
     }
 
     val courseId: String
