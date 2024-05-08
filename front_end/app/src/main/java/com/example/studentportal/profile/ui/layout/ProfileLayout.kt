@@ -72,48 +72,50 @@ fun ProfileLayout(
                             start.linkTo(parent.start)
                         }
                 )
-                if (showLogoutButton && userType != UserType.ADMIN) {
-                    Column(
-                        modifier = Modifier
-                            .padding(vertical = 8.dp, horizontal = 16.dp)
-                            .constrainAs(hideAnnouncements) {
-                                top.linkTo(userLayout.bottom)
-                                start.linkTo(parent.start)
-                            }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.announcement_hide),
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 20.sp
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Switch(
-                            checked = checkedState ?: false,
-                            colors = SwitchColors(
-                                checkedThumbColor = Color.White,
-                                checkedTrackColor = Color.Black,
-                                checkedBorderColor = Color.White,
-                                checkedIconColor = Color.White,
-                                uncheckedThumbColor = Color.White,
-                                uncheckedTrackColor = Color.Gray,
-                                uncheckedBorderColor = Color.White,
-                                uncheckedIconColor = Color.White,
-                                disabledCheckedThumbColor = Color.White,
-                                disabledCheckedTrackColor = Color.White,
-                                disabledCheckedBorderColor = Color.White,
-                                disabledCheckedIconColor = Color.White,
-                                disabledUncheckedThumbColor = Color.White,
-                                disabledUncheckedTrackColor = Color.White,
-                                disabledUncheckedBorderColor = Color.White,
-                                disabledUncheckedIconColor = Color.Gray
-                            ),
-                            onCheckedChange = {
-                                viewModel.updateChecked(it)
-                            }
-                        )
+                if (showLogoutButton) {
+                    if (userType != UserType.ADMIN) {
+                        Column(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
+                                .constrainAs(hideAnnouncements) {
+                                    top.linkTo(userLayout.bottom)
+                                    start.linkTo(parent.start)
+                                }
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.announcement_hide),
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 20.sp
+                                ),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Switch(
+                                checked = checkedState ?: false,
+                                colors = SwitchColors(
+                                    checkedThumbColor = Color.White,
+                                    checkedTrackColor = Color.Black,
+                                    checkedBorderColor = Color.White,
+                                    checkedIconColor = Color.White,
+                                    uncheckedThumbColor = Color.White,
+                                    uncheckedTrackColor = Color.Gray,
+                                    uncheckedBorderColor = Color.White,
+                                    uncheckedIconColor = Color.White,
+                                    disabledCheckedThumbColor = Color.White,
+                                    disabledCheckedTrackColor = Color.White,
+                                    disabledCheckedBorderColor = Color.White,
+                                    disabledCheckedIconColor = Color.White,
+                                    disabledUncheckedThumbColor = Color.White,
+                                    disabledUncheckedTrackColor = Color.White,
+                                    disabledUncheckedBorderColor = Color.White,
+                                    disabledUncheckedIconColor = Color.Gray
+                                ),
+                                onCheckedChange = {
+                                    viewModel.updateChecked(it)
+                                }
+                            )
+                        }
                     }
                     Button(
                         modifier = Modifier
@@ -121,7 +123,13 @@ fun ProfileLayout(
                             .padding(16.dp)
                             .fillMaxWidth()
                             .constrainAs(logoutButton) {
-                                top.linkTo(hideAnnouncements.bottom)
+                                top.linkTo(
+                                    if (userType != UserType.ADMIN) {
+                                        hideAnnouncements.bottom
+                                    } else {
+                                        userLayout.bottom
+                                    }
+                                )
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                             },
