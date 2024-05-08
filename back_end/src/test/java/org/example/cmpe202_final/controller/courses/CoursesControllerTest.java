@@ -5,10 +5,12 @@ import org.example.cmpe202_final.controller.AuthControllerTestConfiguration;
 import org.example.cmpe202_final.controller.MockSecurityConfiguration;
 import org.example.cmpe202_final.controller.auth.AuthController;
 import org.example.cmpe202_final.controller.course.CourseController;
+import org.example.cmpe202_final.model.announcement.Announcement;
 import org.example.cmpe202_final.model.course.Course;
 import org.example.cmpe202_final.model.course.Semester;
 import org.example.cmpe202_final.model.user.User;
 import org.example.cmpe202_final.model.user.UserType;
+import org.example.cmpe202_final.service.announcement.AnnouncementService;
 import org.example.cmpe202_final.service.auth.TokenService;
 import org.example.cmpe202_final.service.course.CourseService;
 import org.example.cmpe202_final.service.semester.SemesterService;
@@ -51,6 +53,9 @@ public class CoursesControllerTest {
     private UserService userService;
 
     @MockBean
+    private AnnouncementService announcementService;
+
+    @MockBean
     private SemesterService semesterService;
 
     @MockBean
@@ -68,13 +73,10 @@ public class CoursesControllerTest {
     public void testGetCoursesWithoutUserId() throws Exception {
         // Mock Response
         given(courseService.findAllCourses()).willReturn(getCourses());
+        given(announcementService.getAnnouncementsByCourse(any())).willReturn(new ArrayList<>());
 
         // Test Response without userId
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getDefaultResponseViews())))
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses")).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json(objectMapper.writeValueAsString(getDefaultResponseViews()))).andReturn();
     }
 
     @Test
@@ -84,13 +86,10 @@ public class CoursesControllerTest {
         given(courseService.findByEnrolledStudent("studentId")).willReturn(getCourses());
         given(semesterService.findAllSemesters()).willReturn(getSemesters(mockDate));
         given(userService.findById("studentId")).willReturn(getStudent());
+        given(announcementService.getAnnouncementsByCourse(any())).willReturn(new ArrayList<>());
 
         // Test Response without userId
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=studentId"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getStudentResponseViews(mockDate))))
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=studentId")).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json(objectMapper.writeValueAsString(getStudentResponseViews(mockDate)))).andReturn();
     }
 
     @Test
@@ -100,13 +99,10 @@ public class CoursesControllerTest {
         given(courseService.findByInstructor("instructor1")).willReturn(getCourses());
         given(semesterService.findAllSemesters()).willReturn(getSemesters(mockDate));
         given(userService.findById("instructor1")).willReturn(getOptionalFaculty());
+        given(announcementService.getAnnouncementsByCourse(any())).willReturn(new ArrayList<>());
 
         // Test Response without userId
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=instructor1"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getProfessorResponseViews(mockDate))))
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=instructor1")).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json(objectMapper.writeValueAsString(getProfessorResponseViews(mockDate)))).andReturn();
     }
 
     @Test
@@ -117,13 +113,10 @@ public class CoursesControllerTest {
         given(semesterService.findAllSemesters()).willReturn(getSemesters(mockDate));
         given(userService.findByType(UserType.FACULTY)).willReturn(new ArrayList<>(List.of(getFaculty())));
         given(userService.findById("admin1")).willReturn(getAdmin());
+        given(announcementService.getAnnouncementsByCourse(any())).willReturn(new ArrayList<>());
 
         // Test Response without userId
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=admin1"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(getAdminViews(mockDate))))
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses?userId=admin1")).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json(objectMapper.writeValueAsString(getAdminViews(mockDate)))).andReturn();
     }
 
     @Test
@@ -132,27 +125,20 @@ public class CoursesControllerTest {
         UserService userService = mock(UserService.class);
         SemesterService semesterService = mock(SemesterService.class);
         CourseService courseService = mock(CourseService.class);
+        AnnouncementService announcementService = mock(AnnouncementService.class);
 
         // Create the controller instance with mocks injected
-        CourseController controller = new CourseController(userService, semesterService, courseService);
+        CourseController controller = new CourseController(userService, semesterService, courseService, announcementService);
 
         // Mock the behavior of UserType.ADMIN.getCourseStrategy().getCourseViews()
         ArrayList<CourseViewEntity> expectedCourseViews = new ArrayList<>();
-        when(UserType.ADMIN.getCourseStrategy().getCourseViews(
-                courseService,
-                semesterService,
-                userService,
-                ""
-        )).thenReturn(expectedCourseViews);
+        when(UserType.ADMIN.getCourseStrategy().getCourseViews(courseService, semesterService, userService, "")).thenReturn(expectedCourseViews);
 
         // Set up MockMvc for controller testing
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         // Perform a POST request to create a course
-        mockMvc.perform(MockMvcRequestBuilders.post("/courses")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"courseId\":\"123\", \"courseName\":\"Example Course\"}"))
-                .andExpect(status().isOk()) // Expect HTTP status 200
+        mockMvc.perform(MockMvcRequestBuilders.post("/courses").contentType(MediaType.APPLICATION_JSON).content("{\"courseId\":\"123\", \"courseName\":\"Example Course\"}")).andExpect(status().isOk()) // Expect HTTP status 200
                 .andExpect(jsonPath("$").isArray()) // Expect response to be an array
                 .andExpect(jsonPath("$").isEmpty()); // Expect response array to be empty
 
@@ -167,9 +153,10 @@ public class CoursesControllerTest {
         UserService userService = mock(UserService.class);
         SemesterService semesterService = mock(SemesterService.class);
         CourseService courseService = mock(CourseService.class);
+        AnnouncementService announcementService = mock(AnnouncementService.class);
 
         // Create the controller instance with mocks injected
-        CourseController controller = new CourseController(userService, semesterService, courseService);
+        CourseController controller = new CourseController(userService, semesterService, courseService, announcementService);
 
         // Create a sample course object
         Course sampleCourse = new Course("123", "InstructorId", new HashSet<>(), new HashSet<>(), "Semester", true, "Example Course", "Description");
@@ -181,14 +168,39 @@ public class CoursesControllerTest {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         // Perform a POST request to update the course
-        mockMvc.perform(MockMvcRequestBuilders.post("/courses/update")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":\"123\", \"instructor\":\"NewInstructorId\", \"enrolledStudents\":[], \"assignments\":[], \"semester\":\"NewSemester\", \"published\":true, \"name\":\"Updated Course\", \"description\":\"New Description\"}"))
-                .andExpect(status().isOk()) // Expect HTTP status 200
+        mockMvc.perform(MockMvcRequestBuilders.post("/courses/update").contentType(MediaType.APPLICATION_JSON).content("{\"id\":\"123\", \"instructor\":\"NewInstructorId\", \"enrolledStudents\":[], \"assignments\":[], \"semester\":\"NewSemester\", \"published\":true, \"name\":\"Updated Course\", \"description\":\"New Description\"}")).andExpect(status().isOk()) // Expect HTTP status 200
                 .andExpect(jsonPath("$.course.id").value("123")); // Expect courseId to be "123"// Expect instructor to be "NewInstructorId"
 
         // Verify that courseService.addItem(course) was called once
         verify(courseService, times(1)).addItem(any());
+    }
+
+    @Test
+    public void testPostAnnouncement() throws Exception {
+        // Create mocks for the services
+        UserService userService = mock(UserService.class);
+        SemesterService semesterService = mock(SemesterService.class);
+        CourseService courseService = mock(CourseService.class);
+        AnnouncementService announcementService = mock(AnnouncementService.class);
+
+        // Create the controller instance with mocks injected
+        CourseController controller = new CourseController(userService, semesterService, courseService, announcementService);
+
+        // Create a sample course object
+        Course sampleCourse = new Course("123", "InstructorId", new HashSet<>(), new HashSet<>(), "Semester", true, "Example Course", "Description");
+
+        // Mock the behavior of courseService.addItem(course) to return the updated course
+        when(courseService.findCourseById(any())).thenReturn(sampleCourse);
+
+        // Set up MockMvc for controller testing
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        Announcement announcement = new Announcement("id", "123", "title", "description");
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Perform a POST request to update the course
+        mockMvc.perform(MockMvcRequestBuilders.post("/courses/announcement").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(announcement))).andExpect(status().isOk()); // Expect courseId to be "123"// Expect instructor to be "NewInstructorId"
     }
 
     @Test
@@ -197,9 +209,10 @@ public class CoursesControllerTest {
         UserService userService = mock(UserService.class);
         SemesterService semesterService = mock(SemesterService.class);
         CourseService courseService = mock(CourseService.class);
+        AnnouncementService announcementService = mock(AnnouncementService.class);
 
         // Create the controller instance with mocks injected
-        CourseController controller = new CourseController(userService, semesterService, courseService);
+        CourseController controller = new CourseController(userService, semesterService, courseService, announcementService);
 
         // Create sample data for semesters and users
         List<Semester> sampleSemesters = Arrays.asList(new Semester(/* provide necessary constructor arguments */));
@@ -213,8 +226,7 @@ public class CoursesControllerTest {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         // Perform a GET request to get course input data
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses/input"))
-                .andExpect(status().isOk()) // Expect HTTP status 200
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/input")).andExpect(status().isOk()) // Expect HTTP status 200
                 .andExpect(jsonPath("$.semesters").isArray()) // Expect semesters array
                 .andExpect(jsonPath("$.semesters[0]").exists()) // Expect at least one semester
                 .andExpect(jsonPath("$.users").isArray()) // Expect users array
@@ -231,24 +243,16 @@ public class CoursesControllerTest {
         UserService userService = mock(UserService.class);
         SemesterService semesterService = mock(SemesterService.class);
         CourseService courseService = mock(CourseService.class);
+        AnnouncementService announcementService = mock(AnnouncementService.class);
 
         // Create the controller instance with mocks injected
-        CourseController controller = new CourseController(userService, semesterService, courseService);
+        CourseController controller = new CourseController(userService, semesterService, courseService, announcementService);
 
         // Create a sample course object
         Course sampleCourse = new Course("123", "InstructorId", new HashSet<>(), new HashSet<>(), "Semester", true, "Example Course", "Description");
 
         // Create a sample instructor object
-        User sampleInstructor = User.builder()
-                .id("InstructorId")
-                .password("password")
-                .type("type")
-                .firstName("John")
-                .lastName("Doe")
-                .biography("Biography")
-                .email("john.doe@example.com")
-                .phone("1234567890")
-                .build();
+        User sampleInstructor = User.builder().id("InstructorId").password("password").type("type").firstName("John").lastName("Doe").biography("Biography").email("john.doe@example.com").phone("1234567890").build();
 
         // Mock the behavior of courseService.findById(courseId) and userService.findById(instructorId)
         when(courseService.findById("123")).thenReturn(Optional.of(sampleCourse));
@@ -258,8 +262,7 @@ public class CoursesControllerTest {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         // Perform a GET request to get course details
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses/123/details"))
-                .andExpect(status().isOk()) // Expect HTTP status 200
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/123/details")).andExpect(status().isOk()) // Expect HTTP status 200
                 .andExpect(jsonPath("$.course.id").value("123")) // Expect courseId to be "123"
                 .andExpect(jsonPath("$.course.name").value("Example Course")) // Expect courseName to be "Example Course"
                 .andExpect(jsonPath("$.instructor.id").value("InstructorId")) // Expect instructorId to be "InstructorId"
@@ -272,201 +275,25 @@ public class CoursesControllerTest {
     }
 
     List<CourseViewCourse> getDefaultResponseViews() {
-        return Arrays.asList(
-                new CourseViewCourse(
-                        "id1",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student3", "Student4")),
-                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
-                        "semester1",
-                        true,
-                        "course1",
-                        "description1"
-                ),
-                new CourseViewCourse(
-                        "id2",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        true,
-                        "course2",
-                        "description2"
-                ),
-                new CourseViewCourse(
-                        "id3",
-                        null,
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        false,
-                        "course2",
-                        "description2"
-                )
-        );
+        return Arrays.asList(new CourseViewCourse("id1", "instructor1", new HashSet<>(Set.of("Student3", "Student4")), new HashSet<>(Set.of("Assignment3", "Assignment4")), "semester1", true, "course1", "description1"), new CourseViewCourse("id2", "instructor1", new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", true, "course2", "description2"), new CourseViewCourse("id3", null, new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", false, "course2", "description2"));
     }
 
     List<CourseViewEntity> getProfessorResponseViews(Date date) {
-        return Arrays.asList(
-                new CourseViewSemester(
-                        "semester1",
-                        date,
-                        date,
-                        "Semester Name"
-                ),
-                new CourseViewCourse(
-                        "id1",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student3", "Student4")),
-                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
-                        "semester1",
-                        true,
-                        "course1",
-                        "description1"
-                ),
-                new CourseViewCourse(
-                        "id2",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        true,
-                        "course2",
-                        "description2"
-                ),
-                new CourseViewCourse(
-                        "id3",
-                        null,
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        false,
-                        "course2",
-                        "description2"
-                )
-        );
+        return Arrays.asList(new CourseViewSemester("semester1", date, date, "Semester Name"), new CourseViewCourse("id1", "instructor1", new HashSet<>(Set.of("Student3", "Student4")), new HashSet<>(Set.of("Assignment3", "Assignment4")), "semester1", true, "course1", "description1"), new CourseViewCourse("id2", "instructor1", new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", true, "course2", "description2"), new CourseViewCourse("id3", null, new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", false, "course2", "description2"));
     }
 
     List<CourseViewEntity> getStudentResponseViews(Date date) {
-        return Arrays.asList(
-                new CourseViewSemester(
-                        "semester1",
-                        date,
-                        date,
-                        "Semester Name"
-                ),
-                new CourseViewCourse(
-                        "id1",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student3", "Student4")),
-                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
-                        "semester1",
-                        true,
-                        "course1",
-                        "description1"
-                ),
-                new CourseViewCourse(
-                        "id2",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        true,
-                        "course2",
-                        "description2"
-                )
-        );
+        return Arrays.asList(new CourseViewSemester("semester1", date, date, "Semester Name"), new CourseViewCourse("id1", "instructor1", new HashSet<>(Set.of("Student3", "Student4")), new HashSet<>(Set.of("Assignment3", "Assignment4")), "semester1", true, "course1", "description1"), new CourseViewCourse("id2", "instructor1", new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", true, "course2", "description2"));
     }
 
     List<CourseViewEntity> getAdminViews(Date date) {
-        return Arrays.asList(
-                new CourseViewFaculty(
-                        "instructor1",
-                        "1234",
-                        UserType.FACULTY.name(),
-                        "ProfessorName",
-                        "ProfessorLastName"
-                ),
-                new CourseViewSemester(
-                        "semester1",
-                        date,
-                        date,
-                        "Semester Name"
-                ),
-                new CourseViewCourse(
-                        "id1",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student3", "Student4")),
-                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
-                        "semester1",
-                        true,
-                        "course1",
-                        "description1"
-                ),
-                new CourseViewCourse(
-                        "id2",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        true,
-                        "course2",
-                        "description2"
-                ),
-                CourseViewFaculty.getUnassignedView(),
-                new CourseViewSemester(
-                        "semester1",
-                        date,
-                        date,
-                        "Semester Name"
-                ),
-                new CourseViewCourse(
-                        "id3",
-                        null,
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        false,
-                        "course2",
-                        "description2"
-                )
+        return Arrays.asList(new CourseViewFaculty("instructor1", "1234", UserType.FACULTY.name(), "ProfessorName", "ProfessorLastName"), new CourseViewSemester("semester1", date, date, "Semester Name"), new CourseViewCourse("id1", "instructor1", new HashSet<>(Set.of("Student3", "Student4")), new HashSet<>(Set.of("Assignment3", "Assignment4")), "semester1", true, "course1", "description1"), new CourseViewCourse("id2", "instructor1", new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", true, "course2", "description2"), CourseViewFaculty.getUnassignedView(), new CourseViewSemester("semester1", date, date, "Semester Name"), new CourseViewCourse("id3", null, new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", false, "course2", "description2")
 
         );
     }
 
     List<Course> getCourses() {
-        return Arrays.asList(
-                new Course(
-                        "id1",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student3", "Student4")),
-                        new HashSet<>(Set.of("Assignment3", "Assignment4")),
-                        "semester1",
-                        true,
-                        "course1",
-                        "description1"
-                ),
-                new Course(
-                        "id2",
-                        "instructor1",
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        true,
-                        "course2",
-                        "description2"
-                ),
-                new Course(
-                        "id3",
-                        null,
-                        new HashSet<>(Set.of("Student1", "Student2")),
-                        new HashSet<>(Set.of("Assignment1", "Assignment2")),
-                        "semester1",
-                        false,
-                        "course2",
-                        "description2"
-                )
-        );
+        return Arrays.asList(new Course("id1", "instructor1", new HashSet<>(Set.of("Student3", "Student4")), new HashSet<>(Set.of("Assignment3", "Assignment4")), "semester1", true, "course1", "description1"), new Course("id2", "instructor1", new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", true, "course2", "description2"), new Course("id3", null, new HashSet<>(Set.of("Student1", "Student2")), new HashSet<>(Set.of("Assignment1", "Assignment2")), "semester1", false, "course2", "description2"));
     }
 
     List<Semester> getSemesters(Date date) {
@@ -481,7 +308,7 @@ public class CoursesControllerTest {
         return Optional.of(getFaculty());
     }
 
-    User getFaculty(){
+    User getFaculty() {
         return new User("instructor1", "1234", UserType.FACULTY.name(), "ProfessorName", "ProfessorLastName", "biography", "email", "phone");
     }
 
@@ -493,20 +320,14 @@ public class CoursesControllerTest {
     public void testGetStudentsByCourseName() throws Exception {
         // Given
         String courseId = "CMPE_287";
-        List<User> mockUsers = Arrays.asList(
-                new User("user1", "password1", UserType.STUDENT.name(), "John", "Doe", null, null, null),
-                new User("user2", "password2", UserType.STUDENT.name(), "Jane", "Doe", null, null, null)
-        );
+        List<User> mockUsers = Arrays.asList(new User("user1", "password1", UserType.STUDENT.name(), "John", "Doe", null, null, null), new User("user2", "password2", UserType.STUDENT.name(), "Jane", "Doe", null, null, null));
 
         // When
         given(courseService.findStudentsByCourseId(courseId)).willReturn(mockUsers);
+        given(announcementService.getAnnouncementsByCourse(any())).willReturn(new ArrayList<>());
 
         // Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/courses/{courseId}/students", courseId))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(mockUsers)))
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/courses/{courseId}/students", courseId)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json(objectMapper.writeValueAsString(mockUsers))).andReturn();
     }
 
 }

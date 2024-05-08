@@ -21,7 +21,6 @@ import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.ActivityHomeBinding
 import com.example.studentportal.home.ui.fragment.HomeFragment
-import com.example.studentportal.notifications.ui.fragment.NotificationsFragment
 import com.example.studentportal.profile.ui.fragment.ProfileFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -79,8 +78,8 @@ class HomeActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                 userId = userId,
                 userType = userType
             )
-            R.id.nav_profile -> ProfileFragment.newInstance(userId)
-            R.id.nav_notifications -> NotificationsFragment.newInstance()
+            R.id.nav_profile -> ProfileFragment.newInstance(userId, userType)
+            // R.id.nav_notifications -> NotificationsFragment.newInstance()
             else -> HomeFragment.newInstance(
                 userId = userId,
                 userType = userType

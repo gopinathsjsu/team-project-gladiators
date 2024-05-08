@@ -35,7 +35,7 @@ class AddAssignmentViewModel(
         _uiResultLiveData.value = state.copy(name = name)
     }
 
-    fun updateLink(link: String) {
+    fun updateDescription(link: String) {
         val state = _uiResultLiveData.value ?: UiState.INITIAL
         _uiResultLiveData.value = state.copy(link = link)
     }

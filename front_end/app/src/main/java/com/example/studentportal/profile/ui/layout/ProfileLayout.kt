@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +33,7 @@ import com.example.studentportal.R
 import com.example.studentportal.common.ui.model.BaseUiState
 import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.error
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.ui.viewModel.UserProfileViewModel
 
@@ -38,11 +41,14 @@ import com.example.studentportal.profile.ui.viewModel.UserProfileViewModel
 fun ProfileLayout(
     showLogoutButton: Boolean,
     userId: String,
+    userType: UserType,
     viewModel: UserProfileViewModel,
     onLogoutClicked: () -> Unit,
     modifier: Modifier
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
+
+    val checkedState by viewModel.checkedState.observeAsState()
 
     // API Call
     LaunchedEffect(key1 = Unit) {
@@ -53,7 +59,7 @@ fun ProfileLayout(
         is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
         is BaseUiState.Success -> {
             ConstraintLayout(modifier = modifier) {
-                val (userLayout, logoutButton) = createRefs()
+                val (userLayout, logoutButton, hideAnnouncements) = createRefs()
                 UserLayout(
                     user = uiState.data() ?: UserUiModel.empty(),
                     modifier = Modifier
@@ -66,14 +72,56 @@ fun ProfileLayout(
                             start.linkTo(parent.start)
                         }
                 )
-                if (showLogoutButton) {
+                if (showLogoutButton && userType != UserType.ADMIN) {
+                    Column(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                            .constrainAs(hideAnnouncements) {
+                                top.linkTo(userLayout.bottom)
+                                start.linkTo(parent.start)
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.announcement_hide),
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 20.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Switch(
+                            checked = checkedState ?: false,
+                            colors = SwitchColors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = Color.Black,
+                                checkedBorderColor = Color.White,
+                                checkedIconColor = Color.White,
+                                uncheckedThumbColor = Color.White,
+                                uncheckedTrackColor = Color.Gray,
+                                uncheckedBorderColor = Color.White,
+                                uncheckedIconColor = Color.White,
+                                disabledCheckedThumbColor = Color.White,
+                                disabledCheckedTrackColor = Color.White,
+                                disabledCheckedBorderColor = Color.White,
+                                disabledCheckedIconColor = Color.White,
+                                disabledUncheckedThumbColor = Color.White,
+                                disabledUncheckedTrackColor = Color.White,
+                                disabledUncheckedBorderColor = Color.White,
+                                disabledUncheckedIconColor = Color.Gray
+                            ),
+                            onCheckedChange = {
+                                viewModel.updateChecked(it)
+                            }
+                        )
+                    }
                     Button(
                         modifier = Modifier
                             .testTag("submitButton")
                             .padding(16.dp)
                             .fillMaxWidth()
                             .constrainAs(logoutButton) {
-                                top.linkTo(userLayout.bottom)
+                                top.linkTo(hideAnnouncements.bottom)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                             },
@@ -97,6 +145,7 @@ fun ProfileLayout(
                 }
             }
         }
+
         else -> Text(text = "Loading...")
     }
 }

@@ -15,8 +15,10 @@ import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
+import com.example.studentportal.course.ui.model.AnnouncementUiModel
 import com.example.studentportal.course.ui.model.CourseDetailsUiModel
 import com.example.studentportal.course.usecase.CourseDetailsUseCase
+import com.example.studentportal.course.usecase.PostAnnouncementUseCase
 import com.example.studentportal.course.usecase.UpdateCourseUseCase
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,8 +37,7 @@ class CourseDetailsViewModel(
     suspend fun fetchCourseDetails(courseId: String) {
         _uiResultLiveData.value = BaseUiState.Loading()
         viewModelScope.launch(dispatcher) {
-            CourseDetailsUseCase(courseId = courseId, repository = koin.get())
-                .launch()
+            CourseDetailsUseCase(courseId = courseId, repository = koin.get()).launch()
                 .collectLatest { result ->
                     when (result) {
                         is UseCaseResult.Failure -> {
@@ -44,6 +45,7 @@ class CourseDetailsViewModel(
                                 _uiResultLiveData.value = result.failure()
                             }
                         }
+
                         is UseCaseResult.Success -> {
                             viewModelScope.launch {
                                 _uiResultLiveData.value = result.success()
@@ -51,6 +53,43 @@ class CourseDetailsViewModel(
                         }
                     }
                 }
+        }
+    }
+
+    fun createAnnouncement(
+        announcement: AnnouncementUiModel,
+        onError: (BaseUiState<CourseDetailsUiModel, DefaultError>) -> Unit
+    ) {
+        val previousCourseDetails = _uiResultLiveData.value.data()
+        _uiResultLiveData.value = BaseUiState.Loading()
+        viewModelScope.launch(dispatcher) {
+            PostAnnouncementUseCase(
+                repository = koin.get(),
+                announcement = announcement.toUseCaseModel()
+            ).launch().collectLatest { result ->
+                when (result) {
+                    is UseCaseResult.Failure -> {
+                        viewModelScope.launch {
+                            // Post previous list
+                            _uiResultLiveData.value = BaseUiState.Success(
+                                CourseDetailsUiModel(
+                                    previousCourseDetails?.courseUiModel,
+                                    previousCourseDetails?.instructorUiModel,
+                                    previousCourseDetails?.announcements.orEmpty()
+                                )
+                            )
+                            // Notify UI post failed
+                            onError.invoke(result.failure())
+                        }
+                    }
+
+                    is UseCaseResult.Success -> {
+                        viewModelScope.launch {
+                            _uiResultLiveData.value = result.success()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -72,7 +111,8 @@ class CourseDetailsViewModel(
                             _uiResultLiveData.value = BaseUiState.Success(
                                 CourseDetailsUiModel(
                                     previousCourseDetails?.courseUiModel,
-                                    previousCourseDetails?.instructorUiModel
+                                    previousCourseDetails?.instructorUiModel,
+                                    previousCourseDetails?.announcements.orEmpty()
                                 )
                             )
                             // Notify UI post failed

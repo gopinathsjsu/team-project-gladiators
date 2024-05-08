@@ -46,7 +46,9 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(TAG) {
         return binding
     }
 
-    override fun menuItem() = R.id.nav_notifications
+    // override fun menuItem() = R.id.nav_notifications
+
+    override fun menuItem() = -1
 
     companion object {
 

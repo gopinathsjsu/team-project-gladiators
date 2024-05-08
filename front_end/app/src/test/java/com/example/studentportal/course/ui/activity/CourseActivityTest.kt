@@ -79,7 +79,8 @@ class CourseActivityTest {
                                 password = "Password",
                                 firstName = "FirstName",
                                 lastName = "LastName"
-                            )
+                            ),
+                            announcements = listOf()
                         )
                     )
 
