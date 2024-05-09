@@ -101,13 +101,18 @@ class CourseInputViewModel(
                 description.isNotBlank()
         }
 
-        fun toUiModel(id: String?): BaseCourseUiModel.CourseUiModel {
+
+        fun toUiModel(
+            id: String?,
+            assignments: Set<String>,
+            enrolledStudents: Set<String>
+        ): BaseCourseUiModel.CourseUiModel {
             return BaseCourseUiModel.CourseUiModel(
                 id = id ?: UUID.randomUUID().toString(),
                 name = this.name,
                 instructor = selectedUser?.id.orEmpty(),
-                enrolledStudents = setOf(),
-                assignments = setOf(),
+                enrolledStudents = enrolledStudents,
+                assignments = assignments,
                 semester = selectedSemester?.id.orEmpty(),
                 isPublished = false,
                 description = description

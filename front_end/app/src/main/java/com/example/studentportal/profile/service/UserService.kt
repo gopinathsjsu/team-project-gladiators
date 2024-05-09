@@ -19,4 +19,7 @@ interface UserService {
     fun login(
         @Body authRequest: AuthRequest
     ): Call<AuthResponseUseCaseModel>
+
+    @POST("/users")
+    fun updateUser(@Body user: UserUseCaseModel): Call<UserUseCaseModel>
 }
