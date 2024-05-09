@@ -45,4 +45,4 @@ private fun buildOkHttpClient(): OkHttpClient {
         .build()
 }
 
-const val KEY_BASE_URL = "http://10.0.2.2:8080"
+const val KEY_BASE_URL = "https://vivekcmpe.csproject.org"

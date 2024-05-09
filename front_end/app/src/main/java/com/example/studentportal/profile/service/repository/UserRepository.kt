@@ -23,6 +23,10 @@ class UserRepository(
         return provider.service().login(authRequest).execute()
     }
 
+    suspend fun updateUser(userUseCaseModel: UserUseCaseModel): Response<UserUseCaseModel> {
+        return provider.service().updateUser(userUseCaseModel).execute()
+    }
+
     companion object {
         fun koinModule(): Module {
             return module {

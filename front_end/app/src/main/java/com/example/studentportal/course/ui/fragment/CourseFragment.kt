@@ -16,6 +16,7 @@ import com.example.studentportal.R
 import com.example.studentportal.common.di.areAnnoucementsDisabled
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.showBaseDialogFragment
 import com.example.studentportal.course.ui.layout.CourseMenuLayout
 import com.example.studentportal.course.ui.model.UserType
@@ -71,7 +72,13 @@ class CourseFragment(
                     if (it == UserType.ADMIN) {
                         childFragmentManager.showBaseDialogFragment(
                             CourseInputFragment.newInstance(
-                                course = course
+                                course = if (viewModel.uiResultLiveData.value.data() != null) {
+                                    course?.copy(
+                                        instructor = viewModel.uiResultLiveData.value.data()?.courseUiModel?.instructor
+                                    )
+                                } else {
+                                    course
+                                }
                             )
                         )
                     } else if (it == UserType.FACULTY) {

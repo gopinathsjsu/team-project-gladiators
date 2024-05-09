@@ -137,7 +137,11 @@ fun CourseInputLayout(
                 disabledContentColor = Color.LightGray
             ),
             onClick = {
-                viewModel.uiResultLiveData.value?.toUiModel(existingCourse?.id)?.let {
+                viewModel.uiResultLiveData.value?.toUiModel(
+                    id = existingCourse?.id,
+                    assignments = existingCourse?.assignments.orEmpty(),
+                    enrolledStudents = existingCourse?.enrolledStudents.orEmpty()
+                )?.let {
                     onSubmitClicked.invoke(it)
                 }
             }
