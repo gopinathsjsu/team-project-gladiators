@@ -1,4 +1,4 @@
-package com.example.studentportal.assignment.ui.layout
+package com.example.studentportal.course.ui.layout
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,23 +18,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.studentportal.R
-import com.example.studentportal.assignment.ui.model.AssignmentUiModel
-import com.example.studentportal.assignment.ui.viewmodel.AddAssignmentViewModel
-import com.example.studentportal.common.ui.layout.DateInput
 import com.example.studentportal.common.ui.layout.DialogTitle
 import com.example.studentportal.common.ui.layout.FormInput
+import com.example.studentportal.course.ui.model.AnnouncementUiModel
+import com.example.studentportal.course.ui.viewmodel.AddAnnouncementViewModel
 
 @Composable
-fun AddAssignmentLayout(
+fun AddAnnouncementLayout(
     courseId: String,
-    viewModel: AddAssignmentViewModel,
+    viewModel: AddAnnouncementViewModel,
     modifier: Modifier,
     onCloseClicked: () -> Unit,
-    onSubmitClicked: (AssignmentUiModel) -> Unit
+    onSubmitClicked: (AnnouncementUiModel) -> Unit
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
     ConstraintLayout(modifier = modifier) {
-        val (title, nameInput, linkInput, dateInput, submitButton) = createRefs()
+        val (title, titleInput, messageInput, submitButton) = createRefs()
         DialogTitle(
             modifier = Modifier
                 .fillMaxWidth()
@@ -42,7 +41,7 @@ fun AddAssignmentLayout(
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
                 },
-            titleRes = R.string.assignments_new,
+            titleRes = R.string.add_announcement_title,
             onCloseClicked = onCloseClicked
         )
         FormInput(
@@ -50,11 +49,11 @@ fun AddAssignmentLayout(
                 .testTag("nameInput")
                 .padding(16.dp)
                 .fillMaxWidth()
-                .constrainAs(nameInput) {
+                .constrainAs(titleInput) {
                     top.linkTo(title.bottom)
                     start.linkTo(parent.start)
                 },
-            value = uiState?.name.orEmpty(),
+            value = uiState?.title.orEmpty(),
             onValueChange = {
                 viewModel.updateName(it)
             },
@@ -65,30 +64,15 @@ fun AddAssignmentLayout(
                 .testTag("linkInput")
                 .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp))
                 .fillMaxWidth()
-                .constrainAs(linkInput) {
-                    top.linkTo(nameInput.bottom)
+                .constrainAs(messageInput) {
+                    top.linkTo(titleInput.bottom)
                     start.linkTo(parent.start)
                 },
-            value = uiState?.link.orEmpty(),
+            value = uiState?.description.orEmpty(),
             onValueChange = {
                 viewModel.updateDescription(it)
             },
-            labelStringRes = R.string.assignments_link
-        )
-        DateInput(
-            modifier = Modifier
-                .testTag("dateInput")
-                .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp))
-                .fillMaxWidth()
-                .constrainAs(dateInput) {
-                    top.linkTo(linkInput.bottom)
-                    start.linkTo(parent.start)
-                },
-            value = uiState?.dueDate.orEmpty(),
-            labelStringRes = R.string.assignments_due_date,
-            onValueChange = {
-                viewModel.updateDate(it)
-            }
+            labelStringRes = R.string.announcement_message
         )
         Button(
             modifier = Modifier
@@ -96,7 +80,7 @@ fun AddAssignmentLayout(
                 .padding(16.dp)
                 .fillMaxWidth()
                 .constrainAs(submitButton) {
-                    top.linkTo(dateInput.bottom)
+                    top.linkTo(messageInput.bottom)
                     start.linkTo(parent.start)
                 },
             enabled = uiState?.readyToSubmit() ?: false,

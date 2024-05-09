@@ -1,5 +1,6 @@
 package com.example.studentportal.course.ui.fragment
 
+import android.content.SharedPreferences
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -44,7 +45,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
@@ -74,6 +74,9 @@ class CourseInputFragmentTest {
                 module {
                     single {
                         mockRepo
+                    }
+                    single {
+                        mockk<SharedPreferences>(relaxed = true)
                     }
                 }
             )
@@ -216,9 +219,10 @@ class CourseInputFragmentTest {
                 firstName = "firstName",
                 lastName = "lastName",
                 password = "password"
-            )
+            ),
+            announcements = listOf()
         )
-        coEvery { mockRepo.updateCourse(any()) } returns Response.success(
+        coEvery { mockRepo.postAnnouncement(any()) } returns Response.success(
             expectedResult
         )
         launchFragmentInContainer<CourseFragment>(
@@ -340,10 +344,8 @@ class CourseInputFragmentTest {
                 firstName = "firstName",
                 lastName = "lastName",
                 password = "password"
-            )
-        )
-        coEvery { mockRepo.updateCourse(any()) } returns Response.success(
-            expectedResult
+            ),
+            announcements = listOf()
         )
         coEvery { mockRepo.fetchCourseDetails(any()) } returns Response.success(
             expectedResult
@@ -392,6 +394,81 @@ class CourseInputFragmentTest {
             coVerify {
                 mockRepo.updateCourse(
                     course = any()
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `test post announcement content`() = runTest(mainDispatcher) {
+        val expectedResult = CourseDetailsUseCaseModel(
+            course = BaseCourseUseCaseModel.CourseUseCaseModel(
+                id = "id",
+                instructor = "instructor",
+                enrolledStudents = setOf(),
+                assignments = setOf(),
+                semester = "semester",
+                published = false,
+                name = "name",
+                description = "description"
+            ),
+            instructor = BaseCourseUseCaseModel.FacultyUseCaseModel(
+                id = "id",
+                firstName = "firstName",
+                lastName = "lastName",
+                password = "password"
+            ),
+            announcements = listOf()
+        )
+        coEvery { mockRepo.fetchCourseDetails(any()) } returns Response.success(
+            expectedResult
+        )
+        val viewModel = CourseDetailsViewModel(mainDispatcher)
+        launchFragmentInContainer<AnnouncementsFragment>(
+            fragmentArgs = bundleOf(
+                AnnouncementsFragment.KEY_COURSE to "courseId",
+                AnnouncementsFragment.KEY_USER_TYPE to UserType.FACULTY.name,
+                AnnouncementsFragment.KEY_USER_ID to "userId"
+            ),
+            factory = object : FragmentFactory() {
+                override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+                    return AnnouncementsFragment(
+                        viewModelFactory {
+                            initializer {
+                                viewModel
+                            }
+                        }
+                    )
+                }
+            }
+        ).onFragment { fragment ->
+            fragment.viewModel._uiResultLiveData.value = BaseUiState.Success(
+                expectedResult.toUiModel()
+            )
+            composeTestRule.onNodeWithTag("addAnnouncement").performClick()
+            fragment.childFragmentManager.executePendingTransactions()
+
+            assertThat(
+                fragment.childFragmentManager.fragments.any {
+                    it is AddAnnouncementFragment
+                }
+            ).isTrue()
+
+            composeTestRule.onNodeWithTag("nameInput").performTextInput("Updated Content")
+            composeTestRule.onNodeWithTag("linkInput").performTextInput("Updated Content")
+            composeTestRule.onNodeWithTag("submitButton").performClick()
+            fragment.childFragmentManager.executePendingTransactions()
+
+            // Verify Dialog Fragment is no longer visible
+            assertThat(fragment.childFragmentManager.fragments).isEmpty()
+
+            // Proceed with Api Call
+            mainDispatcher.scheduler.advanceUntilIdle()
+
+            // Verify assignment values
+            coVerify {
+                mockRepo.postAnnouncement(
+                    announcement = any()
                 )
             }
         }

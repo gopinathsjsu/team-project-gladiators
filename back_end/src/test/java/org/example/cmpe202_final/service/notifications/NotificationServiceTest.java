@@ -1,6 +1,8 @@
 package org.example.cmpe202_final.service.notifications;
 
 import org.example.cmpe202_final.model.notification.Notification;
+import org.example.cmpe202_final.repository.announcement.AnnouncementRepository;
+import org.example.cmpe202_final.repository.assignment.AssignmentRepository;
 import org.example.cmpe202_final.repository.notifications.NotificationRepository;
 import org.example.cmpe202_final.service.notification.NotificationService;
 import org.junit.jupiter.api.BeforeEach;

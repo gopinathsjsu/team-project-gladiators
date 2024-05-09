@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseFragment
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentStudentsBinding
 import com.example.studentportal.profile.ui.fragment.ProfileFragment
 import com.example.studentportal.students.ui.layout.StudentListLayout
@@ -36,7 +37,8 @@ class StudentsFragment(
                 viewModel = viewModel,
                 onClick = {
                     val fragment = ProfileFragment.newInstance(
-                        userId = it.id
+                        userId = it.id,
+                        userType = UserType.STUDENT
                     )
                     parentFragmentManager.showBaseFragment(
                         fragment = fragment,

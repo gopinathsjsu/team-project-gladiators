@@ -1,5 +1,6 @@
 package com.example.studentportal.home.service.repository
 
+import com.example.studentportal.course.usecase.model.AnnouncementUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseDetailsUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseInputUseCaseModel
 import com.example.studentportal.home.service.CourseService
@@ -67,6 +68,10 @@ class CourseServiceProviderTest {
         }
 
         override fun updateCourse(courseUseCaseModel: BaseCourseUseCaseModel.CourseUseCaseModel): Call<CourseDetailsUseCaseModel> {
+            return mockk(relaxed = true)
+        }
+
+        override fun postAnnouncement(announcementUiModel: AnnouncementUseCaseModel): Call<CourseDetailsUseCaseModel> {
             return mockk(relaxed = true)
         }
     }

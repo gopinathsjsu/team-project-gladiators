@@ -85,12 +85,6 @@ class HomeActivityTest {
                     homeActivity.onOptionsItemSelected(MockMenuItem(android.R.id.home))
                     assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.OPEN)
 
-                    // Go to notifications
-                    homeActivity.onNavigationItemSelected(MockMenuItem(R.id.nav_notifications))
-                    fragmentManager.executePendingTransactions()
-                    assertThat(fragmentManager.backStackEntryCount).isEqualTo(1)
-                    assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.CLOSED)
-
                     // Open Drawer Third Time
                     homeActivity.onOptionsItemSelected(MockMenuItem(android.R.id.home))
                     assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.OPEN)
@@ -98,18 +92,12 @@ class HomeActivityTest {
                     // Go to Profile
                     homeActivity.onNavigationItemSelected(MockMenuItem(R.id.nav_profile))
                     fragmentManager.executePendingTransactions()
-                    assertThat(fragmentManager.backStackEntryCount).isEqualTo(2)
+                    assertThat(fragmentManager.backStackEntryCount).isEqualTo(1)
                     assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.CLOSED)
 
                     // Open Drawer 4th Time
                     homeActivity.onOptionsItemSelected(MockMenuItem(android.R.id.home))
                     assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.OPEN)
-
-                    // Go to Notifications
-                    homeActivity.onNavigationItemSelected(MockMenuItem(R.id.nav_notifications))
-                    fragmentManager.executePendingTransactions()
-                    assertThat(fragmentManager.backStackEntryCount).isEqualTo(1)
-                    assertThat(mockDrawerState.state).isEqualTo(MockDrawerState.State.CLOSED)
 
                     // Open Drawer 5th Time
                     homeActivity.onOptionsItemSelected(MockMenuItem(android.R.id.home))

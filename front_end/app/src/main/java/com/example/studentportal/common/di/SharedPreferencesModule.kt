@@ -9,6 +9,7 @@ const val APP_SHARED_PREFERENCES_KEY = "APP_SHARED_PREFERENCES"
 const val APP_JWT_TOKEN_KEY = "APP_JWT_TOKEN_KEY"
 const val APP_USER_ID = "APP_USER_ID"
 const val APP_USER_TYPE = "APP_USER_TYPE"
+const val APP_DISABLE_ANNOUNCEMENTS = "APP_DISABLE_ANNOUNCEMENTS"
 
 val sharedPreferencesModule = module {
     single { get<Context>().getSharedPreferences(APP_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE) }
@@ -27,6 +28,7 @@ fun SharedPreferences.clearAuthenticatedUserData() {
     preferences.remove(APP_JWT_TOKEN_KEY)
     preferences.remove(APP_USER_ID)
     preferences.remove(APP_USER_TYPE)
+    preferences.remove(APP_DISABLE_ANNOUNCEMENTS)
     preferences.apply()
 }
 
@@ -40,4 +42,14 @@ fun SharedPreferences.getUserId(): String {
 
 fun SharedPreferences.getUserType(): String {
     return getString(APP_USER_TYPE, "").orEmpty()
+}
+
+fun SharedPreferences.hideAnnouncements(hide: Boolean) {
+    val preferences = this.edit()
+    preferences.putBoolean(APP_DISABLE_ANNOUNCEMENTS, hide)
+    preferences.apply()
+}
+
+fun SharedPreferences.areAnnoucementsDisabled(): Boolean {
+    return getBoolean(APP_DISABLE_ANNOUNCEMENTS, false)
 }

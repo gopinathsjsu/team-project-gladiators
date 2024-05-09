@@ -2,6 +2,7 @@ package com.example.studentportal.home.service.repository
 
 import com.example.studentportal.common.service.Repository
 import com.example.studentportal.common.service.serviceModule
+import com.example.studentportal.course.usecase.model.AnnouncementUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseDetailsUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseInputUseCaseModel
 import com.example.studentportal.home.service.CourseService
@@ -55,6 +56,10 @@ class CourseRepository(
 
     suspend fun updateCourse(course: BaseCourseUseCaseModel.CourseUseCaseModel): Response<CourseDetailsUseCaseModel> {
         return provider.service().updateCourse(courseUseCaseModel = course).execute()
+    }
+
+    suspend fun postAnnouncement(announcement: AnnouncementUseCaseModel): Response<CourseDetailsUseCaseModel> {
+        return provider.service().postAnnouncement(announcementUiModel = announcement).execute()
     }
 
     companion object {

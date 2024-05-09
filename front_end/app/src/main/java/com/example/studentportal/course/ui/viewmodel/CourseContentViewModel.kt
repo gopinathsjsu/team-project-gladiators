@@ -72,7 +72,8 @@ class CourseContentViewModel(
                             _uiResultLiveData.value = BaseUiState.Success(
                                 CourseDetailsUiModel(
                                     previousCourseDetails.courseUiModel,
-                                    previousCourseDetails.instructorUiModel
+                                    previousCourseDetails.instructorUiModel,
+                                    previousCourseDetails.announcements
                                 )
                             )
                             // Notify UI post failed

@@ -53,7 +53,8 @@ fun CourseMenuLayout(
     viewModel: CourseDetailsViewModel,
     modifier: Modifier = Modifier,
     onClicked: (command: Command) -> Unit,
-    onEditClicked: (userType: UserType) -> Unit
+    onEditClicked: (userType: UserType) -> Unit,
+    hideAnnouncements: Boolean
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
 
@@ -131,7 +132,13 @@ fun CourseMenuLayout(
                         bottom.linkTo(parent.bottom)
                     }
             ) {
-                items(userType.menuItems) {
+                items(
+                    if (hideAnnouncements) {
+                        userType.menuItems.filterNot { it.command is Command.Announcements }
+                    } else {
+                        userType.menuItems
+                    }
+                ) {
                     MenuItem(
                         menuItem = it,
                         onClicked = onClicked
