@@ -1,4 +1,4 @@
-package com.example.studentportal.course.ui.layout
+package com.example.studentportal.profile.ui.layout
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,24 +23,22 @@ import com.example.studentportal.R
 import com.example.studentportal.common.ui.layout.DialogTitle
 import com.example.studentportal.common.ui.layout.DropdownInput
 import com.example.studentportal.common.ui.layout.FormInput
-import com.example.studentportal.course.ui.viewmodel.CourseInputViewModel
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
+import com.example.studentportal.profile.ui.model.UserUiModel
+import com.example.studentportal.profile.ui.viewModel.EditProfileViewModel
+
 
 @Composable
-fun CourseInputLayout(
-    existingCourse: BaseCourseUiModel.CourseUiModel?,
-    viewModel: CourseInputViewModel,
+fun EditProfileLayout(
+    existingUser: UserUiModel?,
+    viewModel: EditProfileViewModel,
     modifier: Modifier,
     onCloseClicked: () -> Unit,
-    onSubmitClicked: (BaseCourseUiModel.CourseUiModel) -> Unit
+    onSubmitClicked: () -> Unit
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
-    // API call
-    LaunchedEffect(key1 = Unit) {
-        viewModel.fetchInputData()
-    }
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
-        val (title, nameInput, descriptionInput, semesterInput, instructorInput, submitButton) = createRefs()
+        val (title, biographyInput, phone, email, submitButton) = createRefs()
         DialogTitle(
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,85 +46,62 @@ fun CourseInputLayout(
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
                 },
-            titleRes = if (existingCourse != null) {
-                R.string.courses_update
-            } else {
-                R.string.courses_new
-            },
+            titleRes = R.string.profile_edit_title,
             onCloseClicked = onCloseClicked
         )
         FormInput(
             modifier = Modifier
-                .testTag("nameInput")
+                .testTag("biographyInput")
                 .padding(PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
                 .fillMaxWidth()
-                .constrainAs(nameInput) {
+                .constrainAs(biographyInput) {
                     top.linkTo(title.bottom)
                     start.linkTo(parent.start)
                 },
-            enabled = existingCourse == null,
-            value = uiState?.name.orEmpty(),
+            value = uiState?.biography.orEmpty(),
             onValueChange = {
-                viewModel.updateName(it)
+                viewModel.updateBiography(it)
             },
-            labelStringRes = R.string.courses_name
+            labelStringRes = R.string.profile_biography
         )
         FormInput(
             modifier = Modifier
-                .testTag("descriptionInput")
+                .testTag("phoneInput")
                 .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp))
                 .fillMaxWidth()
-                .constrainAs(descriptionInput) {
-                    top.linkTo(nameInput.bottom)
+                .constrainAs(phone) {
+                    top.linkTo(biographyInput.bottom)
                     start.linkTo(parent.start)
                 },
-            enabled = existingCourse == null,
-            value = uiState?.description.orEmpty(),
+            value = uiState?.phone.orEmpty(),
             onValueChange = {
-                viewModel.updateDescription(it)
+                viewModel.updatePhone(it)
             },
-            labelStringRes = R.string.courses_menu_content
+            labelStringRes = R.string.profile_phone
         )
-        DropdownInput(
+        FormInput(
             modifier = Modifier
-                .testTag("semesterInput")
+                .testTag("emailInput")
                 .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp))
                 .fillMaxWidth()
-                .constrainAs(semesterInput) {
-                    top.linkTo(descriptionInput.bottom)
+                .constrainAs(email) {
+                    top.linkTo(phone.bottom)
                     start.linkTo(parent.start)
                 },
-            enabled = existingCourse == null,
-            options = uiState?.semesters.orEmpty(),
-            onClick = { option ->
-                viewModel.updateSelectedSemester(option)
+            value = uiState?.email.orEmpty(),
+            onValueChange = {
+                viewModel.updateEmail(it)
             },
-            labelStringRes = R.string.courses_semester,
-            selectedItem = uiState?.selectedSemester
+            labelStringRes = R.string.profile_email
         )
-        DropdownInput(
-            modifier = Modifier
-                .testTag("instructorInput")
-                .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp))
-                .fillMaxWidth()
-                .constrainAs(instructorInput) {
-                    top.linkTo(semesterInput.bottom)
-                    start.linkTo(parent.start)
-                },
-            options = uiState?.users.orEmpty(),
-            onClick = { option ->
-                viewModel.updateSelectedInstructor(option)
-            },
-            labelStringRes = R.string.courses_instructor,
-            selectedItem = uiState?.selectedUser
-        )
+
         Button(
             modifier = Modifier
                 .testTag("submitButton")
                 .padding(PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 8.dp))
                 .fillMaxWidth()
                 .constrainAs(submitButton) {
-                    top.linkTo(instructorInput.bottom)
+                    top.linkTo(email.bottom)
                     start.linkTo(parent.start)
                 },
             enabled = uiState?.readyToSubmit() ?: false,
@@ -137,22 +112,12 @@ fun CourseInputLayout(
                 disabledContentColor = Color.LightGray
             ),
             onClick = {
-                viewModel.uiResultLiveData.value?.toUiModel(
-                    id = existingCourse?.id,
-                    assignments = existingCourse?.assignments.orEmpty(),
-                    enrolledStudents = existingCourse?.enrolledStudents.orEmpty()
-                )?.let {
-                    onSubmitClicked.invoke(it)
-                }
+                onSubmitClicked.invoke()
             }
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
-                text = if (existingCourse != null) {
-                    stringResource(id = R.string.courses_update)
-                } else {
-                    stringResource(id = R.string.courses_new)
-                },
+                text =  stringResource(id = R.string.auth_submit),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )

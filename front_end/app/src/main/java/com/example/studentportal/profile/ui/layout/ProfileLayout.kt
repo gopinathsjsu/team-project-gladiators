@@ -9,8 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
@@ -44,6 +49,7 @@ fun ProfileLayout(
     userType: UserType,
     viewModel: UserProfileViewModel,
     onLogoutClicked: () -> Unit,
+    onEditClicked: () -> Unit,
     modifier: Modifier
 ) {
     val uiState by viewModel.uiResultLiveData.observeAsState()
@@ -59,7 +65,7 @@ fun ProfileLayout(
         is BaseUiState.Error -> Text(text = uiState.error()?.message.orEmpty())
         is BaseUiState.Success -> {
             ConstraintLayout(modifier = modifier) {
-                val (userLayout, logoutButton, hideAnnouncements) = createRefs()
+                val (userLayout, logoutButton, hideAnnouncements, editButton) = createRefs()
                 UserLayout(
                     user = uiState.data() ?: UserUiModel.empty(),
                     modifier = Modifier
@@ -72,6 +78,23 @@ fun ProfileLayout(
                             start.linkTo(parent.start)
                         }
                 )
+                FloatingActionButton(
+                    onClick = onEditClicked,
+                    modifier = Modifier
+                        .testTag("editProfile")
+                        .padding(16.dp)
+                        .constrainAs(editButton) {
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        },
+                    containerColor = Color.Black,
+                    contentColor = Color.White
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = "Edit Profile"
+                    )
+                }
                 if (showLogoutButton) {
                     if (userType != UserType.ADMIN) {
                         Column(

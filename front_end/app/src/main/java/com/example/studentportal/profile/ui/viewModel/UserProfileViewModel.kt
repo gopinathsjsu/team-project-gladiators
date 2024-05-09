@@ -12,11 +12,15 @@ import com.example.studentportal.common.di.areAnnoucementsDisabled
 import com.example.studentportal.common.di.hideAnnouncements
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.model.BaseUiState
+import com.example.studentportal.common.ui.model.data
+import com.example.studentportal.common.ui.viewmodel.BaseViewModel
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
+import com.example.studentportal.course.ui.model.CourseDetailsUiModel
 import com.example.studentportal.profile.ui.model.UserUiModel
+import com.example.studentportal.profile.usecase.UpdateUserProfileUseCase
 import com.example.studentportal.profile.usecase.UserProfileUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +29,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
 
 class UserProfileViewModel(
-    val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+    dispatcher: CoroutineDispatcher
+) : BaseViewModel(dispatcher) {
 
     @VisibleForTesting
     internal val _uiResultLiveData = MutableLiveData<UserProfileUiResult>()
@@ -62,6 +66,35 @@ class UserProfileViewModel(
                         }
                     }
                 }
+        }
+    }
+
+    fun updateProfile(
+        user: UserUiModel,
+        onError: (BaseUiState<UserUiModel, DefaultError>) -> Unit
+    ) {
+        val previousData = uiResultLiveData.value.data()
+        _uiResultLiveData.value = BaseUiState.Loading()
+        viewModelScope.launch(dispatcher) {
+            UpdateUserProfileUseCase(
+                user.toUseCaseModel(),
+                repository = koin.get()
+            ).launch().collectLatest { result ->
+                when(result){
+                    is UseCaseResult.Failure -> {
+                        _uiResultLiveData.value = BaseUiState.Success(
+                            previousData ?: UserUiModel()
+                        )
+                        // Notify UI post failed
+                        onError.invoke(result.failure())
+                    }
+                    is UseCaseResult.Success -> {
+                        viewModelScope.launch {
+                            _uiResultLiveData.value = result.success()
+                        }
+                    }
+                }
+            }
         }
     }
 
