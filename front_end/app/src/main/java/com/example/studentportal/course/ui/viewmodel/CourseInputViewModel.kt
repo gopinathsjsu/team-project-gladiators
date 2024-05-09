@@ -101,6 +101,7 @@ class CourseInputViewModel(
                 description.isNotBlank()
         }
 
+
         fun toUiModel(
             id: String?,
             assignments: Set<String>,

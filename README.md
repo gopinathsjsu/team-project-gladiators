@@ -75,6 +75,9 @@ Here are two XP values that the team followed throughout the project implementat
 * **Feedback:** Given the varying levels of experience that each member brought to the table, feedback was crucial for each team member and for the success of the overall team. All pull requests made were reviewed thoroughly and feedback was given immediately, both in the pull requests as well as on Discord. The progress of each team member was also discussed in each scrum meeting and at the end of each meeting, the team closely analyzed the sprint burndown charts and retrospectives. That way, both on the individual and the team level, everyone knew what they must improve upon for the upcoming sprint.
 
 ## Agile reports
+=======
+
+## Agile reports
 - [Weekly Scrum Report](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/agile/Weekly_Scrum_Report.pdf)
 
 - [Sprint Report](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/agile/Sprint_Report.pdf)
@@ -82,3 +85,13 @@ Here are two XP values that the team followed throughout the project implementat
 ## Important links
 * **Project repository:** https://github.com/gopinathsjsu/team-project-gladiators
 * **Jira board:** https://sjsu-gladiators.atlassian.net/jira/software/projects/GC/boards/3
+
+## Component diagrams
+
+### Backend component diagram
+
+![Backend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/backend_component_diagram.png)
+
+### Frontend component diagram
+
+![Frontend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/frontend_component_diagram.png)

@@ -35,6 +35,8 @@
     <string name="post_submission_link_button">Post submission link</string>
     <string name= "edit_score_label">New score</string>
     <string name= "post_submission_link_label">New submission link</string>
+
+    <!-- Grades -->
     <string name="edit_grade_score_label">Score</string>
     <string name="edit_grade_submission_link_label">Submission Link</string>
     <string name="no_submission">No submission</string>
@@ -92,4 +94,5 @@
     <string name="profile_biography">Biography</string>
     <string name="profile_phone">Phone</string>
     <string name="profile_email">Email</string>
+
 </resources>

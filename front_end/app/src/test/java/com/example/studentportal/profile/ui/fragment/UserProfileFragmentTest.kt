@@ -43,6 +43,7 @@ import retrofit2.Response
 class UserProfileFragmentTest {
     @get:Rule
     val composeTestRule = createComposeRule()
+
     lateinit var mockRepo: UserRepository
 
     private val mainDispatcher = StandardTestDispatcher()

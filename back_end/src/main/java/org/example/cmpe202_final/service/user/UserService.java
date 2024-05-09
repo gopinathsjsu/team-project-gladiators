@@ -31,9 +31,8 @@ public class UserService {
     public User findByEmail(String email){
         return repository.findByEmail(email);
     }
-
+    
     public User postUser(User user){
         return repository.save(user);
     }
-
 }
