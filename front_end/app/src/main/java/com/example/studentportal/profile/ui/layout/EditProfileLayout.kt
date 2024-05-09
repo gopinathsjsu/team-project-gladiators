@@ -84,6 +84,7 @@ fun EditProfileLayout(
                     top.linkTo(phone.bottom)
                     start.linkTo(parent.start)
                 },
+            enabled = false,
             value = uiState?.email.orEmpty(),
             onValueChange = {
                 viewModel.updateEmail(it)

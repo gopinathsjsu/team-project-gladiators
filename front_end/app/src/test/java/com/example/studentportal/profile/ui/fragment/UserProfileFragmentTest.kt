@@ -120,7 +120,6 @@ class UserProfileFragmentTest {
             // Input Course Data
             composeTestRule.onNodeWithTag("biographyInput").performTextInput("CourseName")
             composeTestRule.onNodeWithTag("phoneInput").performTextInput("Link")
-            composeTestRule.onNodeWithTag("emailInput").performTextInput("Wrong Date")
 
             // Submit click
             composeTestRule.onNodeWithTag("submitButton").performClick()
