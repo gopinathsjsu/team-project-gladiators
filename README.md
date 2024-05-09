@@ -1,1 +1,16 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/LZLg91XD)
+
+## Agile reports
+
+- [Weekly Scrum Report](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/agile/Weekly_Scrum_Report.pdf)
+
+- [Sprint Report](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/agile/Sprint_Report.pdf)
+
+## Component diagrams
+
+### Backend component diagram
+
+![Backend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/backend_component_diagram.png)
+
+### Frontend component diagram
+
+![Frontend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/frontend_component_diagram.png)

@@ -9,11 +9,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.model.BaseUiState
+import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.viewmodel.BaseViewModel
 import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
+import com.example.studentportal.course.usecase.CreateCourseUseCase
+import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.home.ui.model.CourseListUiModel
 import com.example.studentportal.home.usecase.CoursesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,25 +33,62 @@ class HomeViewModel(
     val uiResultLiveData: LiveData<CourseListUiResult>
         get() = _uiResultLiveData
 
-    suspend fun fetchStudent(userId: String) {
-        _uiResultLiveData.value = BaseUiState.Loading()
-        viewModelScope.launch(dispatcher) {
-            CoursesUseCase(userId = userId, repository = koin.get())
-                .launch()
-                .collectLatest { result ->
-                    when (result) {
-                        is UseCaseResult.Failure -> {
-                            viewModelScope.launch {
-                                _uiResultLiveData.value = result.failure()
+    suspend fun fetchCourses(userId: String?) {
+        userId?.let {
+            _uiResultLiveData.value = BaseUiState.Loading()
+            viewModelScope.launch(dispatcher) {
+                CoursesUseCase(userId = userId, repository = koin.get())
+                    .launch()
+                    .collectLatest { result ->
+                        when (result) {
+                            is UseCaseResult.Failure -> {
+                                viewModelScope.launch {
+                                    _uiResultLiveData.value = result.failure()
+                                }
                             }
-                        }
-                        is UseCaseResult.Success -> {
-                            viewModelScope.launch {
-                                _uiResultLiveData.value = result.success()
+                            is UseCaseResult.Success -> {
+                                viewModelScope.launch {
+                                    _uiResultLiveData.value = result.success()
+                                }
                             }
                         }
                     }
+            }
+        }
+    }
+
+    fun createNewCourse(
+        course: BaseCourseUiModel.CourseUiModel,
+        onError: (BaseUiState<CourseListUiModel, DefaultError>) -> Unit
+    ) {
+        val previousCourses = _uiResultLiveData.value
+        _uiResultLiveData.value = BaseUiState.Loading()
+        viewModelScope.launch(dispatcher) {
+            CreateCourseUseCase(
+                repository = koin.get(),
+                courseUseCaseModel = course.toUseCaseModel()
+            ).launch().collectLatest { result ->
+                when (result) {
+                    is UseCaseResult.Failure -> {
+                        viewModelScope.launch {
+                            // Post previous list
+                            _uiResultLiveData.value = BaseUiState.Success(
+                                CourseListUiModel(
+                                    uiModels = previousCourses.data()?.uiModels.orEmpty()
+                                )
+                            )
+                            // Notify UI post failed
+                            onError.invoke(result.failure())
+                        }
+                    }
+
+                    is UseCaseResult.Success -> {
+                        viewModelScope.launch {
+                            _uiResultLiveData.value = result.success()
+                        }
+                    }
                 }
+            }
         }
     }
 

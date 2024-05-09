@@ -1,11 +1,16 @@
 package org.example.cmpe202_final.repository;
 
+import org.example.cmpe202_final.controller.AuthControllerTestConfiguration;
+import org.example.cmpe202_final.controller.MockSecurityConfiguration;
 import org.example.cmpe202_final.model.notification.Notification;
 import org.example.cmpe202_final.repository.notifications.NotificationRepository;
+import org.example.cmpe202_final.service.auth.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +18,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
+@Import({MockSecurityConfiguration.class, TokenService.class, AuthControllerTestConfiguration.class})
+@ActiveProfiles("test")
 public class NotificationRepositoryTest {
 
     @Autowired

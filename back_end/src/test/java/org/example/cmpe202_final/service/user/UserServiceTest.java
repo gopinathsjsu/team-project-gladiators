@@ -30,7 +30,7 @@ public class UserServiceTest {
     public void testFindById() {
         // Mock repository behavior
         String userId = "123";
-        User user = new User(userId, "password", "type", "John", "Doe");
+        User user = new User(userId, "password", "type", "John", "Doe", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "john.doe@exampleuni.edu", "(XXX) XXX-XXX");
         when(repository.findById(userId)).thenReturn(Optional.of(user));
 
         // Test service method
@@ -42,8 +42,8 @@ public class UserServiceTest {
     public void testFindByType() {
         // Mock repository behavior
         UserType type = UserType.STUDENT;
-        User user1 = new User("1", "password", type.name(), "John", "Doe");
-        User user2 = new User("2", "password", type.name(), "Jane", "Smith");
+        User user1 = new User("1", "password", type.name(), "John", "Doe", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "john.doe@exampleuni.edu", "(XXX) XXX-XXX");
+        User user2 = new User("2", "password", type.name(), "Jane", "Smith", "biography", "jane.smith@exampleuni.edu", "(XXX) XXX-XXX");
         List<User> users = Arrays.asList(user1, user2);
         when(repository.findByType(type)).thenReturn(users);
 
@@ -56,13 +56,13 @@ public class UserServiceTest {
     @Test
     public void testFindAllUsers() {
         // Mock repository behavior
-        User user1 = new User("1", "password", "type", "John", "Doe");
-        User user2 = new User("2", "password", "type", "Jane", "Smith");
+        User user1 = new User("1", "password", "type", "John", "Doe", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "john.doe@exampleuni.edu", "(XXX) XXX-XXX");
+        User user2 = new User("2", "password", "type", "Jane", "Smith", "biography", "jane.smith@exampleuni.edu", "(XXX) XXX-XXX");
         List<User> users = Arrays.asList(user1, user2);
         when(repository.findAll()).thenReturn(users);
 
         // Test service method
-        List<User> result = userService.findAlUsers();
+        List<User> result = userService.findAllUsers();
         assertEquals(users.size(), result.size());
         assertEquals(users, result);
     }

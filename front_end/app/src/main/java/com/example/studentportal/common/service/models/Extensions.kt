@@ -10,16 +10,24 @@ import kotlinx.coroutines.flow.flowOf
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Response
 
 fun <UseCaseModel : BaseUseCaseModel<UIModel>, Error, UIModel : BaseUiModel> successFlow(serviceModel: UseCaseModel): Flow<UseCaseResult<UseCaseModel, Error, UIModel>> {
     return flowOf(UseCaseResult.Success(serviceModel))
 }
 
-fun <UseCaseModel : BaseUseCaseModel<UiModel>, UiModel : BaseUiModel> defaultFailureFlow(errorBody: ResponseBody): Flow<UseCaseResult<UseCaseModel, DefaultError, UiModel>> {
+fun <UseCaseModel : BaseUseCaseModel<UiModel>, UiModel : BaseUiModel> defaultFailureFlow(
+    code: Int,
+    errorBody: ResponseBody
+): Flow<UseCaseResult<UseCaseModel, DefaultError, UiModel>> {
     val message = try {
         JSONObject(errorBody.string()).getString("message")
     } catch (e: JSONException) {
-        "Parse Error"
+        when (code) {
+            401 -> "Unauthorized"
+            403 -> "Forbidden"
+            else -> "Parse Error"
+        }
     }
 
     return flowOf(
@@ -31,8 +39,12 @@ fun <UseCaseModel : BaseUseCaseModel<UiModel>, UiModel : BaseUiModel> defaultFai
     )
 }
 
-fun <U : BaseUseCaseModel<UI>, UI : BaseUiModel> defaultFailureFlow(): Flow<UseCaseResult<U, DefaultError, UI>> {
-    return failureFlow(DefaultError("Parse error"))
+fun <U : BaseUseCaseModel<UI>, UI : BaseUiModel> defaultFailureFlow(response: Response<*>): Flow<UseCaseResult<U, DefaultError, UI>> {
+    return when (response.code()) {
+        401 -> failureFlow(DefaultError("Parse error"))
+        403 -> failureFlow(DefaultError("Parse error"))
+        else -> failureFlow(DefaultError("Parse error"))
+    }
 }
 
 fun <U : BaseUseCaseModel<UI>, UI : BaseUiModel> defaultFailureFlow(e: Exception): Flow<UseCaseResult<U, DefaultError, UI>> {

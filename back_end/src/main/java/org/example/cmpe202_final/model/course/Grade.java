@@ -13,9 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Document("grades")
 public class Grade {
+    public static final int NOT_GRADED = -1;
     @Id
     private String id;
-    private Double score;
+    private int score = NOT_GRADED;
     private String studentId;
-    private String courseId;
+    private String assignmentId;
+    private String submissionLink;
 }
