@@ -14,7 +14,9 @@ import com.example.studentportal.common.di.clearAuthenticatedUserData
 import com.example.studentportal.common.di.getUserId
 import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.fragment.BaseFragment
+import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentProfileBinding
+import com.example.studentportal.home.ui.activity.HomeActivity
 import com.example.studentportal.profile.ui.layout.ProfileLayout
 import com.example.studentportal.profile.ui.viewModel.UserProfileViewModel
 
@@ -25,6 +27,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(TAG) {
 
     val userId: String
         get() = arguments?.getString(KEY_USER_ID).orEmpty()
+
+    val userType: UserType
+        get() = UserType.valueOf(arguments?.getString(HomeActivity.KEY_USER_TYPE).orEmpty())
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -37,6 +42,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(TAG) {
                 userId = userId,
                 viewModel = viewModel,
                 modifier = Modifier.fillMaxSize(),
+                userType = userType,
                 onLogoutClicked = {
                     showLogoutDialog(requireActivity()) {
                         koin.get<SharedPreferences>().clearAuthenticatedUserData() // Clear JwtToken
@@ -53,10 +59,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(TAG) {
     companion object {
         const val TAG = "PROFILE"
         const val KEY_USER_ID = "KEY_USER_ID"
-        fun newInstance(userId: String): ProfileFragment {
+        const val KEY_USER_TYPE = "KEY_USER_TYPE"
+        fun newInstance(userId: String, userType: UserType): ProfileFragment {
             val fragment = ProfileFragment()
             fragment.arguments = bundleOf(
-                KEY_USER_ID to userId
+                KEY_USER_ID to userId,
+                KEY_USER_TYPE to userType.name
             )
             return fragment
         }

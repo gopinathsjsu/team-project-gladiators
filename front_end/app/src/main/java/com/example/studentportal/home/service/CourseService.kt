@@ -1,5 +1,6 @@
 package com.example.studentportal.home.service
 
+import com.example.studentportal.course.usecase.model.AnnouncementUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseDetailsUseCaseModel
 import com.example.studentportal.course.usecase.model.CourseInputUseCaseModel
 import com.example.studentportal.home.usecase.models.BaseCourseUseCaseModel
@@ -25,4 +26,7 @@ interface CourseService {
 
     @POST("courses/update")
     fun updateCourse(@Body courseUseCaseModel: BaseCourseUseCaseModel.CourseUseCaseModel): Call<CourseDetailsUseCaseModel>
+
+    @POST("courses/announcement")
+    fun postAnnouncement(@Body announcementUiModel: AnnouncementUseCaseModel): Call<CourseDetailsUseCaseModel>
 }

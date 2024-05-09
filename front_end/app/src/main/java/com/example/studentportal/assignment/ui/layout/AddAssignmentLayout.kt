@@ -71,7 +71,7 @@ fun AddAssignmentLayout(
                 },
             value = uiState?.link.orEmpty(),
             onValueChange = {
-                viewModel.updateLink(it)
+                viewModel.updateDescription(it)
             },
             labelStringRes = R.string.assignments_link
         )

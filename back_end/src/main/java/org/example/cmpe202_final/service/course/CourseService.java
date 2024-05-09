@@ -51,4 +51,8 @@ public class CourseService {
         // Fetch and return the student Users
         return userRepository.findStudentsByEnrolledIds(enrolledStudentIds);
     }
+
+    public Course findCourseById(String courseId){
+        return courseRepository.findContentByCourseId(courseId);
+    }
 }

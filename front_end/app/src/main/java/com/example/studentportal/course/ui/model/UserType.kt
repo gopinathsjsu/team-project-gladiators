@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Notifications
 import com.example.studentportal.R
 
 enum class UserType(
@@ -25,6 +26,11 @@ enum class UserType(
                 titleRes = R.string.courses_menu_assignments,
                 icon = Icons.Default.Create,
                 command = Command.ShowAssignments
+            ),
+            CourseMenuItem(
+                titleRes = R.string.courses_announcements,
+                icon = Icons.Default.Notifications,
+                command = Command.Announcements
             )
         )
     ),
@@ -39,6 +45,11 @@ enum class UserType(
                 titleRes = R.string.courses_menu_assignments,
                 icon = Icons.Default.Create,
                 command = Command.ShowAssignments
+            ),
+            CourseMenuItem(
+                titleRes = R.string.courses_announcements,
+                icon = Icons.Default.Notifications,
+                command = Command.Announcements
             )
         )
     ),

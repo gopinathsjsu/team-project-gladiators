@@ -5,11 +5,11 @@
         android:id="@+id/nav_courses"
         app:showAsAction="ifRoom"
         android:title="@string/drawer_courses" />
-
-    <item
-        android:id="@+id/nav_notifications"
-        app:showAsAction="ifRoom"
-        android:title="@string/drawer_notifications" />
+<!--    TODO: Reenable once notifications have been wired -->
+<!--    <item-->
+<!--        android:id="@+id/nav_notifications"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:title="@string/drawer_notifications" />-->
 
     <item
         android:id="@+id/nav_profile"

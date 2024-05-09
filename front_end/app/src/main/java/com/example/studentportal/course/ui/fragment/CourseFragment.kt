@@ -1,6 +1,7 @@
 package com.example.studentportal.course.ui.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,17 +13,15 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.studentportal.R
-import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
+import com.example.studentportal.common.di.areAnnoucementsDisabled
+import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
-import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.layout.CourseMenuLayout
-import com.example.studentportal.course.ui.model.Command
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.course.ui.viewmodel.CourseDetailsViewModel
 import com.example.studentportal.databinding.FragmentCourseBinding
 import com.example.studentportal.home.ui.model.BaseCourseUiModel
-import com.example.studentportal.students.ui.fragment.StudentsFragment
 
 class CourseFragment(
     viewModelFactory: ViewModelProvider.Factory = CourseDetailsViewModel.CourseViewModelFactory
@@ -43,6 +42,11 @@ class CourseFragment(
             return requireArguments().getParcelable(KEY_COURSE)
         }
 
+    private val userId: String
+        get() {
+            return requireArguments().getString(KEY_USER_ID) ?: ""
+        }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -54,38 +58,15 @@ class CourseFragment(
                 userType = userType,
                 viewModel = viewModel,
                 courseId = course?.id.orEmpty(),
-                onClicked = {
-                    when (it) {
-                        Command.ShowAssignments -> {
-                            val fragment = AssignmentsFragment.newInstance(
-                                course?.id.orEmpty(),
-                                userType.name
-                            )
-                            parentFragmentManager.showBaseFragment(
-                                fragment = fragment,
-                                addToBackStack = true,
-                                containerId = R.id.fl_content
-                            )
-                        }
-
-                        Command.ShowContent -> {
-                            // TODO show course content
-                        }
-
-                        Command.ShowStudents -> {
-                            val fragment = StudentsFragment.newInstance(
-                                course?.id.orEmpty()
-                            )
-                            parentFragmentManager.showBaseFragment(
-                                fragment = fragment,
-                                addToBackStack = true,
-                                containerId = R.id.fl_content
-                            )
-                        }
-
-                        Command.Nothing -> Unit // Default
-                    }
+                onClicked = { command ->
+                    command.showFragment(
+                        fragmentManager = parentFragmentManager,
+                        course = course,
+                        userId = userId,
+                        userType = userType
+                    )
                 },
+                hideAnnouncements = koin.get<SharedPreferences>().areAnnoucementsDisabled(),
                 onEditClicked = {
                     if (it == UserType.ADMIN) {
                         childFragmentManager.showBaseDialogFragment(

@@ -9,13 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.studentportal.R
 import com.example.studentportal.assignment.ui.layout.AssignmentListLayout
 import com.example.studentportal.assignment.ui.model.AssignmentUiModel
 import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
 import com.example.studentportal.common.ui.fragment.BaseFragment
 import com.example.studentportal.common.ui.showBaseDialogFragment
+import com.example.studentportal.common.ui.showBaseFragment
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.databinding.FragmentAssignmentsBinding
+import com.example.studentportal.grades.ui.fragment.GradesFragment
 
 class AssignmentsFragment(
     viewModelFactory: ViewModelProvider.Factory = AssignmentsViewModel.AssignmentsViewModelFactory
@@ -28,6 +31,9 @@ class AssignmentsFragment(
 
     val userType: UserType
         get() = UserType.valueOf(requireArguments().getString(KEY_USER_TYPE).orEmpty())
+
+    val userId: String
+        get() = requireArguments().getString(KEY_USER_ID).orEmpty()
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -43,6 +49,18 @@ class AssignmentsFragment(
                 onAddClicked = {
                     childFragmentManager.showBaseDialogFragment(
                         AddAssignmentFragment.newInstance(courseId)
+                    )
+                },
+                onItemClick = {
+                    val fragment = GradesFragment.newInstance(
+                        it,
+                        userId = userId,
+                        userType = userType.name
+                    )
+                    parentFragmentManager.showBaseFragment(
+                        fragment = fragment,
+                        addToBackStack = true,
+                        containerId = R.id.fl_content
                     )
                 }
             )
@@ -74,11 +92,13 @@ class AssignmentsFragment(
         const val TAG = "ASSIGNMENTS"
         const val KEY_COURSE_ID = "KET_COURSE_ID"
         const val KEY_USER_TYPE = "KEY_USER_TYPE"
-        fun newInstance(courseId: String, userType: String): AssignmentsFragment {
+        const val KEY_USER_ID = "KEY_USER_IDE"
+        fun newInstance(courseId: String, userType: String, userId: String): AssignmentsFragment {
             val fragment = AssignmentsFragment()
             fragment.arguments = bundleOf(
                 KEY_COURSE_ID to courseId,
-                KEY_USER_TYPE to userType
+                KEY_USER_TYPE to userType,
+                KEY_USER_ID to userId
             )
             return fragment
         }

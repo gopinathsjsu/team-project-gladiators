@@ -1,5 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/LZLg91XD)
-
 # CMPE 202 Gladiators Team Project
 
 ## Introduction
@@ -84,4 +82,3 @@ Here are two XP values that the team followed throughout the project implementat
 ## Important links
 * **Project repository:** https://github.com/gopinathsjsu/team-project-gladiators
 * **Jira board:** https://sjsu-gladiators.atlassian.net/jira/software/projects/GC/boards/3
-

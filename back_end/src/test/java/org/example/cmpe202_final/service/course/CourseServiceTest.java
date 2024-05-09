@@ -118,4 +118,33 @@ public class CourseServiceTest {
         verify(courseRepository).findById(courseId);
         verify(userRepository).findStudentsByEnrolledIds(studentIds);
     }
+
+    @Test
+    void testFindCourseById_ReturnsCourseDetails() {
+        // Setup
+        String courseId = "course123";
+        Course expectedCourse = new Course(courseId, "John Doe", new HashSet<>(), new HashSet<>(), "Spring 2022", true, "Course 1", "Description 1");
+
+        // Correcting the mock to match the actual repository call
+        when(courseRepository.findContentByCourseId(courseId)).thenReturn(expectedCourse);
+
+        // Execute
+        Course actualCourse = courseService.findCourseById(courseId);
+
+        // Verify
+        assertNotNull(actualCourse, "The returned course should not be null");
+        assertEquals(expectedCourse, actualCourse, "The returned course should match the expected course");
+    }
+
+    @Test
+    void testFindCourseById_ThrowsExceptionIfNotFound() {
+        // Setup
+        String courseId = "nonExistentCourseId";
+        when(courseRepository.findContentByCourseId(courseId)).thenThrow(new IllegalArgumentException("Course not found"));
+
+        // Execute & Verify
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> courseService.findCourseById(courseId),
+                "Should throw an exception if the course is not found");
+        assertTrue(exception.getMessage().contains("Course not found"), "Exception message should indicate that the course was not found");
+    }
 }
