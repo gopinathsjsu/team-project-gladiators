@@ -3,7 +3,6 @@ package com.example.studentportal.profile.ui.viewModel
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
@@ -18,7 +17,6 @@ import com.example.studentportal.common.usecase.DefaultError
 import com.example.studentportal.common.usecase.UseCaseResult
 import com.example.studentportal.common.usecase.failure
 import com.example.studentportal.common.usecase.success
-import com.example.studentportal.course.ui.model.CourseDetailsUiModel
 import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.usecase.UpdateUserProfileUseCase
 import com.example.studentportal.profile.usecase.UserProfileUseCase
@@ -80,7 +78,7 @@ class UserProfileViewModel(
                 user.toUseCaseModel(),
                 repository = koin.get()
             ).launch().collectLatest { result ->
-                when(result){
+                when (result) {
                     is UseCaseResult.Failure -> {
                         _uiResultLiveData.value = BaseUiState.Success(
                             previousData ?: UserUiModel()

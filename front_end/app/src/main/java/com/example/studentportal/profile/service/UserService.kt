@@ -2,7 +2,6 @@ package com.example.studentportal.profile.service
 
 import com.example.studentportal.auth.usecase.model.AuthRequest
 import com.example.studentportal.auth.usecase.model.AuthResponseUseCaseModel
-import com.example.studentportal.home.usecase.models.BaseCourseUseCaseModel
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
 import retrofit2.Call
 import retrofit2.http.Body

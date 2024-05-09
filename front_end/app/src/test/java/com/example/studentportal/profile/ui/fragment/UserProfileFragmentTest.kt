@@ -2,8 +2,6 @@ package com.example.studentportal.profile.ui.fragment
 
 import android.content.SharedPreferences
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -17,24 +15,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.studentportal.assignment.service.repository.AssignmentRepository
-import com.example.studentportal.assignment.ui.fragment.AddAssignmentFragment
-import com.example.studentportal.assignment.ui.fragment.AssignmentsFragment
-import com.example.studentportal.assignment.ui.model.AssignmentListUiModel
-import com.example.studentportal.assignment.ui.viewmodel.AssignmentsViewModel
-import com.example.studentportal.assignment.usecase.models.AssignmentListUseCaseModel
-import com.example.studentportal.assignment.usecase.models.AssignmentUseCaseModel
 import com.example.studentportal.common.ui.model.BaseUiState
-import com.example.studentportal.common.ui.model.data
 import com.example.studentportal.common.ui.model.isLoading
-import com.example.studentportal.common.ui.model.isSuccess
 import com.example.studentportal.course.ui.model.UserType
 import com.example.studentportal.profile.service.repository.UserRepository
 import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.ui.viewModel.UserProfileViewModel
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
-import com.google.common.truth.Truth
-import com.google.common.truth.Truth.*
+import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -50,7 +38,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import retrofit2.Response
-import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class UserProfileFragmentTest {
@@ -59,8 +46,9 @@ class UserProfileFragmentTest {
     lateinit var mockRepo: UserRepository
 
     private val mainDispatcher = StandardTestDispatcher()
+
     @Before
-    fun setUp(){
+    fun setUp() {
         mockRepo = mockk(relaxed = true)
         stopKoin()
         startKoin {

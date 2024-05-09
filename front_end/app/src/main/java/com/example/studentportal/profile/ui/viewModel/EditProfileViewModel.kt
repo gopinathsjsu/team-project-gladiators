@@ -4,21 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.studentportal.common.di.koin
 import com.example.studentportal.common.ui.viewmodel.BaseViewModel
-import com.example.studentportal.common.usecase.UseCaseResult
-import com.example.studentportal.course.ui.model.SemesterUiModel
 import com.example.studentportal.course.ui.model.UserType
-import com.example.studentportal.course.usecase.CourseInputDataUseCase
-import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.profile.ui.model.UserUiModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
-import java.util.UUID
 
 class EditProfileViewModel(
     dispatcher: CoroutineDispatcher,
@@ -65,12 +56,12 @@ class EditProfileViewModel(
     data class UiState(
         val biography: String = "",
         val email: String = "",
-        val phone: String = "",
+        val phone: String = ""
     ) {
         fun readyToSubmit(): Boolean {
             return biography.isNotBlank() &&
-                    email.isNotBlank() &&
-                    phone.isNotBlank()
+                email.isNotBlank() &&
+                phone.isNotBlank()
         }
 
         fun toUiModel(

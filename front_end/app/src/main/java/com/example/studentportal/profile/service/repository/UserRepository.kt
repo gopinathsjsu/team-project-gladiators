@@ -6,7 +6,6 @@ import com.example.studentportal.common.service.Repository
 import com.example.studentportal.common.service.ServiceProvider
 import com.example.studentportal.common.service.serviceModule
 import com.example.studentportal.profile.service.UserService
-import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.usecase.model.UserUseCaseModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -24,7 +23,7 @@ class UserRepository(
         return provider.service().login(authRequest).execute()
     }
 
-    suspend fun updateUser(userUseCaseModel: UserUseCaseModel): Response<UserUseCaseModel>{
+    suspend fun updateUser(userUseCaseModel: UserUseCaseModel): Response<UserUseCaseModel> {
         return provider.service().updateUser(userUseCaseModel).execute()
     }
 

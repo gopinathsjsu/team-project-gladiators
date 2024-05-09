@@ -8,7 +8,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -21,12 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.studentportal.R
 import com.example.studentportal.common.ui.layout.DialogTitle
-import com.example.studentportal.common.ui.layout.DropdownInput
 import com.example.studentportal.common.ui.layout.FormInput
-import com.example.studentportal.home.ui.model.BaseCourseUiModel
 import com.example.studentportal.profile.ui.model.UserUiModel
 import com.example.studentportal.profile.ui.viewModel.EditProfileViewModel
-
 
 @Composable
 fun EditProfileLayout(
@@ -117,7 +113,7 @@ fun EditProfileLayout(
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
-                text =  stringResource(id = R.string.auth_submit),
+                text = stringResource(id = R.string.auth_submit),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )

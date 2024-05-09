@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.example.studentportal.common.ui.fragment.BaseDialogFragment
-import com.example.studentportal.course.ui.fragment.CourseInputFragment
 import com.example.studentportal.databinding.FragmentEditProfileBinding
 import com.example.studentportal.profile.ui.layout.EditProfileLayout
 import com.example.studentportal.profile.ui.model.UserUiModel
@@ -36,7 +35,7 @@ class EditProfileFragment : BaseDialogFragment<FragmentEditProfileBinding>(TAG) 
                 existingUser = existingUser,
                 viewModel = viewModel,
                 modifier = Modifier.fillMaxSize(),
-                onCloseClicked = {dismiss()},
+                onCloseClicked = { dismiss() },
                 onSubmitClicked = {
                     val initialData = existingUser ?: return@EditProfileLayout
                     val user = viewModel.uiResultLiveData.value?.toUiModel(
