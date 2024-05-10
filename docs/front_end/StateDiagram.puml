@@ -1,0 +1,23 @@
+@startuml
+
+[*] --> UiState
+state UiState {
+note on link
+  User interaction triggers
+  API call
+end note
+Loading --> ApiCall
+  Loading: BaseUiState.Loading<T>
+ApiCall--> Success
+ApiCall: BaseUseCase<T>
+Success: BaseUiState.Success<T>
+note on link
+   API call response
+   is received
+end note
+ApiCall --> Error
+Error: BaseUiState.Error<T>
+}
+
+
+@enduml

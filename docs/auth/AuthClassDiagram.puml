@@ -1,0 +1,21 @@
+@startuml
+'''' Declarations to stylize the diagram ''''
+hide circle
+skinparam classFontStyle bold
+hide empty members
+skinparam classAttributeIconSize 0
+''' Class Declarations '''
+class " Http Client \n(OkHttp) " <<Singleton>>
+class " Interceptor " <<Interface>> {
+ + intercept ( chain: Chain): Response
+
+}
+class " ConcreteInterceptor " {
+   - next: Interceptor
+   + intercept ( chain: Chain) : Response
+}
+
+''' Relations '''
+" Http Client \n(OkHttp) "  x--> " Interceptor "
+" Interceptor " ^-- " ConcreteInterceptor "
+@enduml
