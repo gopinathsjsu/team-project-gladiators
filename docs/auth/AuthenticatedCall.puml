@@ -1,0 +1,12 @@
+@startuml
+start
+:User triggers authenticated call\n\nEx:\n*Courses\n*Assignments\n*Profile;
+:Stored **jwtToken** is added to request\nheaders in the format bellow\n\nBearer **{{AUTH_TOKEN}}**};
+if (Valid token ?) then ( yes\n )
+  else ( no\n )
+  #pink:401 Unauthorized;
+  end
+endif
+#palegreen:Proceed with call;
+stop
+@enduml

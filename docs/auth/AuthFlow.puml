@@ -1,0 +1,13 @@
+@startuml
+
+start
+:User tries to authenticate\n**email**\n**password**;
+if (Valid credentials ?) then ( yes\n )
+  :Store **jwtToken** in device\n**Shared Preferences** ;
+  else ( no\n )
+  #pink:401 Unauthorized;
+  end
+endif
+#palegreen:Proceed with authenticated\nroutes\n\nEx:\n*Courses\n*Assignments\n*Profile;
+stop
+@enduml
