@@ -54,34 +54,50 @@ Our configuration employs the Nginx web server software to set up web servers. I
 Our app is authenticated using a basic Jwt Token flow 
 
 #### Login Flow
-Clients need to authenticate to get **jwtToken** used by authenticated calls
+Clients need to authenticate to get the **jwtToken** used by authenticated calls
+
 ![Login Flow](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/auth/AuthFlow.png)
 
 #### Authenticated Routes
-Clients need to add jwtToken to request headers to get **jwtToken** used by authenticated calls
+Clients need to add the **jwtToken** to request headers when triggering authenticated calls
+
 ![Authenticated Routes](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/auth/AuthenticatedCall.png)
 
 #### Auth Architecture
-Authenticated calls follow a **Chain Of Responsibility**  pattern where Handlers (known as interceptors for this library) are registered for a singleton instance of the http client used for the entire app
+Authenticated calls follow a **Chain Of Responsibility**  pattern where Handlers (known as interceptors for this library) are registered to a singleton instance serving as an http client for the entire app
+
 ![Authenticated Routes](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/auth/AuthClassDiagram.png)
 
  ## Diagrams
+ 
  **MVVM**
+ 
+ MVVM offers a structured approach to developing software applications by separating the user interface (View), presentation logic (ViewModel), and underlying data and business logic (Model). This architecture promotes testability, reusability, and scalability while simplifying UI updates and adapting to changing requirements. With strong community support and tooling available, MVVM facilitates the creation of maintainable and scalable applications with complex user interfaces. 
+ 
  ![MVVM](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/front_end/MVVM.png)
 
 **Clean**
+
+The CLEAN architecture promotes modularity, testability, and maintainability by separating code into layers: Presentation, Domain, and Data. It facilitates flexibility, platform independence, and easy component swapping while ensuring clear code organization and adherence to best practices, making it ideal for scalable, long-term software projects.
+
 ![CLEAN](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/front_end/CLEAN.png)
 
 **UI State**
+
+All user interfaces in our front end adhere to a straightforward state machine pattern, which effectively manages UI states throughout various stages of user interactions, encompassing loading, API call execution, and success or error outcomes. This pattern guarantees a uniform and well-structured method for handling UI behavior, streamlining the management of intricate UI states and fostering clarity and predictability across the application's user experience.
+
 ![STATE](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/front_end/StateDiagram.png)
 
 **Backend component diagram**
+
 ![Backend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/backend_component_diagram.png)
 
 **Frontend component diagram**
+
 ![Frontend Component Diagram](https://github.com/gopinathsjsu/team-project-gladiators/blob/main/docs/uml/frontend_component_diagram.png)
 
 **System deployment diagram**
+
 ![image](https://github.com/gopinathsjsu/team-project-gladiators/assets/93010008/5420854e-fd6b-4813-9da4-dc1cc0716db8)
 
 ## Wireframes
