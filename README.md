@@ -38,7 +38,7 @@ From the user perspective, this application includes the following main features
 
  **Testing:** The team tested their components using JUnit tests. These are built into Android Studio by default. That's why they are very popular in Android apps because they provide developers with the simplicity of writing precise tests and identify bugs early on. These tests can also serve as documentation for the code and that is useful in large codebases and systems. 
 
- **API:** The APIs were RESTfully designed using the Spring Boot Java backend which was initially hosted on the team's local computers, and the designed endpoints allowed easy access to all parts of the database. The input and output of each API is in the JSON format. 
+ **API:** The APIs were RESTfully designed using the Spring Boot Java backend which is hosted on AWS, and the designed endpoints allowed easy access to all parts of the database. The input and output of each API is in the JSON format. 
 
  **Cloud:** The backend application was later hosted on an AWS instance in the cloud, where it works and can be accessed using the appropriate hostname. 
 
